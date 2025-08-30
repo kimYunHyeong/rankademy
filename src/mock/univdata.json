@@ -1,0 +1,112 @@
+[
+  {
+    "univName": "서울과학기술대학교",
+    "studentCnt": 200,
+    "competitionCnt": 100,
+    "competitionWinCnt": 70,
+    "ranker": {
+      "id": 1,
+      "username": "니 카 #luffy",
+      "icon": "LeeSin"
+    }
+  },
+  {
+    "univName": "중앙대학교",
+    "studentCnt": 200,
+    "competitionCnt": 100,
+    "competitionWinCnt": 70,
+    "ranker": {
+      "id": 2,
+      "username": "니 카 #luffy",
+      "icon": "Ahri"
+    }
+  },
+  {
+    "univName": "연세대학교",
+    "studentCnt": 200,
+    "competitionCnt": 100,
+    "competitionWinCnt": 70,
+    "ranker": {
+      "id": 3,
+      "username": "니 카 #luffy",
+      "icon": "Jinx"
+    }
+  },
+  {
+    "univName": "서울대학교",
+    "studentCnt": 200,
+    "competitionCnt": 100,
+    "competitionWinCnt": 70,
+    "ranker": {
+      "id": 4,
+      "username": "니 카 #luffy",
+      "icon": "Thresh"
+    }
+  },
+  {
+    "univName": "서울과학기술대학교",
+    "studentCnt": 200,
+    "competitionCnt": 100,
+    "competitionWinCnt": 70,
+    "ranker": {
+      "id": 5,
+      "username": "니 카 #luffy",
+      "icon": "Ezreal"
+    }
+  },
+  {
+    "univName": "서울과학기술대학교",
+    "studentCnt": 200,
+    "competitionCnt": 100,
+    "competitionWinCnt": 70,
+    "ranker": {
+      "id": 6,
+      "username": "니 카 #luffy",
+      "icon": "Garen"
+    }
+  },
+  {
+    "univName": "서울과학기술대학교",
+    "studentCnt": 200,
+    "competitionCnt": 100,
+    "competitionWinCnt": 70,
+    "ranker": {
+      "id": 7,
+      "username": "니 카 #luffy",
+      "icon": "Katarina"
+    }
+  },
+  {
+    "univName": "서울과학기술대학교",
+    "studentCnt": 200,
+    "competitionCnt": 100,
+    "competitionWinCnt": 70,
+    "ranker": {
+      "id": 8,
+      "username": "니 카 #luffy",
+      "icon": "Lux"
+    }
+  },
+  {
+    "univName": "서울과학기술대학교",
+    "studentCnt": 200,
+    "competitionCnt": 100,
+    "competitionWinCnt": 70,
+    "ranker": {
+      "id": 9,
+      "username": "니 카 #luffy",
+      "icon": "Zed"
+    }
+  },
+  {
+    "univName": "서울과학기술대학교",
+    "studentCnt": 200,
+    "competitionCnt": 100,
+    "competitionWinCnt": 70,
+    "ranker": {
+      "id": 10,
+      "username": "니 카 #luffy",
+      "icon": "Milio"
+    }
+  }
+]

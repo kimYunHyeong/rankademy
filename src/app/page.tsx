@@ -1,5 +1,12 @@
-import Image from "next/image";
+import RankingTable from "@/components/ranking-table";
+import SubHeaderMain from "@/components/sub-header-main";
 
 export default function Home() {
-  return <div>메인페이지</div>;
+  return (
+    <>
+      <SubHeaderMain />
+      <div className="h-5"></div>
+      <RankingTable />
+    </>
+  );
 }
