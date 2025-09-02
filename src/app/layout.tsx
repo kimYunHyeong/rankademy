@@ -18,13 +18,12 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                 href="/"
               >
                 <Image
-                  src="/images/logo.png"
+                  src="/images/logo_underside.png"
                   alt="Rankademy 로고"
-                  width={35.58}
-                  height={23.75}
+                  width={61}
+                  height={45.75}
                   className="object-contain"
                 />
-                <span>Rankademy</span>
               </Link>
 
               {/* 네비게이션 */}
@@ -97,8 +96,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             </aside>
 
             {/* 가운데: 이 영역만 스크롤 */}
-            <main className="flex-1 h-full overflow-y-auto hide-scrollbar">
-              {children}
+            <main className="flex-1 h-full overflow-y-auto hide-scrollbar flex justify-center ">
+              <div className="w-[70%]">{children}</div>
             </main>
 
             {/* 오른쪽: 광고*/}
@@ -110,15 +109,15 @@ export default function RootLayout({ children }: { children: ReactNode }) {
 
         <footer className="mt-10 text-[#B1ACC1] w-full bg-[#0A080E] h-50 flex gap-6">
           <div className="w-20"></div>
-          <div className="flex flex-col space-y-1">
+          <div className="flex flex-col space-y-2">
             <div className="flex space-x-2">
               <Image
                 src="/images/logo.png"
                 alt="Rankademy 로고"
-                width={35.58}
-                height={23.75}
+                width={150.58}
+                height={34}
+                className="space-y-2"
               />
-              <h1 className="font-bold text-white"> Rankademy</h1>
             </div>
             <span className="my-3">이용약관 | 개인정보처리방침</span>
             <div className="flex flex-col">

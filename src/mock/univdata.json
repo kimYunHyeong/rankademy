@@ -6,107 +6,393 @@
     "competitionWinCnt": 70,
     "ranker": {
       "id": 1,
-      "username": "니 카 #luffy",
+      "username": "니 카",
+      "userTag": "#luffy",
       "icon": "LeeSin"
     }
   },
   {
-    "univName": "중앙대학교",
-    "studentCnt": 200,
-    "competitionCnt": 100,
-    "competitionWinCnt": 70,
+    "univName": "고려대학교",
+    "studentCnt": 320,
+    "competitionCnt": 120,
+    "competitionWinCnt": 75,
     "ranker": {
       "id": 2,
-      "username": "니 카 #luffy",
-      "icon": "Ahri"
+      "username": "강백호",
+      "userTag": "#slam",
+      "icon": "Yasuo"
     }
   },
   {
     "univName": "연세대학교",
-    "studentCnt": 200,
-    "competitionCnt": 100,
-    "competitionWinCnt": 70,
+    "studentCnt": 280,
+    "competitionCnt": 95,
+    "competitionWinCnt": 60,
     "ranker": {
       "id": 3,
-      "username": "니 카 #luffy",
-      "icon": "Jinx"
+      "username": "바람검객",
+      "userTag": "#wind",
+      "icon": "Yone"
+    }
+  },
+  {
+    "univName": "서울과학기술대학교",
+    "studentCnt": 350,
+    "competitionCnt": 140,
+    "competitionWinCnt": 92,
+    "ranker": {
+      "id": 4,
+      "username": "토끼왕",
+      "userTag": "#hop",
+      "icon": "Teemo"
     }
   },
   {
     "univName": "서울대학교",
-    "studentCnt": 200,
-    "competitionCnt": 100,
-    "competitionWinCnt": 70,
-    "ranker": {
-      "id": 4,
-      "username": "니 카 #luffy",
-      "icon": "Thresh"
-    }
-  },
-  {
-    "univName": "서울과학기술대학교",
-    "studentCnt": 200,
-    "competitionCnt": 100,
-    "competitionWinCnt": 70,
+    "studentCnt": 500,
+    "competitionCnt": 150,
+    "competitionWinCnt": 100,
     "ranker": {
       "id": 5,
-      "username": "니 카 #luffy",
-      "icon": "Ezreal"
+      "username": "철학자",
+      "userTag": "#logic",
+      "icon": "Zilean"
     }
   },
   {
-    "univName": "서울과학기술대학교",
-    "studentCnt": 200,
-    "competitionCnt": 100,
-    "competitionWinCnt": 70,
+    "univName": "부산대학교",
+    "studentCnt": 260,
+    "competitionCnt": 110,
+    "competitionWinCnt": 65,
     "ranker": {
       "id": 6,
-      "username": "니 카 #luffy",
-      "icon": "Garen"
+      "username": "남해검",
+      "userTag": "#wave",
+      "icon": "Fiora"
     }
   },
   {
-    "univName": "서울과학기술대학교",
-    "studentCnt": 200,
-    "competitionCnt": 100,
-    "competitionWinCnt": 70,
+    "univName": "경북대학교",
+    "studentCnt": 310,
+    "competitionCnt": 130,
+    "competitionWinCnt": 80,
     "ranker": {
       "id": 7,
-      "username": "니 카 #luffy",
-      "icon": "Katarina"
+      "username": "용의혼",
+      "userTag": "#draco",
+      "icon": "Shyvana"
     }
   },
   {
-    "univName": "서울과학기술대학교",
-    "studentCnt": 200,
-    "competitionCnt": 100,
-    "competitionWinCnt": 70,
+    "univName": "전남대학교",
+    "studentCnt": 270,
+    "competitionCnt": 90,
+    "competitionWinCnt": 55,
     "ranker": {
       "id": 8,
-      "username": "니 카 #luffy",
-      "icon": "Lux"
+      "username": "숲속요정",
+      "userTag": "#elf",
+      "icon": "Ivern"
     }
   },
   {
-    "univName": "서울과학기술대학교",
-    "studentCnt": 200,
-    "competitionCnt": 100,
-    "competitionWinCnt": 70,
+    "univName": "인하대학교",
+    "studentCnt": 240,
+    "competitionCnt": 85,
+    "competitionWinCnt": 50,
     "ranker": {
       "id": 9,
-      "username": "니 카 #luffy",
+      "username": "제트",
+      "userTag": "#shadow",
       "icon": "Zed"
     }
   },
   {
+    "univName": "중앙대학교",
+    "studentCnt": 300,
+    "competitionCnt": 120,
+    "competitionWinCnt": 72,
+    "ranker": {
+      "id": 10,
+      "username": "미소녀",
+      "userTag": "#cute",
+      "icon": "Ahri"
+    }
+  },
+  {
     "univName": "서울과학기술대학교",
-    "studentCnt": 200,
+    "studentCnt": 210,
+    "competitionCnt": 100,
+    "competitionWinCnt": 60,
+    "ranker": {
+      "id": 11,
+      "username": "술꾼",
+      "userTag": "#cheers",
+      "icon": "Gragas"
+    }
+  },
+  {
+    "univName": "단국대학교",
+    "studentCnt": 250,
+    "competitionCnt": 110,
+    "competitionWinCnt": 65,
+    "ranker": {
+      "id": 12,
+      "username": "무영",
+      "userTag": "#silent",
+      "icon": "Kayn"
+    }
+  },
+  {
+    "univName": "동국대학교",
+    "studentCnt": 270,
+    "competitionCnt": 105,
+    "competitionWinCnt": 70,
+    "ranker": {
+      "id": 13,
+      "username": "스님",
+      "userTag": "#zen",
+      "icon": "Karma"
+    }
+  },
+  {
+    "univName": "서울과학기술대학교",
+    "studentCnt": 220,
+    "competitionCnt": 95,
+    "competitionWinCnt": 58,
+    "ranker": {
+      "id": 14,
+      "username": "화가",
+      "userTag": "#art",
+      "icon": "Jhin"
+    }
+  },
+  {
+    "univName": "세종대학교",
+    "studentCnt": 190,
+    "competitionCnt": 80,
+    "competitionWinCnt": 45,
+    "ranker": {
+      "id": 15,
+      "username": "발명왕",
+      "userTag": "#idea",
+      "icon": "Heimerdinger"
+    }
+  },
+  {
+    "univName": "숙명여자대학교",
+    "studentCnt": 230,
+    "competitionCnt": 90,
+    "competitionWinCnt": 55,
+    "ranker": {
+      "id": 16,
+      "username": "별빛",
+      "userTag": "#stella",
+      "icon": "Soraka"
+    }
+  },
+  {
+    "univName": "이화여자대학교",
+    "studentCnt": 280,
     "competitionCnt": 100,
     "competitionWinCnt": 70,
     "ranker": {
-      "id": 10,
-      "username": "니 카 #luffy",
-      "icon": "Milio"
+      "id": 17,
+      "username": "꽃잎",
+      "userTag": "#bloom",
+      "icon": "Lillia"
+    }
+  },
+  {
+    "univName": "서울과학기술대학교",
+    "studentCnt": 210,
+    "competitionCnt": 85,
+    "competitionWinCnt": 52,
+    "ranker": {
+      "id": 18,
+      "username": "코딩러",
+      "userTag": "#dev",
+      "icon": "Ekko"
+    }
+  },
+  {
+    "univName": "국민대학교",
+    "studentCnt": 260,
+    "competitionCnt": 120,
+    "competitionWinCnt": 75,
+    "ranker": {
+      "id": 19,
+      "username": "드리머",
+      "userTag": "#dream",
+      "icon": "Ezreal"
+    }
+  },
+  {
+    "univName": "성균관대학교",
+    "studentCnt": 300,
+    "competitionCnt": 130,
+    "competitionWinCnt": 85,
+    "ranker": {
+      "id": 20,
+      "username": "역사가",
+      "userTag": "#past",
+      "icon": "Nasus"
+    }
+  },
+  {
+    "univName": "경희대학교",
+    "studentCnt": 350,
+    "competitionCnt": 140,
+    "competitionWinCnt": 95,
+    "ranker": {
+      "id": 21,
+      "username": "음악가",
+      "userTag": "#note",
+      "icon": "Sona"
+    }
+  },
+  {
+    "univName": "서울과학기술대학교",
+    "studentCnt": 220,
+    "competitionCnt": 90,
+    "competitionWinCnt": 55,
+    "ranker": {
+      "id": 22,
+      "username": "용사",
+      "userTag": "#hero",
+      "icon": "Garen"
+    }
+  },
+  {
+    "univName": "강원대학교",
+    "studentCnt": 240,
+    "competitionCnt": 100,
+    "competitionWinCnt": 62,
+    "ranker": {
+      "id": 23,
+      "username": "산꾼",
+      "userTag": "#mount",
+      "icon": "Tryndamere"
+    }
+  },
+  {
+    "univName": "전북대학교",
+    "studentCnt": 260,
+    "competitionCnt": 110,
+    "competitionWinCnt": 70,
+    "ranker": {
+      "id": 24,
+      "username": "농부",
+      "userTag": "#farm",
+      "icon": "Illaoi"
+    }
+  },
+  {
+    "univName": "서울과학기술대학교",
+    "studentCnt": 280,
+    "competitionCnt": 120,
+    "competitionWinCnt": 78,
+    "ranker": {
+      "id": 25,
+      "username": "사자",
+      "userTag": "#lion",
+      "icon": "Rengar"
+    }
+  },
+  {
+    "univName": "충북대학교",
+    "studentCnt": 200,
+    "competitionCnt": 85,
+    "competitionWinCnt": 50,
+    "ranker": {
+      "id": 26,
+      "username": "호랑이",
+      "userTag": "#tiger",
+      "icon": "Volibear"
+    }
+  },
+  {
+    "univName": "서울과학기술대학교",
+    "studentCnt": 210,
+    "competitionCnt": 90,
+    "competitionWinCnt": 57,
+    "ranker": {
+      "id": 27,
+      "username": "해녀",
+      "userTag": "#diver",
+      "icon": "Nami"
+    }
+  },
+  {
+    "univName": "서울과학기술대학교",
+    "studentCnt": 230,
+    "competitionCnt": 95,
+    "competitionWinCnt": 60,
+    "ranker": {
+      "id": 28,
+      "username": "치유자",
+      "userTag": "#heal",
+      "icon": "Yuumi"
+    }
+  },
+  {
+    "univName": "서울과학기술대학교",
+    "studentCnt": 300,
+    "competitionCnt": 130,
+    "competitionWinCnt": 82,
+    "ranker": {
+      "id": 29,
+      "username": "번역가",
+      "userTag": "#lingo",
+      "icon": "Ryze"
+    }
+  },
+  {
+    "univName": "서울과학기술대학교",
+    "studentCnt": 400,
+    "competitionCnt": 150,
+    "competitionWinCnt": 110,
+    "ranker": {
+      "id": 30,
+      "username": "사이언티스트",
+      "userTag": "#lab",
+      "icon": "Orianna"
+    }
+  },
+  {
+    "univName": "서울과학기술대학교",
+    "studentCnt": 270,
+    "competitionCnt": 100,
+    "competitionWinCnt": 68,
+    "ranker": {
+      "id": 31,
+      "username": "철인",
+      "userTag": "#iron",
+      "icon": "Rumble"
+    }
+  },
+  {
+    "univName": "한동대학교",
+    "studentCnt": 220,
+    "competitionCnt": 85,
+    "competitionWinCnt": 54,
+    "ranker": {
+      "id": 32,
+      "username": "빛의아이",
+      "userTag": "#light",
+      "icon": "Lux"
+    }
+  },
+  {
+    "univName": "서울시립대학교",
+    "studentCnt": 260,
+    "competitionCnt": 110,
+    "competitionWinCnt": 72,
+    "ranker": {
+      "id": 33,
+      "username": "장군",
+      "userTag": "#general",
+      "icon": "JarvanIV"
     }
   }
 ]
