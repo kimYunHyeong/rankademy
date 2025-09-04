@@ -1,9 +1,38 @@
+"use client";
+
 import "@/styles/globals.css";
 import { ReactNode } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
+
+type NavItem = {
+  href: string;
+  label: string;
+  key: "ranking" | "group" | "competition";
+  match?: (path: string) => boolean;
+};
 
 export default function RootLayout({ children }: { children: ReactNode }) {
+  const pathname = usePathname() ?? "/";
+
+  const navItems: NavItem[] = [
+    {
+      href: "/rankings",
+      label: "랭킹",
+      key: "ranking",
+      // 홈("/")과 /rankings 모두 활성 처리
+      match: (path) =>
+        path === "/" || path === "/rankings" || path.startsWith("/rankings/"),
+    },
+    { href: "/group", label: "그룹", key: "group" },
+    { href: "/competition", label: "대항전", key: "competition" },
+  ];
+
+  // 기본 매칭 규칙: 정확히 같거나, 세그먼트 경계로 시작
+  const defaultMatch = (href: string, path: string) =>
+    path === href || path.startsWith(href + "/");
+
   return (
     <html lang="ko">
       <body className="bg-[#110D17]">
@@ -12,7 +41,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           <div className="flex gap-6 h-[calc(100vh-40px)]">
             {/* 왼쪽*/}
             <aside className="flex flex-col justify-between items-center h-full w-20">
-              {/*로고 */}
+              {/* 로고 */}
               <Link
                 className="flex flex-col items-center font-helveticaInserat text-white"
                 href="/"
@@ -27,46 +56,32 @@ export default function RootLayout({ children }: { children: ReactNode }) {
               </Link>
 
               {/* 네비게이션 */}
-              <nav className="flex flex-col text-white [&>*]:text-center [&>*]:p-1 [&>*]:w-[80px] [&>*]:rounded-md ">
-                <Link
-                  href="/ranking"
-                  className="flex flex-col items-center justify-center"
-                >
-                  <Image
-                    src="/images/ranking-empty.png"
-                    alt="Ranking 로고"
-                    width={46}
-                    height={46}
-                    className="object-contain"
-                  />
-                  <span>랭킹</span>
-                </Link>
-                <Link
-                  href="/group"
-                  className="flex flex-col items-center justify-center"
-                >
-                  <Image
-                    src="/images/group-empty.png"
-                    alt="group 로고"
-                    width={46}
-                    height={46}
-                    className="object-contain"
-                  />
-                  <span>그룹</span>
-                </Link>
-                <Link
-                  href="/competition"
-                  className="flex flex-col items-center justify-center"
-                >
-                  <Image
-                    src="/images/competition-empty.png"
-                    alt="competition 로고"
-                    width={46}
-                    height={46}
-                    className="object-contain"
-                  />
-                  <span>대항전</span>
-                </Link>
+              <nav className="flex flex-col text-white [&>*]:text-center [&>*]:p-1 [&>*]:w-[80px] [&>*]:rounded-md">
+                {navItems.map((item) => {
+                  const isActive = item.match
+                    ? item.match(pathname)
+                    : defaultMatch(item.href, pathname);
+
+                  return (
+                    <Link
+                      key={item.key}
+                      href={item.href}
+                      className="flex flex-col items-center justify-center"
+                      aria-current={isActive ? "page" : undefined}
+                    >
+                      <Image
+                        src={`/images/${item.key}${
+                          isActive ? "-full" : "-empty"
+                        }.png`}
+                        alt={`${item.label} 로고`}
+                        width={46}
+                        height={46}
+                        className="object-contain transition-transform duration-200 ease-out hover:scale-110"
+                      />
+                      <span>{item.label}</span>
+                    </Link>
+                  );
+                })}
               </nav>
 
               {/* 내 정보 */}
@@ -85,8 +100,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                 </Link>
                 <Link href="/login">
                   <Image
-                    src={`https://ddragon.leagueoflegends.com/cdn/13.10.1/img/champion/Yasuo.png`}
-                    alt="알람"
+                    src="https://ddragon.leagueoflegends.com/cdn/13.10.1/img/champion/Yasuo.png"
+                    alt="프로필"
                     width={40}
                     height={40}
                     className="object-contain"
@@ -96,11 +111,11 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             </aside>
 
             {/* 가운데: 이 영역만 스크롤 */}
-            <main className="flex-1 h-full overflow-y-auto hide-scrollbar flex justify-center ">
+            <main className="flex-1 h-full overflow-y-auto hide-scrollbar flex justify-center">
               <div className="w-[70%]">{children}</div>
             </main>
 
-            {/* 오른쪽: 광고*/}
+            {/* 오른쪽: 광고 */}
             <aside className="w-20 h-full flex flex-col justify-center text-white">
               <span>광고</span>
             </aside>
@@ -108,8 +123,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         </div>
 
         <footer className="mt-10 text-[#B1ACC1] w-full bg-[#0A080E] h-50 flex gap-6">
-          <div className="w-20"></div>
-          <div className="flex flex-col space-y-2">
+          <div className="w-[20%]"></div>
+          <div className="w-[80%] flex flex-col space-y-2">
+            <div className="h-4"></div>
             <div className="flex space-x-2">
               <Image
                 src="/images/logo.png"

@@ -4,15 +4,43 @@ export interface UnivData {
   studentCnt: number;
   competitionCnt: number;
   competitionWinCnt: number;
-  ranker: RankerDTO;
+  ranker: userDTO;
 }
 
-export interface RankerDTO {
+export interface userDTO {
   id: number;
-  username: string;
+  userName: string;
   userTag: string;
   icon: string;
 }
+
+/* -------------------------유저 정보----------------------------------- */
+export type position = "top" | "jungle" | "middle" | "bottom" | "utility";
+
+export interface tierDTO {
+  rank: string;
+  tier: number;
+  lp: number;
+}
+
+export interface recordDTO {
+  winCnt: number;
+  LoseCnt: number;
+}
+
+export interface positionDTO {
+  mainPosition: position;
+  subPosition: position;
+}
+
+export interface userData {
+  user: userDTO;
+  univName: string;
+  position: positionDTO;
+  tier: tierDTO;
+  record: recordDTO;
+}
+
 /* ----------------------------------------------------------- */
 
 /* ---------------------테이블 관리--------------------------- */
@@ -40,3 +68,50 @@ export type Column<T> = {
 };
 
 /* ------------------------------------------------------------ */
+
+export type SelectOption<V = string, M = unknown> = {
+  value: V; // string/number/boolean 등 자유
+  label: React.ReactNode; // 텍스트/아이콘 등
+  meta?: M; // { type: "number" } 같은 보조 정보
+};
+
+/** 컴포넌트 Props */
+export type SelectProps<V = string, M = unknown> = {
+  value?: V;
+  defaultValue?: V;
+  onChange?: (value: V, meta?: M) => void;
+
+  /** readonly 배열을 지원해야 `as const` 옵션 배열을 그대로 넘길 수 있음 */
+  options: ReadonlyArray<SelectOption<V, M>>;
+
+  placeholder?: string;
+
+  /** value<->string 변환기 (Shadcn Select는 내부적으로 string 사용) */
+  valueToString?: (v: V) => string;
+  stringToValue?: (s: string, opt?: SelectOption<V, M>) => V;
+
+  /** 스타일 훅 */
+  triggerClassName?: string;
+  contentClassName?: string;
+  itemClassName?: string;
+};
+
+/* -----------------------테이블 정렬------------------------------------- */
+
+export type OptionValueOf<T extends readonly { value: any }[]> =
+  T[number]["value"];
+export type OptionMetaOf<T extends readonly { meta?: any }[]> = NonNullable<
+  T[number]["meta"]
+>;
+
+/* ------------------------------------------------------------ */
+
+/* ------------------------------------------------------------ */
+export type PaginationProps<T> = {
+  data: T[]; // 현재 페이지 데이터(서버 페이지네이션이면 "현재 페이지분"만)
+  pageSize: number; // 15
+  current: number; // 1..totalPages
+  serverPaginated?: boolean;
+  /** serverPaginated=true일 때 필수: 전체 레코드 수(예: 33) */
+  totalCount?: number;
+};

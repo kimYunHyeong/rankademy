@@ -1,0 +1,222 @@
+[
+  {
+    "user": {
+      "id": 1,
+      "userName": "Alpha",
+      "userTag": "#001",
+      "icon": "Kaisa"
+    },
+    "univName": "서울대학교",
+    "position": { "mainPosition": "middle", "subPosition": "bottom" },
+    "tier": { "rank": "challenger", "tier": 1, "lp": 940 },
+    "record": { "winCnt": 120, "LoseCnt": 30 }
+  },
+  {
+    "user": { "id": 2, "userName": "Bravo", "userTag": "#002", "icon": "Ahri" },
+    "univName": "연세대학교",
+    "position": { "mainPosition": "bottom", "subPosition": "utility" },
+    "tier": { "rank": "grandmaster", "tier": 1, "lp": 590 },
+    "record": { "winCnt": 95, "LoseCnt": 40 }
+  },
+  {
+    "user": {
+      "id": 3,
+      "userName": "Charlie",
+      "userTag": "#003",
+      "icon": "LeeSin"
+    },
+    "univName": "고려대학교",
+    "position": { "mainPosition": "jungle", "subPosition": "middle" },
+    "tier": { "rank": "master", "tier": 1, "lp": 77 },
+    "record": { "winCnt": 80, "LoseCnt": 45 }
+  },
+  {
+    "user": {
+      "id": 4,
+      "userName": "Delta",
+      "userTag": "#004",
+      "icon": "Thresh"
+    },
+    "univName": "성균관대학교",
+    "position": { "mainPosition": "utility", "subPosition": "bottom" },
+    "tier": { "rank": "diamond", "tier": 4, "lp": 65 },
+    "record": { "winCnt": 150, "LoseCnt": 130 }
+  },
+  {
+    "user": { "id": 5, "userName": "Echo", "userTag": "#005", "icon": "Zed" },
+    "univName": "서울대학교",
+    "position": { "mainPosition": "middle", "subPosition": "top" },
+    "tier": { "rank": "platinum", "tier": 1, "lp": 42 },
+    "record": { "winCnt": 200, "LoseCnt": 180 }
+  },
+  {
+    "user": {
+      "id": 6,
+      "userName": "Foxtrot",
+      "userTag": "#006",
+      "icon": "Ezreal"
+    },
+    "univName": "부산대학교",
+    "position": { "mainPosition": "bottom", "subPosition": "middle" },
+    "tier": { "rank": "gold", "tier": 2, "lp": 33 },
+    "record": { "winCnt": 90, "LoseCnt": 110 }
+  },
+  {
+    "user": { "id": 7, "userName": "Golf", "userTag": "#007", "icon": "Rakan" },
+    "univName": "경북대학교",
+    "position": { "mainPosition": "utility", "subPosition": "jungle" },
+    "tier": { "rank": "silver", "tier": 3, "lp": 28 },
+    "record": { "winCnt": 60, "LoseCnt": 140 }
+  },
+  {
+    "user": {
+      "id": 8,
+      "userName": "Hotel",
+      "userTag": "#008",
+      "icon": "Fiora"
+    },
+    "univName": "전남대학교",
+    "position": { "mainPosition": "top", "subPosition": "middle" },
+    "tier": { "rank": "iron", "tier": 4, "lp": 5 },
+    "record": { "winCnt": 20, "LoseCnt": 100 }
+  },
+  {
+    "user": {
+      "id": 9,
+      "userName": "India",
+      "userTag": "#009",
+      "icon": "Akali"
+    },
+    "univName": "이화여자대학교",
+    "position": { "mainPosition": "middle", "subPosition": "top" },
+    "tier": { "rank": "emerald", "tier": 1, "lp": 59 },
+    "record": { "winCnt": 70, "LoseCnt": 55 }
+  },
+  {
+    "user": {
+      "id": 10,
+      "userName": "Juliet",
+      "userTag": "#010",
+      "icon": "Jinx"
+    },
+    "univName": "서울대학교",
+    "position": { "mainPosition": "bottom", "subPosition": "utility" },
+    "tier": { "rank": "platinum", "tier": 2, "lp": 72 },
+    "record": { "winCnt": 130, "LoseCnt": 100 }
+  },
+  {
+    "user": { "id": 11, "userName": "Kilo", "userTag": "#011", "icon": "Nami" },
+    "univName": "중앙대학교",
+    "position": { "mainPosition": "utility", "subPosition": "middle" },
+    "tier": { "rank": "gold", "tier": 3, "lp": 66 },
+    "record": { "winCnt": 75, "LoseCnt": 90 }
+  },
+  {
+    "user": {
+      "id": 12,
+      "userName": "Lima",
+      "userTag": "#012",
+      "icon": "Darius"
+    },
+    "univName": "서울과학기술대학교",
+    "position": { "mainPosition": "top", "subPosition": "jungle" },
+    "tier": { "rank": "silver", "tier": 4, "lp": 21 },
+    "record": { "winCnt": 50, "LoseCnt": 95 }
+  },
+  {
+    "user": {
+      "id": 13,
+      "userName": "Mike",
+      "userTag": "#013",
+      "icon": "Katarina"
+    },
+    "univName": "서울대학교",
+    "position": { "mainPosition": "middle", "subPosition": "bottom" },
+    "tier": { "rank": "bronze", "tier": 1, "lp": 13 },
+    "record": { "winCnt": 40, "LoseCnt": 110 }
+  },
+  {
+    "user": {
+      "id": 14,
+      "userName": "November",
+      "userTag": "#014",
+      "icon": "Graves"
+    },
+    "univName": "강원대학교",
+    "position": { "mainPosition": "jungle", "subPosition": "top" },
+    "tier": { "rank": "challenger", "tier": 1, "lp": 1097 },
+    "record": { "winCnt": 300, "LoseCnt": 100 }
+  },
+  {
+    "user": {
+      "id": 15,
+      "userName": "Oscar",
+      "userTag": "#015",
+      "icon": "Leona"
+    },
+    "univName": "경희대학교",
+    "position": { "mainPosition": "utility", "subPosition": "bottom" },
+    "tier": { "rank": "emerald", "tier": 3, "lp": 84 },
+    "record": { "winCnt": 180, "LoseCnt": 90 }
+  },
+  {
+    "user": {
+      "id": 16,
+      "userName": "Papa",
+      "userTag": "#016",
+      "icon": "Camille"
+    },
+    "univName": "전남대학교",
+    "position": { "mainPosition": "top", "subPosition": "middle" },
+    "tier": { "rank": "master", "tier": 1, "lp": 76 },
+    "record": { "winCnt": 110, "LoseCnt": 85 }
+  },
+  {
+    "user": {
+      "id": 17,
+      "userName": "Quebec",
+      "userTag": "#017",
+      "icon": "Lux"
+    },
+    "univName": "대진대학교",
+    "position": { "mainPosition": "middle", "subPosition": "utility" },
+    "tier": { "rank": "diamond", "tier": 1, "lp": 91 },
+    "record": { "winCnt": 140, "LoseCnt": 120 }
+  },
+  {
+    "user": {
+      "id": 18,
+      "userName": "Romeo",
+      "userTag": "#018",
+      "icon": "Draven"
+    },
+    "univName": "고신대학교",
+    "position": { "mainPosition": "bottom", "subPosition": "middle" },
+    "tier": { "rank": "platinum", "tier": 2, "lp": 63 },
+    "record": { "winCnt": 160, "LoseCnt": 130 }
+  },
+  {
+    "user": {
+      "id": 19,
+      "userName": "Sierra",
+      "userTag": "#019",
+      "icon": "Morgana"
+    },
+    "univName": "서울시립대학교",
+    "position": { "mainPosition": "utility", "subPosition": "jungle" },
+    "tier": { "rank": "gold", "tier": 3, "lp": 54 },
+    "record": { "winCnt": 100, "LoseCnt": 90 }
+  },
+  {
+    "user": {
+      "id": 20,
+      "userName": "Tango",
+      "userTag": "#020",
+      "icon": "Garen"
+    },
+    "univName": "부경대학교",
+    "position": { "mainPosition": "top", "subPosition": "utility" },
+    "tier": { "rank": "silver", "tier": 4, "lp": 37 },
+    "record": { "winCnt": 45, "LoseCnt": 70 }
+  }
+]

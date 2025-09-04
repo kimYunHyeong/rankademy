@@ -143,19 +143,28 @@ export function RankingTable<T>({
             <PaginationPrevious
               aria-disabled={current === 1}
               onClick={() => go(current - 1)}
-              className={current === 1 ? "pointer-events-none opacity-50" : ""}
+              className={`rounded-sm w-[28px] h-[28px] px-3 py-1 text-sm font-medium transition-colors
+          border border-[#323036] text-[#B1ACC1]
+          hover:bg-[#FF5679] hover:text-[#110D17] hover:border-none
+          ${current === 1 ? "pointer-events-none opacity-50" : ""}`}
             />
           </PaginationItem>
 
-          {/* 가운데: 페이지 번호들 — 각 번호는 반드시 <li>(PaginationItem) */}
+          {/* 가운데: 페이지 번호들 */}
           {pages.map((p, idx) => (
             <PaginationItem key={`${p}-${idx}`}>
               {p === "..." ? (
-                <PaginationEllipsis />
+                <PaginationEllipsis className="text-[#323036]" />
               ) : (
                 <PaginationLink
                   isActive={p === current}
                   onClick={() => go(p as number)}
+                  className={`w-[28px] h-[28px] rounded-sm px-3 py-1 text-sm font-medium transition-colors
+              ${
+                p === current
+                  ? "bg-[#FF5679] text-[#110D17] border-none"
+                  : "border border-[#323036] text-[#B1ACC1] hover:bg-[#FF5679] hover:text-[#110D17] hover:border-none"
+              }`}
                 >
                   {p}
                 </PaginationLink>
@@ -168,9 +177,10 @@ export function RankingTable<T>({
             <PaginationNext
               aria-disabled={current === totalPages}
               onClick={() => go(current + 1)}
-              className={
-                current === totalPages ? "pointer-events-none opacity-50" : ""
-              }
+              className={`rounded-sm w-[28px] h-[28px] px-3 py-1 text-sm font-medium transition-colors
+          border border-[#323036] text-[#B1ACC1]
+          hover:bg-[#FF5679] hover:text-[#110D17] hover:border-none
+          ${current === totalPages ? "pointer-events-none opacity-50" : ""}`}
             />
           </PaginationItem>
         </PaginationContent>

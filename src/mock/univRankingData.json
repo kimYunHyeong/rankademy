@@ -6,7 +6,7 @@
     "competitionWinCnt": 70,
     "ranker": {
       "id": 1,
-      "username": "니 카",
+      "userName": "니 카",
       "userTag": "#luffy",
       "icon": "LeeSin"
     }
@@ -18,7 +18,7 @@
     "competitionWinCnt": 75,
     "ranker": {
       "id": 2,
-      "username": "강백호",
+      "userName": "강백호",
       "userTag": "#slam",
       "icon": "Yasuo"
     }
@@ -30,7 +30,7 @@
     "competitionWinCnt": 60,
     "ranker": {
       "id": 3,
-      "username": "바람검객",
+      "userName": "바람검객",
       "userTag": "#wind",
       "icon": "Yone"
     }
@@ -42,7 +42,7 @@
     "competitionWinCnt": 92,
     "ranker": {
       "id": 4,
-      "username": "토끼왕",
+      "userName": "토끼왕",
       "userTag": "#hop",
       "icon": "Teemo"
     }
@@ -54,7 +54,7 @@
     "competitionWinCnt": 100,
     "ranker": {
       "id": 5,
-      "username": "철학자",
+      "userName": "철학자",
       "userTag": "#logic",
       "icon": "Zilean"
     }
@@ -66,7 +66,7 @@
     "competitionWinCnt": 65,
     "ranker": {
       "id": 6,
-      "username": "남해검",
+      "userName": "남해검",
       "userTag": "#wave",
       "icon": "Fiora"
     }
@@ -78,7 +78,7 @@
     "competitionWinCnt": 80,
     "ranker": {
       "id": 7,
-      "username": "용의혼",
+      "userName": "용의혼",
       "userTag": "#draco",
       "icon": "Shyvana"
     }
@@ -90,7 +90,7 @@
     "competitionWinCnt": 55,
     "ranker": {
       "id": 8,
-      "username": "숲속요정",
+      "userName": "숲속요정",
       "userTag": "#elf",
       "icon": "Ivern"
     }
@@ -102,7 +102,7 @@
     "competitionWinCnt": 50,
     "ranker": {
       "id": 9,
-      "username": "제트",
+      "userName": "제트",
       "userTag": "#shadow",
       "icon": "Zed"
     }
@@ -114,7 +114,7 @@
     "competitionWinCnt": 72,
     "ranker": {
       "id": 10,
-      "username": "미소녀",
+      "userName": "미소녀",
       "userTag": "#cute",
       "icon": "Ahri"
     }
@@ -126,7 +126,7 @@
     "competitionWinCnt": 60,
     "ranker": {
       "id": 11,
-      "username": "술꾼",
+      "userName": "술꾼",
       "userTag": "#cheers",
       "icon": "Gragas"
     }
@@ -138,7 +138,7 @@
     "competitionWinCnt": 65,
     "ranker": {
       "id": 12,
-      "username": "무영",
+      "userName": "무영",
       "userTag": "#silent",
       "icon": "Kayn"
     }
@@ -150,7 +150,7 @@
     "competitionWinCnt": 70,
     "ranker": {
       "id": 13,
-      "username": "스님",
+      "userName": "스님",
       "userTag": "#zen",
       "icon": "Karma"
     }
@@ -162,7 +162,7 @@
     "competitionWinCnt": 58,
     "ranker": {
       "id": 14,
-      "username": "화가",
+      "userName": "화가",
       "userTag": "#art",
       "icon": "Jhin"
     }
@@ -174,7 +174,7 @@
     "competitionWinCnt": 45,
     "ranker": {
       "id": 15,
-      "username": "발명왕",
+      "userName": "발명왕",
       "userTag": "#idea",
       "icon": "Heimerdinger"
     }
@@ -186,7 +186,7 @@
     "competitionWinCnt": 55,
     "ranker": {
       "id": 16,
-      "username": "별빛",
+      "userName": "별빛",
       "userTag": "#stella",
       "icon": "Soraka"
     }
@@ -198,7 +198,7 @@
     "competitionWinCnt": 70,
     "ranker": {
       "id": 17,
-      "username": "꽃잎",
+      "userName": "꽃잎",
       "userTag": "#bloom",
       "icon": "Lillia"
     }
@@ -210,7 +210,7 @@
     "competitionWinCnt": 52,
     "ranker": {
       "id": 18,
-      "username": "코딩러",
+      "userName": "코딩러",
       "userTag": "#dev",
       "icon": "Ekko"
     }
@@ -222,7 +222,7 @@
     "competitionWinCnt": 75,
     "ranker": {
       "id": 19,
-      "username": "드리머",
+      "userName": "드리머",
       "userTag": "#dream",
       "icon": "Ezreal"
     }
@@ -234,7 +234,7 @@
     "competitionWinCnt": 85,
     "ranker": {
       "id": 20,
-      "username": "역사가",
+      "userName": "역사가",
       "userTag": "#past",
       "icon": "Nasus"
     }
@@ -246,7 +246,7 @@
     "competitionWinCnt": 95,
     "ranker": {
       "id": 21,
-      "username": "음악가",
+      "userName": "음악가",
       "userTag": "#note",
       "icon": "Sona"
     }
@@ -258,7 +258,7 @@
     "competitionWinCnt": 55,
     "ranker": {
       "id": 22,
-      "username": "용사",
+      "userName": "용사",
       "userTag": "#hero",
       "icon": "Garen"
     }
@@ -270,7 +270,7 @@
     "competitionWinCnt": 62,
     "ranker": {
       "id": 23,
-      "username": "산꾼",
+      "userName": "산꾼",
       "userTag": "#mount",
       "icon": "Tryndamere"
     }
@@ -282,7 +282,7 @@
     "competitionWinCnt": 70,
     "ranker": {
       "id": 24,
-      "username": "농부",
+      "userName": "농부",
       "userTag": "#farm",
       "icon": "Illaoi"
     }
@@ -294,7 +294,7 @@
     "competitionWinCnt": 78,
     "ranker": {
       "id": 25,
-      "username": "사자",
+      "userName": "사자",
       "userTag": "#lion",
       "icon": "Rengar"
     }
@@ -306,7 +306,7 @@
     "competitionWinCnt": 50,
     "ranker": {
       "id": 26,
-      "username": "호랑이",
+      "userName": "호랑이",
       "userTag": "#tiger",
       "icon": "Volibear"
     }
@@ -318,7 +318,7 @@
     "competitionWinCnt": 57,
     "ranker": {
       "id": 27,
-      "username": "해녀",
+      "userName": "해녀",
       "userTag": "#diver",
       "icon": "Nami"
     }
@@ -330,7 +330,7 @@
     "competitionWinCnt": 60,
     "ranker": {
       "id": 28,
-      "username": "치유자",
+      "userName": "치유자",
       "userTag": "#heal",
       "icon": "Yuumi"
     }
@@ -342,7 +342,7 @@
     "competitionWinCnt": 82,
     "ranker": {
       "id": 29,
-      "username": "번역가",
+      "userName": "번역가",
       "userTag": "#lingo",
       "icon": "Ryze"
     }
@@ -354,7 +354,7 @@
     "competitionWinCnt": 110,
     "ranker": {
       "id": 30,
-      "username": "사이언티스트",
+      "userName": "사이언티스트",
       "userTag": "#lab",
       "icon": "Orianna"
     }
@@ -366,7 +366,7 @@
     "competitionWinCnt": 68,
     "ranker": {
       "id": 31,
-      "username": "철인",
+      "userName": "철인",
       "userTag": "#iron",
       "icon": "Rumble"
     }
@@ -378,7 +378,7 @@
     "competitionWinCnt": 54,
     "ranker": {
       "id": 32,
-      "username": "빛의아이",
+      "userName": "빛의아이",
       "userTag": "#light",
       "icon": "Lux"
     }
@@ -390,7 +390,7 @@
     "competitionWinCnt": 72,
     "ranker": {
       "id": 33,
-      "username": "장군",
+      "userName": "장군",
       "userTag": "#general",
       "icon": "JarvanIV"
     }
