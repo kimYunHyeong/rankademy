@@ -66,7 +66,7 @@ export default function Home() {
       headerClassName: "w-[18%]",
       cell: (row) => (
         <Link
-          href={`/rankings/rankings/univ/${encodeURIComponent(row.univName)}`}
+          href={`/rankings/univ/${encodeURIComponent(row.univName)}/users`}
           className="flex items-center gap-2"
         >
           <Image

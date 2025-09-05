@@ -1,31 +1,32 @@
 "use client";
 
-// app/page.tsx
 import { useMemo, useState } from "react";
-import { RankingTable } from "@/components/ranking-table";
-import type { userData, Column, OptionMetaOf, OptionValueOf } from "@/types";
-import SubHeaderMain from "@/components/sub-header-main";
-import SearchAndFilter from "@/components/search-and-filter";
+import { useParams } from "next/navigation";
+import Link from "next/link";
 import Image from "next/image";
-import userRanking from "@/mock/userRankingData.json";
+
+import { RankingTable } from "@/components/ranking-table";
+import SubHeaderUnivRanking from "@/components/sub-header-univ-ranking";
+import SearchAndFilter from "@/components/search-and-filter";
+
+import type {
+  univUserData,
+  Column,
+  OptionMetaOf,
+  OptionValueOf,
+} from "@/types";
+import univUserRanking from "@/mock/univUserRankingData.json";
 import { calcWinRate } from "@/utils/calc-winrate";
 import { calcRankScore } from "@/utils/calc-rank-score";
-import Link from "next/link";
 
-export default function Home({ params }: { params: { univName: string } }) {
-  const univName = decodeURIComponent(params.univName);
+export default function Home() {
+  // ✅ 동기 접근 (클라이언트에서만 사용)
+  const { univName: raw } = useParams<{ univName: string }>();
+  const univName = decodeURIComponent(String(raw ?? ""));
 
   const sortOptions = [
-    {
-      value: "rank",
-      label: "랭크순",
-      meta: { type: "number" },
-    },
-    {
-      value: "winrate",
-      label: "승률순",
-      meta: { type: "number" },
-    },
+    { value: "rank", label: "랭크순", meta: { type: "number" } },
+    { value: "winrate", label: "승률순", meta: { type: "number" } },
   ] as const;
 
   type SortValue = OptionValueOf<typeof sortOptions>;
@@ -34,22 +35,20 @@ export default function Home({ params }: { params: { univName: string } }) {
   const [sortKey, setSortKey] = useState<SortValue>("rank");
   const [query, setQuery] = useState("");
 
-  function capitalize(str: string) {
-    if (!str) return str;
-    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
-  }
+  const capitalize = (s: string) =>
+    s ? s.charAt(0).toUpperCase() + s.slice(1).toLowerCase() : s;
 
   // ✅ 원본 리스트
-  const baseData = useMemo<userData[]>(
-    () => (Array.isArray(userRanking) ? (userRanking as userData[]) : []),
+  const baseData = useMemo<univUserData[]>(
+    () =>
+      Array.isArray(univUserRanking) ? (univUserRanking as univUserData[]) : [],
     []
   );
 
-  // ✅ 검색 필터 (원하는 필드 추가/삭제 가능)
-  const filteredData = useMemo<userData[]>(() => {
+  // ✅ 검색 필터
+  const filteredData = useMemo<univUserData[]>(() => {
     if (!query) return baseData;
     const q = query.toLowerCase();
-
     return baseData.filter((row) => {
       const name = (row.user?.userName ?? "").toLowerCase();
       const tag = (row.user?.userTag ?? "").toLowerCase();
@@ -58,38 +57,31 @@ export default function Home({ params }: { params: { univName: string } }) {
     });
   }, [baseData, query]);
 
-  // ✅ 정렬 (filteredData 기준)
-  const sortedData = useMemo<userData[]>(() => {
+  // ✅ 정렬
+  const sortedData = useMemo<univUserData[]>(() => {
     const num = (x: unknown) => (typeof x === "number" ? x : 0);
-    const getWinRate = (row: userData) =>
+    const getWinRate = (row: univUserData) =>
       calcWinRate(row.record?.winCnt ?? 0, row.record?.LoseCnt ?? 0);
-    const getRankScore = (row: userData) =>
+    const getRankScore = (row: univUserData) =>
       calcRankScore(row.tier?.rank, row.tier?.lp, row.tier?.tier);
 
     const out = [...filteredData].sort((a, b) => {
       let diff = 0;
-
-      if (sortKey === "rank") {
-        diff = getRankScore(b) - getRankScore(a); // 내림차순
-      } else if (sortKey === "winrate") {
-        diff = getWinRate(b) - getWinRate(a); // 내림차순
-      } else {
-        diff = num((b as any)[sortKey]) - num((a as any)[sortKey]);
-      }
+      if (sortKey === "rank") diff = getRankScore(b) - getRankScore(a);
+      else if (sortKey === "winrate") diff = getWinRate(b) - getWinRate(a);
+      else diff = num((b as any)[sortKey]) - num((a as any)[sortKey]);
 
       if (diff !== 0) return diff;
-      // 동점 시 보조 정렬 키들
       const nameDiff = (a.user.userName ?? "").localeCompare(
         b.user.userName ?? ""
       );
       if (nameDiff !== 0) return nameDiff;
       return (a.univName ?? "").localeCompare(b.univName ?? "");
     });
-
     return out;
   }, [filteredData, sortKey]);
 
-  const columns: Column<userData>[] = [
+  const columns: Column<univUserData>[] = [
     {
       id: "user",
       header: "유저명",
@@ -108,23 +100,14 @@ export default function Home({ params }: { params: { univName: string } }) {
       ),
     },
     {
-      id: "univ",
-      header: "학교명",
+      id: "major",
+      header: "전공",
       headerClassName: "w-[18%]",
       cell: (row) => (
-        <Link
-          href={`/rankings/rankings/univ/${encodeURIComponent(row.univName)}`}
-          className="flex items-center gap-2 hover:opacity-80 transition"
-        >
-          <Image
-            src={`/univ-emblem/${row.univName}.png`}
-            alt={row.univName}
-            width={30}
-            height={30}
-            className="rounded-full"
-          />
-          <span>{row.univName}</span>
-        </Link>
+        <div className="flex flex-col">
+          <span>{row.major.major}</span>
+          <span>{row.major.admissionYear}학번</span>
+        </div>
       ),
     },
     {
@@ -163,7 +146,7 @@ export default function Home({ params }: { params: { univName: string } }) {
           <div>
             <div className="flex">
               <span>{capitalize(row.tier.rank)}</span>
-              <span className="w-1"> </span>
+              <span className="w-1" />
               <span>{row.tier.tier}</span>
             </div>
             <span>{row.tier.lp}</span>
@@ -183,21 +166,17 @@ export default function Home({ params }: { params: { univName: string } }) {
         return (
           <div className="flex items-center gap-2 w-full">
             <div className="relative flex-1 w-[160px] h-[30px] border-[#323036] rounded-[4px] bg-[#110D17] overflow-hidden">
-              {/* 채워지는 부분 */}
               <div
                 className="h-full bg-[#FF567980]"
                 style={{ width: `${pct}%` }}
               />
-              {/*왼쪽*/}
               <span className="absolute left-2 top-1/2 -translate-y-1/2 text-xs text-white font-medium">
                 {win}승
               </span>
-              {/* 오른쪽 */}
               <span className="absolute right-2 top-1/2 -translate-y-1/2 text-xs text-white font-medium">
                 {lose}패
               </span>
             </div>
-            {/* % */}
             <span className="ml-3 text-sm text-white">{pct}%</span>
           </div>
         );
@@ -207,32 +186,37 @@ export default function Home({ params }: { params: { univName: string } }) {
 
   return (
     <>
-      <div className="p-6 text-xl font-bold text-white">
-        {univName}의 학교 랭킹 페이지
-      </div>
-      <SubHeaderMain
+      {/* 상단 고정 헤더 */}
+      <SubHeaderUnivRanking
+        univName={univName}
+        univNameEn="SEOUL NATIONAL UNIVERSITY OF SCIENCE AND TECHNOLOGY"
+        logoSrc={`/univ-emblem/${univName}.png`}
         items={[
           { label: "그룹 랭킹", href: `/rankings/univ/${univName}/groups` },
           { label: "유저 랭킹", href: `/rankings/univ/${univName}/users` },
         ]}
+        headerHeight={260}
       />
-      <div className="h-20"></div>
-      <SearchAndFilter<SortValue, { type: "number" }>
-        onSearch={setQuery}
-        filterProps={{
-          value: sortKey,
-          onChange: (v) => setSortKey(v), // v: SortValue
-          options: sortOptions, // readonly 배열 OK
-          placeholder: "정렬 기준",
-        }}
-      />
-      <RankingTable
-        key={sortKey}
-        data={sortedData}
-        columns={columns}
-        pageSize={15}
-        initialPage={1}
-      />
+
+      <div className="max-w-5xl mx-auto px-6">
+        <SearchAndFilter<SortValue, SortMeta>
+          onSearch={setQuery}
+          filterProps={{
+            value: sortKey,
+            onChange: (v) => setSortKey(v),
+            options: sortOptions,
+            placeholder: "정렬 기준",
+          }}
+        />
+
+        <RankingTable
+          key={sortKey}
+          data={sortedData}
+          columns={columns}
+          pageSize={15}
+          initialPage={1}
+        />
+      </div>
     </>
   );
 }

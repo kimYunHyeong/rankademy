@@ -38,9 +38,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <body className="bg-[#110D17]">
         <div className="m-5">
           {/* 3중 분할(네비, 내용, 광고)*/}
-          <div className="flex gap-6 h-[calc(100vh-40px)]">
+          <div className=" flex gap-6 h-[calc(100vh-40px)] bg-none">
             {/* 왼쪽*/}
-            <aside className="flex flex-col justify-between items-center h-full w-20">
+            <aside className="z-50 flex flex-col justify-between items-center h-full w-20">
               {/* 로고 */}
               <Link
                 className="flex flex-col items-center font-helveticaInserat text-white"

@@ -43,6 +43,21 @@ export interface userData {
 
 /* ----------------------------------------------------------- */
 
+export interface univUserData {
+  puuid: number;
+  user: userDTO;
+  univName: string;
+  position: positionDTO;
+  tier: tierDTO;
+  record: recordDTO;
+  major: majorDTO;
+}
+
+export interface majorDTO {
+  admissionYear: string; // ex) 20
+  major: string; // ex) 컴퓨터공학과}
+}
+
 /* ---------------------테이블 관리--------------------------- */
 
 /* 테이블에 어떤 내용이 들어갈지 관리, 페이지에서 인자로 넘기는 것 */
