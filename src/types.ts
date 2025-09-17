@@ -4,10 +4,10 @@ export interface UnivData {
   studentCnt: number;
   competitionCnt: number;
   competitionWinCnt: number;
-  ranker: userDTO;
+  ranker: summonerDTO;
 }
 
-export interface userDTO {
+export interface summonerDTO {
   id: number;
   userName: string;
   userTag: string;
@@ -24,28 +24,28 @@ export interface tierDTO {
 }
 
 export interface recordDTO {
-  winCnt: number;
-  LoseCnt: number;
+  cnt: number;
+  win: number;
 }
 
 export interface positionDTO {
-  mainPosition: position;
-  subPosition: position;
+  main: position;
+  sub: position;
 }
 
 export interface userData {
-  user: userDTO;
+  user: summonerDTO;
   univName: string;
   position: positionDTO;
   tier: tierDTO;
   record: recordDTO;
 }
 
-/* ----------------------------------------------------------- */
+/* ------------------------교내 유저 랭킹 페이지----------------------------------- */
 
 export interface univUserData {
-  puuid: number;
-  user: userDTO;
+  puuid: string | number;
+  user: summonerDTO;
   univName: string;
   position: positionDTO;
   tier: tierDTO;
@@ -57,6 +57,39 @@ export interface majorDTO {
   admissionYear: string; // ex) 20
   major: string; // ex) 컴퓨터공학과}
 }
+
+/* -----------------------교내 그룹 랭킹 페이지------------------------------------ */
+
+export interface univGroupData {
+  group: groupDTO;
+  memberCnt: number;
+  competition: competitionDTO;
+  tier: tierDTO;
+  groupLeader: summonerDTO;
+  description: string;
+  createdAt: Date;
+  latestMatch: matchDTO[];
+}
+
+export interface groupDTO {
+  id: number;
+  name: string;
+  icon: string;
+}
+
+export interface competitionDTO {
+  cnt: number;
+  win: number;
+}
+
+export interface matchDTO {
+  oppose: groupDTO;
+  result: result;
+}
+
+export type result = "win" | "lose";
+
+/* -----------------------대항전 팀 관리------------------------------------ */
 
 /* ---------------------테이블 관리--------------------------- */
 

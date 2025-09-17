@@ -9,182 +9,145 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-  PaginationEllipsis,
 } from "@/components/ui/pagination";
 
-export function RankingTable<T>({
-  data,
-  columns,
-  pageSize = 15,
-  initialPage = 1,
-  onPageChange,
-}: RankingTableProps<T>) {
-  const [page, setPage] = React.useState(initialPage);
+export function RankingTable<T>({ data, columns }: RankingTableProps<T>) {
+  // ✅ 페이지네이션 상태
+  const pageSize = 15; // 한 페이지에 보여줄 행 수
+  const [page, setPage] = React.useState(1);
 
-  // 데이터 길이가 줄어들면 현재 페이지가 유효 범위 내로 들어오도록 보정
   const total = data.length;
   const totalPages = Math.max(1, Math.ceil(total / pageSize));
-  const current = Math.min(Math.max(1, page), totalPages);
 
-  // ✅ 현재 페이지 범위 계산 + 슬라이싱
-  const start = (current - 1) * pageSize;
+  const start = (page - 1) * pageSize;
   const end = Math.min(start + pageSize, total);
-  const pageData = React.useMemo(
-    () => data.slice(start, end),
-    [data, start, end]
-  );
-
-  React.useEffect(() => {
-    if (page !== current) {
-      setPage(current);
-      onPageChange?.(current);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [totalPages]); // totalPages 변할 때만 보정
-
-  const pages = React.useMemo<(number | "...")[]>(() => {
-    if (totalPages <= 7)
-      return Array.from({ length: totalPages }, (_, i) => i + 1);
-    const arr: (number | "...")[] = [1];
-    if (current > 3) arr.push("...");
-    for (
-      let p = Math.max(2, current - 1);
-      p <= Math.min(totalPages - 1, current + 1);
-      p++
-    ) {
-      arr.push(p);
-    }
-    if (current < totalPages - 2) arr.push("...");
-    arr.push(totalPages);
-    return arr;
-  }, [current, totalPages]);
-
-  const go = (n: number) => {
-    if (n < 1 || n > totalPages || n === current) return;
-    setPage(n);
-    onPageChange?.(n);
-  };
+  const pageData = data.slice(start, end);
 
   return (
-    <div className="min-h-screen">
-      <table className="table-fixed border-separate border-spacing-y-1 mx-auto">
-        {/* 헤더 */}
-        <thead>
-          <tr className="bg-[#24192F] text-sm font-medium text-gray-300 ">
-            {/* rank 헤더는 고정 */}
-            <th className="rounded-l px-6 py-4 w-[8%]  text-left">랭킹</th>
-            {columns.map((col) => (
-              <th
-                key={col.id}
-                className={`last:rounded-r px-6 py-4 text-left ${
-                  col.headerClassName ?? ""
-                }`}
-              >
-                {col.header}
-              </th>
-            ))}
-          </tr>
-        </thead>
+    <div className="w-full min-h-screen">
+      {/* 가로 스크롤 보호 래퍼 */}
+      <div className="w-full overflow-x-auto">
+        <table className="w-full table-fixed border-separate border-spacing-y-1">
+          {/* 헤더 */}
+          <thead>
+            <tr className="bg-[#24192F] text-xs text-gray-300">
+              <th className="rounded-l px-6 py-4 w-[8%] text-left">랭킹</th>
+              {columns.map((col) => (
+                <th
+                  key={col.id}
+                  className={`last:rounded-r px-6 py-4 text-left ${
+                    col.headerClassName ?? ""
+                  }`}
+                >
+                  {col.header}
+                </th>
+              ))}
+            </tr>
+          </thead>
 
-        {/* 바디 */}
-        <tbody className="text-sm divide-y divide-[#2E223F]">
-          {pageData.map((row, i) => {
-            const rank = start + i + 1; // ✅ 여기서 rank 정의
+          {/* 바디 */}
+          <tbody className="text-xs divide-y divide-[#2E223F]">
+            {pageData.map((row, i) => {
+              const rank = start + i + 1;
+              return (
+                <tr
+                  key={rank}
+                  className={`not-first:hover:bg-gray-700/50 transition-colors ${defaultRowClassName(
+                    rank
+                  )}`}
+                >
+                  <td className="rounded-l px-6 py-4">
+                    <RankBadge rank={rank} />
+                  </td>
 
-            return (
-              <tr
-                key={rank}
-                className={`not-first:hover:bg-gray-700/50 transition-colors ${defaultRowClassName(
-                  rank
-                )}`}
-              >
-                {/* rank 셀은 고정 */}
-                <td className="rounded-l px-6 py-4 ">
-                  <RankBadge rank={rank} />
-                </td>
+                  {columns.map((col, colIndex) => {
+                    const content =
+                      col.cell?.(row, i) ??
+                      (col.accessorKey ? (row as any)[col.accessorKey] : null);
 
-                {/* 나머지 컬럼은 페이지에서 정의 */}
-                {columns.map((col, colIndex) => {
-                  const content =
-                    col.cell?.(row, i) ??
-                    (col.accessorKey ? (row as any)[col.accessorKey] : null);
+                    const isSecondCol = colIndex === 0;
+                    const gradientOn = isSecondCol && rank <= 3;
 
-                  const isSecondCol = colIndex === 0;
-                  const rank = start + i + 1;
-                  const gradientOn = isSecondCol && rank <= 3;
-
-                  return (
-                    <td
-                      key={col.id}
-                      className={`last:rounded-r px-6 py-4 ${
-                        col.cellClassName ?? ""
-                      } ${
-                        gradientOn
-                          ? "bg-[linear-gradient(149.06deg,_#FFA1D9_10.49%,_#FF5679_60.64%)] bg-clip-text text-transparent font-bold"
-                          : "text-white"
-                      }`}
-                    >
-                      {content}
-                    </td>
-                  );
-                })}
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+                    return (
+                      <td
+                        key={col.id}
+                        className={`last:rounded-r px-6 py-4 ${
+                          col.cellClassName ?? ""
+                        } ${
+                          gradientOn
+                            ? "bg-[linear-gradient(149.06deg,_#FFA1D9_10.49%,_#FF5679_60.64%)] bg-clip-text text-transparent font-bold"
+                            : "text-white"
+                        }`}
+                      >
+                        {content}
+                      </td>
+                    );
+                  })}
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
 
       <div className="my-4"></div>
 
-      <Pagination>
-        <PaginationContent className="w-full items-center">
-          {/* 왼쪽: 이전 */}
-          <PaginationItem className="mr-auto">
-            <PaginationPrevious
-              aria-disabled={current === 1}
-              onClick={() => go(current - 1)}
-              className={`rounded-sm w-[28px] h-[28px] px-3 py-1 text-sm font-medium transition-colors
-          border border-[#323036] text-[#B1ACC1]
-          hover:bg-[#FF5679] hover:text-[#110D17] hover:border-none
-          ${current === 1 ? "pointer-events-none opacity-50" : ""}`}
-            />
-          </PaginationItem>
+      {/* 페이지네이션 */}
+      <div className="w-full mt-4">
+        <Pagination className="w-full">
+          <PaginationContent className="flex w-full justify-between items-center">
+            {/* 왼쪽: 이전 버튼 */}
+            <div>
+              <PaginationItem>
+                <PaginationPrevious
+                  onClick={() => setPage((p) => Math.max(1, p - 1))}
+                  className={`rounded-sm w-[28px] h-[28px] px-3 py-1 text-sm font-medium transition-colors
+                    border border-[#323036] text-[#B1ACC1]
+                    hover:bg-[#FF5679] hover:text-[#110D17] hover:border-none
+                    ${page === 1 ? "pointer-events-none opacity-50" : ""}`}
+                />
+              </PaginationItem>
+            </div>
 
-          {/* 가운데: 페이지 번호들 */}
-          {pages.map((p, idx) => (
-            <PaginationItem key={`${p}-${idx}`}>
-              {p === "..." ? (
-                <PaginationEllipsis className="text-[#323036]" />
-              ) : (
-                <PaginationLink
-                  isActive={p === current}
-                  onClick={() => go(p as number)}
-                  className={`w-[28px] h-[28px] rounded-sm px-3 py-1 text-sm font-medium transition-colors
-              ${
-                p === current
-                  ? "bg-[#FF5679] text-[#110D17] border-none"
-                  : "border border-[#323036] text-[#B1ACC1] hover:bg-[#FF5679] hover:text-[#110D17] hover:border-none"
-              }`}
-                >
-                  {p}
-                </PaginationLink>
-              )}
-            </PaginationItem>
-          ))}
+            {/* 가운데: 페이지 숫자 */}
+            <div className="flex gap-2">
+              {Array.from({ length: totalPages }).map((_, i) => (
+                <PaginationItem key={i}>
+                  <PaginationLink
+                    isActive={page === i + 1}
+                    onClick={() => setPage(i + 1)}
+                    className={`w-[28px] h-[28px] rounded-sm px-3 py-1 text-sm font-medium transition-colors
+                      ${
+                        page === i + 1
+                          ? "bg-[#FF5679] text-[#110D17] border-none"
+                          : "border border-[#323036] text-[#B1ACC1] hover:bg-[#FF5679] hover:text-[#110D17] hover:border-none"
+                      }`}
+                  >
+                    {i + 1}
+                  </PaginationLink>
+                </PaginationItem>
+              ))}
+            </div>
 
-          {/* 오른쪽: 다음 */}
-          <PaginationItem className="ml-auto">
-            <PaginationNext
-              aria-disabled={current === totalPages}
-              onClick={() => go(current + 1)}
-              className={`rounded-sm w-[28px] h-[28px] px-3 py-1 text-sm font-medium transition-colors
-          border border-[#323036] text-[#B1ACC1]
-          hover:bg-[#FF5679] hover:text-[#110D17] hover:border-none
-          ${current === totalPages ? "pointer-events-none opacity-50" : ""}`}
-            />
-          </PaginationItem>
-        </PaginationContent>
-      </Pagination>
+            {/* 오른쪽: 다음 버튼 */}
+            <div>
+              <PaginationItem>
+                <PaginationNext
+                  onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                  className={`rounded-sm w-[28px] h-[28px] px-3 py-1 text-sm font-medium transition-colors
+                    border border-[#323036] text-[#B1ACC1]
+                    hover:bg-[#FF5679] hover:text-[#110D17] hover:border-none
+                    ${
+                      page === totalPages
+                        ? "pointer-events-none opacity-50"
+                        : ""
+                    }`}
+                />
+              </PaginationItem>
+            </div>
+          </PaginationContent>
+        </Pagination>
+      </div>
     </div>
   );
 }

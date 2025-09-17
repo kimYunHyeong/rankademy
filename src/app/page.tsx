@@ -66,7 +66,7 @@ export default function Home() {
       headerClassName: "w-[18%]",
       cell: (row) => (
         <Link
-          href={`/rankings/univ/${encodeURIComponent(row.univName)}/users`}
+          href={`/rankings/univ/${encodeURIComponent(row.univName)}/groups`}
           className="flex items-center gap-2"
         >
           <Image
@@ -136,13 +136,7 @@ export default function Home() {
         }}
         className="mb-4"
       />
-      <RankingTable
-        key={sortKey}
-        data={sortedData}
-        columns={columns}
-        pageSize={15}
-        initialPage={1}
-      />
+      <RankingTable key={sortKey} data={sortedData} columns={columns} />
     </>
   );
 }

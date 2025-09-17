@@ -8,6 +8,7 @@ import Image from "next/image";
 import { RankingTable } from "@/components/ranking-table";
 import SubHeaderUnivRanking from "@/components/sub-header-univ-ranking";
 import SearchAndFilter from "@/components/search-and-filter";
+import { capitalize } from "@/utils/capitalize";
 
 import type {
   univUserData,
@@ -15,11 +16,11 @@ import type {
   OptionMetaOf,
   OptionValueOf,
 } from "@/types";
-import univUserRanking from "@/mock/univUserRankingData.json";
+import { univUserRanking } from "@/mock/univUserRankingData";
 import { calcWinRate } from "@/utils/calc-winrate";
 import { calcRankScore } from "@/utils/calc-rank-score";
 
-export default function Home() {
+export default function Page() {
   // ✅ 동기 접근 (클라이언트에서만 사용)
   const { univName: raw } = useParams<{ univName: string }>();
   const univName = decodeURIComponent(String(raw ?? ""));
@@ -34,9 +35,6 @@ export default function Home() {
 
   const [sortKey, setSortKey] = useState<SortValue>("rank");
   const [query, setQuery] = useState("");
-
-  const capitalize = (s: string) =>
-    s ? s.charAt(0).toUpperCase() + s.slice(1).toLowerCase() : s;
 
   // ✅ 원본 리스트
   const baseData = useMemo<univUserData[]>(
@@ -61,7 +59,7 @@ export default function Home() {
   const sortedData = useMemo<univUserData[]>(() => {
     const num = (x: unknown) => (typeof x === "number" ? x : 0);
     const getWinRate = (row: univUserData) =>
-      calcWinRate(row.record?.winCnt ?? 0, row.record?.LoseCnt ?? 0);
+      calcWinRate(row.record?.win ?? 0, row.record?.cnt ?? 0);
     const getRankScore = (row: univUserData) =>
       calcRankScore(row.tier?.rank, row.tier?.lp, row.tier?.tier);
 
@@ -117,14 +115,14 @@ export default function Home() {
       cell: (row) => (
         <div className="flex items-center gap-2">
           <Image
-            src={`https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-static-assets/global/default/svg/position-${row.position.mainPosition}.svg`}
-            alt={row.position.mainPosition}
+            src={`https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-static-assets/global/default/svg/position-${row.position.main}.svg`}
+            alt={row.position.main}
             width={24}
             height={24}
           />
           <Image
-            src={`https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-static-assets/global/default/svg/position-${row.position.subPosition}.svg`}
-            alt={row.position.subPosition}
+            src={`https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-static-assets/global/default/svg/position-${row.position.sub}.svg`}
+            alt={row.position.sub}
             width={24}
             height={24}
           />
@@ -159,9 +157,9 @@ export default function Home() {
       header: "승률",
       headerClassName: "w-[30%]",
       cell: (row) => {
-        const win = row.record.winCnt;
-        const lose = row.record.LoseCnt;
-        const pct = calcWinRate(win, lose);
+        const win = row.record.win;
+        const cnt = row.record.cnt;
+        const pct = calcWinRate(win, cnt);
 
         return (
           <div className="flex items-center gap-2 w-full">
@@ -174,7 +172,7 @@ export default function Home() {
                 {win}승
               </span>
               <span className="absolute right-2 top-1/2 -translate-y-1/2 text-xs text-white font-medium">
-                {lose}패
+                {cnt - win}패
               </span>
             </div>
             <span className="ml-3 text-sm text-white">{pct}%</span>
@@ -198,7 +196,7 @@ export default function Home() {
         headerHeight={260}
       />
 
-      <div className="max-w-5xl mx-auto px-6">
+      <div className=" mx-auto px-6">
         <SearchAndFilter<SortValue, SortMeta>
           onSearch={setQuery}
           filterProps={{
@@ -209,13 +207,7 @@ export default function Home() {
           }}
         />
 
-        <RankingTable
-          key={sortKey}
-          data={sortedData}
-          columns={columns}
-          pageSize={15}
-          initialPage={1}
-        />
+        <RankingTable key={sortKey} data={sortedData} columns={columns} />
       </div>
     </>
   );
