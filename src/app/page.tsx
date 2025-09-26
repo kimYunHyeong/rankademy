@@ -103,16 +103,18 @@ export default function Home() {
       header: "랭커",
       headerClassName: "w-[20%]",
       cell: (row) => (
-        <div className="flex items-center gap-2">
-          <Image
-            src={`https://ddragon.leagueoflegends.com/cdn/15.17.1/img/champion/${row.ranker.icon}.png`}
-            alt={row.ranker.icon}
-            width={30}
-            height={30}
-          />
-          <span>{row.ranker.userName}</span>
-          <span>{row.ranker.userTag}</span>
-        </div>
+        <Link href={`/user/${row.ranker.id}`}>
+          <div className="flex items-center gap-2">
+            <Image
+              src={`https://ddragon.leagueoflegends.com/cdn/15.17.1/img/champion/${row.ranker.icon}.png`}
+              alt={row.ranker.icon}
+              width={30}
+              height={30}
+            />
+            <span>{row.ranker.userName}</span>
+            <span>{row.ranker.userTag}</span>
+          </div>
+        </Link>
       ),
     },
   ];

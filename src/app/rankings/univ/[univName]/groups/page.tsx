@@ -93,9 +93,7 @@ export default function Home() {
       cell: (row) => (
         <div className="flex items-center gap-2">
           <Link
-            href={`/rankings/univ/${encodeURIComponent(
-              "서울과학기술대학교"
-            )}/groups/${row.group.id}`}
+            href={`/groups/${row.group.id}`}
             className="flex items-center gap-2  transition"
           >
             <Image
@@ -167,16 +165,18 @@ export default function Home() {
       header: "그룹장",
       headerClassName: "w-[21%]",
       cell: (row) => (
-        <div className="flex items-center gap-2">
-          <Image
-            src={`https://ddragon.leagueoflegends.com/cdn/15.17.1/img/champion/${row.groupLeader.icon}.png`}
-            alt={row.groupLeader.icon}
-            width={30}
-            height={30}
-          />
-          <span>{row.groupLeader.userName}</span>
-          <span>{row.groupLeader.userTag}</span>
-        </div>
+        <Link href={`/user/${row.groupLeader.id}`}>
+          <div className="flex items-center gap-2">
+            <Image
+              src={`https://ddragon.leagueoflegends.com/cdn/15.17.1/img/champion/${row.groupLeader.icon}.png`}
+              alt={row.groupLeader.icon}
+              width={30}
+              height={30}
+            />
+            <span>{row.groupLeader.userName}</span>
+            <span>{row.groupLeader.userTag}</span>
+          </div>
+        </Link>
       ),
     },
   ];

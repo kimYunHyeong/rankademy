@@ -93,16 +93,18 @@ export default function Home() {
       header: "유저명",
       headerClassName: "w-[20%]",
       cell: (row) => (
-        <div className="flex items-center gap-2">
-          <Image
-            src={`https://ddragon.leagueoflegends.com/cdn/15.17.1/img/champion/${row.user.icon}.png`}
-            alt={row.user.icon}
-            width={30}
-            height={30}
-          />
-          <span>{row.user.userName}</span>
-          <span>{row.user.userTag}</span>
-        </div>
+        <Link href={`/user/${row.user.id}`}>
+          <div className="flex items-center gap-2">
+            <Image
+              src={`https://ddragon.leagueoflegends.com/cdn/15.17.1/img/champion/${row.user.icon}.png`}
+              alt={row.user.icon}
+              width={30}
+              height={30}
+            />
+            <span>{row.user.userName}</span>
+            <span>{row.user.userTag}</span>
+          </div>
+        </Link>
       ),
     },
     {

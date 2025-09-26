@@ -9,11 +9,17 @@ import { usePathname } from "next/navigation";
 type NavItem = {
   href: string;
   label: string;
-  key: "ranking" | "group" | "competition";
+  key: "ranking" | "groups" | "competition";
   match?: (path: string) => boolean;
 };
 
-export default function RootLayout({ children }: { children: ReactNode }) {
+export default function RootLayout({
+  children,
+  modal,
+}: {
+  children: ReactNode;
+  modal: ReactNode;
+}) {
   const pathname = usePathname() ?? "/";
 
   const navItems: NavItem[] = [
@@ -25,7 +31,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       match: (path) =>
         path === "/" || path === "/rankings" || path.startsWith("/rankings/"),
     },
-    { href: "/group", label: "그룹", key: "group" },
+    { href: "/groups", label: "그룹", key: "groups" },
     { href: "/competition", label: "대항전", key: "competition" },
   ];
 
@@ -36,8 +42,12 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="ko">
       <body className="bg-[#110D17]">
+        {/* modal용 */}
+        <div id="modal-root" />
+
         <div className="m-5">
           {/* 3중 분할(네비, 내용, 광고)*/}
+
           <div className=" flex gap-6 h-[calc(100vh-40px)] bg-none">
             {/* 왼쪽*/}
             <aside className="z-50 flex flex-col justify-between items-center h-full w-20">
@@ -142,6 +152,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             </div>
           </div>
         </footer>
+        {modal}
       </body>
     </html>
   );

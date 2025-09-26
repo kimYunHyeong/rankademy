@@ -1,0 +1,249 @@
+import { GroupInfo } from "@/components/group-info";
+import { univGroupInfo } from "@/mock/groupInfoData";
+import { CompetitionTable } from "@/components/competition-table";
+import { ApiResponse } from "@/components/competition-table";
+export default function Page() {
+  const mock = {
+    totalCount: 1,
+    competitions: [
+      {
+        competitionId: 1,
+        otherTeamUnivName: "test group",
+        status: "COMPLETED",
+        myTeam: {
+          teamId: 1,
+          teamName: "myTeam",
+          groupName: "test group",
+          teamMembers: [
+            {
+              memberId: 1,
+              position: "top",
+              summonerName: "myTeamLeader",
+              summonerTag: "KR1",
+              summonerIcon: "Kaisa",
+            },
+            {
+              memberId: 4,
+              position: "jungle",
+              summonerName: "myTeammember0",
+              summonerTag: "KR1",
+              summonerIcon: "Kaisa",
+            },
+            {
+              memberId: 5,
+              position: "middle",
+              summonerName: "myTeammember1",
+              summonerTag: "KR1",
+              summonerIcon: "Kaisa",
+            },
+            {
+              memberId: 6,
+              position: "bottom",
+              summonerName: "myTeammember2",
+              summonerTag: "KR1",
+              summonerIcon: "Kaisa",
+            },
+            {
+              memberId: 7,
+              position: "utility",
+              summonerName: "myTeammember3",
+              summonerTag: "KR1",
+              summonerIcon: "Kaisa",
+            },
+          ],
+        },
+        otherTeam: {
+          teamId: 2,
+          teamName: "otherTeam",
+          groupName: "test group",
+          groupIcon: "Ezreal",
+          teamMembers: [
+            {
+              memberId: 2,
+              position: "top",
+              summonerName: "otherTeamLeader",
+              summonerTag: "KR1",
+              summonerIcon: "Kaisa",
+            },
+            {
+              memberId: 8,
+              position: "jungle",
+              summonerName: "otherTeammember0",
+              summonerTag: "KR1",
+              summonerIcon: "Kaisa",
+            },
+            {
+              memberId: 9,
+              position: "middle",
+              summonerName: "otherTeammember1",
+              summonerTag: "KR1",
+              summonerIcon: "Kaisa",
+            },
+            {
+              memberId: 10,
+              position: "bottom",
+              summonerName: "otherTeammember2",
+              summonerTag: "KR1",
+              summonerIcon: "Kaisa",
+            },
+            {
+              memberId: 11,
+              position: "utility",
+              summonerName: "otherTeammember3",
+              summonerTag: "KR1",
+              summonerIcon: "Kaisa",
+            },
+          ],
+        },
+        submittedAt: "2025.09.21",
+        isWin: true,
+        setResults: [
+          {
+            setNumber: 1,
+            winnerTeamId: 1,
+          },
+          {
+            setNumber: 2,
+            winnerTeamId: 2,
+          },
+          {
+            setNumber: 3,
+            winnerTeamId: 2,
+          },
+          {
+            setNumber: 4,
+            winnerTeamId: 1,
+          },
+          {
+            setNumber: 5,
+            winnerTeamId: 1,
+          },
+        ],
+      },
+      {
+        competitionId: 2,
+        otherTeamUnivName: "서울과기대",
+        status: "COMPLETED",
+        myTeam: {
+          teamId: 1,
+          teamName: "myTeam",
+          groupName: "test group",
+          teamMembers: [
+            {
+              memberId: 1,
+              position: "top",
+              summonerName: "myTeamLeader",
+              summonerTag: "KR1",
+              summonerIcon: "Kaisa",
+            },
+            {
+              memberId: 4,
+              position: "jungle",
+              summonerName: "myTeammember0",
+              summonerTag: "KR1",
+              summonerIcon: "Kaisa",
+            },
+            {
+              memberId: 5,
+              position: "middle",
+              summonerName: "myTeammember1",
+              summonerTag: "KR1",
+              summonerIcon: "Kaisa",
+            },
+            {
+              memberId: 6,
+              position: "bottom",
+              summonerName: "myTeammember2",
+              summonerTag: "KR1",
+              summonerIcon: "Kaisa",
+            },
+            {
+              memberId: 7,
+              position: "utility",
+              summonerName: "myTeammember3",
+              summonerTag: "KR1",
+              summonerIcon: "Kaisa",
+            },
+          ],
+        },
+        otherTeam: {
+          teamId: 2,
+          teamName: "otherTeam",
+          groupName: "test group",
+          groupIcon: "Ezreal",
+          teamMembers: [
+            {
+              memberId: 2,
+              position: "top",
+              summonerName: "otherTeamLeader",
+              summonerTag: "KR1",
+              summonerIcon: "Kaisa",
+            },
+            {
+              memberId: 8,
+              position: "jungle",
+              summonerName: "otherTeammember0",
+              summonerTag: "KR1",
+              summonerIcon: "Kaisa",
+            },
+            {
+              memberId: 9,
+              position: "middle",
+              summonerName: "otherTeammember1",
+              summonerTag: "KR1",
+              summonerIcon: "Kaisa",
+            },
+            {
+              memberId: 10,
+              position: "bottom",
+              summonerName: "otherTeammember2",
+              summonerTag: "KR1",
+              summonerIcon: "Kaisa",
+            },
+            {
+              memberId: 11,
+              position: "utility",
+              summonerName: "otherTeammember3",
+              summonerTag: "KR1",
+              summonerIcon: "Kaisa",
+            },
+          ],
+        },
+        submittedAt: "2025.09.21",
+        isWin: false,
+        setResults: [
+          {
+            setNumber: 1,
+            winnerTeamId: 1,
+          },
+          {
+            setNumber: 2,
+            winnerTeamId: 2,
+          },
+          {
+            setNumber: 3,
+            winnerTeamId: 2,
+          },
+          {
+            setNumber: 4,
+            winnerTeamId: 1,
+          },
+          {
+            setNumber: 5,
+            winnerTeamId: 1,
+          },
+        ],
+      },
+    ],
+  } satisfies ApiResponse;
+
+  return (
+    <>
+      <div className="flex justify-center text-white">대항전 기록</div>
+
+      <GroupInfo group={univGroupInfo} />
+      <div className="h-4"></div>
+      <CompetitionTable data={mock} />
+    </>
+  );
+}

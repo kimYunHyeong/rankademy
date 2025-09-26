@@ -13,6 +13,7 @@ import { useMemo, useState } from "react";
 import { calcRankScore } from "@/utils/calc-rank-score";
 import { useParams } from "next/navigation";
 import type { OptionMetaOf, OptionValueOf } from "@/types";
+import Link from "next/link";
 
 export default function Page() {
   // ✅ 동기 접근 (클라이언트에서만 사용)
@@ -78,16 +79,18 @@ export default function Page() {
       header: "유저명",
       headerClassName: "w-[20%]",
       cell: (row) => (
-        <div className="flex items-center gap-2">
-          <Image
-            src={`https://ddragon.leagueoflegends.com/cdn/15.17.1/img/champion/${row.user.icon}.png`}
-            alt={row.user.icon}
-            width={30}
-            height={30}
-          />
-          <span>{row.user.userName}</span>
-          <span>{row.user.userTag}</span>
-        </div>
+        <Link href={`/user/${row.puuid}`}>
+          <div className="flex items-center gap-2">
+            <Image
+              src={`https://ddragon.leagueoflegends.com/cdn/15.17.1/img/champion/${row.user.icon}.png`}
+              alt={row.user.icon}
+              width={30}
+              height={30}
+            />
+            <span>{row.user.userName}</span>
+            <span>{row.user.userTag}</span>
+          </div>
+        </Link>
       ),
     },
     {

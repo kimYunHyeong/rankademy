@@ -56,9 +56,7 @@ export default function WinRateDonut({
 export function GroupInfo({ group }: { group: univGroupData }) {
   const pathname = usePathname();
 
-  const competitionPath = `/rankings/univ/${encodeURIComponent(
-    "서울과학기술대학교"
-  )}/groups/${group.group.id}/competition`;
+  const competitionPath = `/groups/${group.group.id}/competition`;
 
   const isCompetitionPage = pathname === competitionPath;
 
