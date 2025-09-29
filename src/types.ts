@@ -34,11 +34,20 @@ export interface positionDTO {
 }
 
 export interface userData {
-  user: summonerDTO;
   univName: string;
+  admissionYear: number;
+  major: string;
+  user: summonerDTO;
   position: positionDTO;
   tier: tierDTO;
   record: recordDTO;
+  emblem: string | null;
+  description: string | null;
+  most: {
+    first: string;
+    second: string;
+    third: string;
+  };
 }
 
 /* ------------------------교내 유저 랭킹 페이지----------------------------------- */
@@ -67,7 +76,7 @@ export interface univGroupData {
   tier: tierDTO;
   groupLeader: summonerDTO;
   description: string;
-  createdAt: Date;
+  createdAt: string;
   latestMatch: matchDTO[];
 }
 
@@ -88,6 +97,13 @@ export interface matchDTO {
 }
 
 export type result = "win" | "lose";
+
+// types.ts (혹은 컴포넌트 파일 상단에 선언해도 OK)
+export type GroupCardData = {
+  group: { id?: string | number; name: string; icon: string };
+  createdAt: string;
+  description: string;
+};
 
 /* -----------------------대항전 팀 관리------------------------------------ */
 

@@ -24,7 +24,7 @@ export const univGroupInfo: univGroupData = {
   },
   description:
     "서울과학기술대학교에서 가장 활발한 정글러 모임 서울과학기술대학교에서 가장 활발한 정글러 모임 서울과학기술대학교에서 가장 활발한 정글러 모임 서울과학기술대학교에서 가장 활발한 정글러 모임",
-  createdAt: new Date(),
+  createdAt: "25.07.27",
   latestMatch: [
     {
       oppose: {

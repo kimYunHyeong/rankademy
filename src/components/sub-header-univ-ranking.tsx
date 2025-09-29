@@ -25,7 +25,6 @@ type Props = {
   className?: string;
 };
 
-//주석
 export default function SubHeaderUnivRanking({
   univName,
   univNameEn,

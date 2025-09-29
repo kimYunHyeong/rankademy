@@ -82,16 +82,9 @@ export function GroupInfo({ group }: { group: univGroupData }) {
 
             {/* 창단일, 그룹장, 평균티어 */}
             <div className="w-[80%] flex items-center justify-between text-[12px] gap-x-3 gap-y-1 max-md:w-full max-md:flex-wrap">
+              <span className="break-words">창단일 |{group.createdAt}</span>
               <span className="break-words">
-                창단일 |{" "}
-                {group.createdAt.toLocaleDateString("ko-KR", {
-                  year: "numeric",
-                  month: "2-digit",
-                  day: "2-digit",
-                })}{" "}
-              </span>
-              <span className="break-words">
-                그룹장 | {group.groupLeader.userName}{" "}
+                그룹장 | {group.groupLeader.userName}
                 {group.groupLeader.userTag}
               </span>
               <div className="flex items-center">
@@ -163,7 +156,7 @@ export function GroupInfo({ group }: { group: univGroupData }) {
                   className="text-[#B1ACC1] flex justify-between py-1 "
                 >
                   <span>
-                    vs{" "}
+                    vs
                     <Link
                       href={`/rankings/univ/${encodeURIComponent(
                         "서울과학기술대학교"
