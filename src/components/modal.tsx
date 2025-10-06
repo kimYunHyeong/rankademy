@@ -32,14 +32,16 @@ export default function Modal({ children }: { children: ReactNode }) {
         className="
           fixed inset-0
           flex items-center justify-center
-          pointer-events-none   /* 오버레이 클릭 통과 */
+          pointer-events-none
         "
       >
         <div
           className="
-            pointer-events-auto  /* 콘텐츠는 클릭 가능 */
-            w-[500px] h-[670px] rounded-2xl bg-[#110D17]
-          "
+    pointer-events-auto
+    w-auto h-auto max-w-[90vw] max-h-[90vh]
+    rounded-2xl bg-[#110D17]
+    overflow-auto
+  "
         >
           {children}
         </div>

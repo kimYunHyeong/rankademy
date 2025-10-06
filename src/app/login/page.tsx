@@ -1,3 +1,5 @@
+import LoginCard from "@/components/login-card";
+
 export default function Login() {
-  return <div>로그인</div>;
+  return <LoginCard />;
 }
