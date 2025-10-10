@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { capitalize } from "@/utils/capitalize";
 import { calcWinRate } from "@/utils/calc-winrate";
-import { summonerDTO, userData } from "@/types";
+import { userData } from "@/types";
 
 type props = userData;
 

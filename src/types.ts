@@ -48,6 +48,7 @@ export interface userData {
     second: string;
     third: string;
   };
+  verified: boolean;
 }
 
 /* ------------------------교내 유저 랭킹 페이지----------------------------------- */
@@ -178,4 +179,13 @@ export type PaginationProps<T> = {
   serverPaginated?: boolean;
   /** serverPaginated=true일 때 필수: 전체 레코드 수(예: 33) */
   totalCount?: number;
+};
+
+export type recruit = {
+  title: string;
+  content: string;
+  groupId: string;
+  groupName: string;
+  uploadedAt: string;
+  contentImg?: string;
 };

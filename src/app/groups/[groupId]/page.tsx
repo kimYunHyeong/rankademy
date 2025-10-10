@@ -14,6 +14,8 @@ import { calcRankScore } from "@/utils/calc-rank-score";
 import { useParams } from "next/navigation";
 import type { OptionMetaOf, OptionValueOf } from "@/types";
 import Link from "next/link";
+import CheckPopup from "@/components/check-popup";
+import { Switch } from "@/components/ui/switch";
 
 export default function Page() {
   // ✅ 동기 접근 (클라이언트에서만 사용)
@@ -180,11 +182,41 @@ export default function Page() {
 
   return (
     <>
+      <div className="flex justify-between items-center mb-12">
+        <div className="flex text-[14px]">
+          <Link
+            href={`recruits/${univGroupInfo.group.id}`}
+            className="flex items-center justify-center border border-[#323036] w-[120px] h-[44px] text-[#B1ACC1] rounded bg-[#25242A33] text-center mr-2"
+          >
+            모집 게시글 보기
+          </Link>
+          <Link
+            href={`/edit`}
+            className="flex items-center justify-center border border-[#323036] w-[120px] h-[44px] text-[#B1ACC1] rounded bg-[#25242A33] text-center mr-2"
+          >
+            그룹원 초대
+          </Link>
+          <Link
+            href={`/recruits/edit`}
+            className="flex items-center justify-center border border-[#323036] w-[120px] h-[44px] text-[#B1ACC1] rounded bg-[#25242A33] text-center"
+          >
+            그룹원 관리
+          </Link>
+        </div>
+
+        <div className="flex">
+          <span className="text-white text-xs mr-2">그룹원 모집</span>
+          <Switch />
+        </div>
+      </div>
+      <CheckPopup />
+
+      <div className="mt-5"></div>
+
       <GroupInfo group={univGroupInfo} />
       <div className="h-4"></div>
       <div className="table container">
         <GroupTableHeader memberCnt={univUserRanking.length} />
-
         <RankingTable data={sortedData} columns={columns} />
       </div>
     </>

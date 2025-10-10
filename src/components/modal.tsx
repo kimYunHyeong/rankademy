@@ -39,7 +39,7 @@ export default function Modal({ children }: { children: ReactNode }) {
           className="
     pointer-events-auto
     w-auto h-auto max-w-[90vw] max-h-[90vh]
-    rounded-2xl bg-[#110D17]
+    rounded bg-[#110D17]
     overflow-auto
   "
         >

@@ -1,5 +1,6 @@
 import SubHeaderMain from "@/components/sub-header-main";
 import GroupCards from "@/components/group-cards";
+import CheckPopup from "@/components/check-popup";
 
 export default function Group() {
   const mockGroups = [
@@ -34,14 +35,13 @@ export default function Group() {
       <SubHeaderMain
         items={[
           { label: "내 그룹", href: "/groups" },
-          { label: "모집 게시판", href: "/rankings" },
+          { label: "모집 게시판", href: "/groups/recruits" },
         ]}
       />
 
       <div className="h-20"></div>
 
-      <div className="text-white">그룹 알람</div>
-
+      <CheckPopup />
       <div className="h-25"></div>
 
       <GroupCards data={mockGroups} />

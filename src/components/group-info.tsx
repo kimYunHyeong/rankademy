@@ -62,9 +62,9 @@ export function GroupInfo({ group }: { group: univGroupData }) {
 
   return (
     /* 컨테이너 */
-    <div className="flex justify-center mt-[5%] h-[255px]">
+    <div className="flex justify-center h-[255px]">
       {/* 첫번째 div: 그룹의 정보 표현 */}
-      <div className="pl-3 w-[70%] bg-[#24192F] rounded mr-[10px] text-white overflow-hidden">
+      <div className="pl-3 w-[70%] bg-[#24192F] rounded mr-[10px] text-white overflow-hidden pr-24">
         {/* 이미지와 정보를 분리하는 div */}
         <div className="flex pt-[20px] justify-center gap-2 max-md:flex-wrap">
           <Image
@@ -82,7 +82,7 @@ export function GroupInfo({ group }: { group: univGroupData }) {
 
             {/* 창단일, 그룹장, 평균티어 */}
             <div className="w-[80%] flex items-center justify-between text-[12px] gap-x-3 gap-y-1 max-md:w-full max-md:flex-wrap">
-              <span className="break-words">창단일 |{group.createdAt}</span>
+              <span className="break-words">창단일 | {group.createdAt}</span>
               <span className="break-words">
                 그룹장 | {group.groupLeader.userName}
                 {group.groupLeader.userTag}
@@ -111,7 +111,7 @@ export function GroupInfo({ group }: { group: univGroupData }) {
 
             <div className="h-3" />
 
-            <span className="text-[#B1ACC1] break-words">
+            <span className="text-[#B1ACC1] break-words ">
               {group.description}
             </span>
           </div>
