@@ -9,7 +9,7 @@ import { usePathname } from "next/navigation";
 type NavItem = {
   href: string;
   label: string;
-  key: "ranking" | "groups" | "competition";
+  key: "ranking" | "groups" | "competitions";
   match?: (path: string) => boolean;
 };
 
@@ -32,7 +32,7 @@ export default function RootLayout({
         path === "/" || path === "/rankings" || path.startsWith("/rankings/"),
     },
     { href: "/groups", label: "그룹", key: "groups" },
-    { href: "/competition", label: "대항전", key: "competition" },
+    { href: "/competitions", label: "대항전", key: "competitions" },
   ];
 
   // 기본 매칭 규칙: 정확히 같거나, 세그먼트 경계로 시작
