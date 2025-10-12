@@ -29,13 +29,27 @@ export default function SubHeaderMain({
 
   const activeIndex = useMemo(() => {
     if (!Array.isArray(items) || items.length === 0) return 0;
-
     const path = pathname ?? "";
-    const i = items.findIndex((it) =>
-      it.match ? it.match(path) : defaultMatch(it.href, path)
-    );
 
-    return i >= 0 ? i : 0;
+    // 1) 정확 일치 우선
+    let idx = items.findIndex((it) =>
+      it.match ? it.match(path) : path === it.href
+    );
+    if (idx >= 0) return idx;
+
+    // 2) 접두사 일치 중 가장 "긴 href"를 선택(=구체적인 경로 우선)
+    const candidates = items
+      .map((it, i) => ({
+        i,
+        href: it.href,
+        ok: it.match
+          ? it.match(path)
+          : path.startsWith(it.href + "/") || path === it.href,
+      }))
+      .filter((c) => c.ok)
+      .sort((a, b) => b.href.length - a.href.length);
+
+    return candidates.length ? candidates[0].i : 0;
   }, [items, pathname]);
 
   const count = items.length || 1; // ✅ 0으로 나눔 방지

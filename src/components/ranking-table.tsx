@@ -1,7 +1,9 @@
-// components/RankTable.tsx
 "use client";
-import { RankingTableProps } from "@/types";
+
 import React from "react";
+import { usePathname } from "next/navigation";
+import { RankingTableProps } from "@/types";
+import Link from "next/link";
 import {
   Pagination,
   PaginationContent,
@@ -12,13 +14,16 @@ import {
 } from "@/components/ui/pagination";
 
 export function RankingTable<T>({ data, columns }: RankingTableProps<T>) {
+  // 편집 페이지 감지 (/groups/[groupId]/edit/* 포함)
+  const pathname = usePathname();
+  const isEditPage = /\/groups\/[^/]+\/edit(?:\/.*)?$/.test(pathname ?? "");
+
   // ✅ 페이지네이션 상태
-  const pageSize = 15; // 한 페이지에 보여줄 행 수
+  const pageSize = 15;
   const [page, setPage] = React.useState(1);
 
   const total = data.length;
   const totalPages = Math.max(1, Math.ceil(total / pageSize));
-
   const start = (page - 1) * pageSize;
   const end = Math.min(start + pageSize, total);
   const pageData = data.slice(start, end);
@@ -52,14 +57,53 @@ export function RankingTable<T>({ data, columns }: RankingTableProps<T>) {
               return (
                 <tr
                   key={rank}
-                  className={`not-first:hover:bg-gray-700/50 transition-colors ${defaultRowClassName(
+                  className={`group relative transition-colors ${defaultRowClassName(
                     rank
                   )}`}
                 >
+                  {/* 첫 번째 셀 */}
                   <td className="rounded-l px-6 py-4">
                     <RankBadge rank={rank} />
+
+                    {/* 편집 페이지에서만: 행 전체 오버레이 */}
+                    {isEditPage && (
+                      <div
+                        className="
+                        border border-[#FF567980] rounded
+                          absolute inset-0 z-10
+                          opacity-0 group-hover:opacity-100 transition-opacity
+                          pointer-events-none
+                        "
+                      >
+                        {/* 어둡게 + 살짝 블러 */}
+                        <div
+                          className="
+                            absolute inset-0 rounded-[6px]
+                            bg-black/60 backdrop-blur-[2px]
+                          "
+                        />
+                        {/* 중앙 버튼 */}
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <Link href={`delete`}>
+                            {" "}
+                            <button
+                              onClick={() => console.log("추방하시겠습니까")}
+                              className="
+                              pointer-events-auto
+                              text-white 
+                              px-4 py-2 font-medium
+                              shadow-sm
+                            "
+                            >
+                              추방하기
+                            </button>
+                          </Link>
+                        </div>
+                      </div>
+                    )}
                   </td>
 
+                  {/* 나머지 셀들 */}
                   {columns.map((col, colIndex) => {
                     const content =
                       col.cell?.(row, i) ??
@@ -90,13 +134,13 @@ export function RankingTable<T>({ data, columns }: RankingTableProps<T>) {
         </table>
       </div>
 
-      <div className="my-4"></div>
+      <div className="my-4" />
 
       {/* 페이지네이션 */}
       <div className="w-full mt-4">
         <Pagination className="w-full">
           <PaginationContent className="flex w-full justify-between items-center">
-            {/* 왼쪽: 이전 버튼 */}
+            {/* 이전 */}
             <div>
               <PaginationItem>
                 <PaginationPrevious
@@ -109,7 +153,7 @@ export function RankingTable<T>({ data, columns }: RankingTableProps<T>) {
               </PaginationItem>
             </div>
 
-            {/* 가운데: 페이지 숫자 */}
+            {/* 페이지 숫자 */}
             <div className="flex gap-2">
               {Array.from({ length: totalPages }).map((_, i) => (
                 <PaginationItem key={i}>
@@ -129,7 +173,7 @@ export function RankingTable<T>({ data, columns }: RankingTableProps<T>) {
               ))}
             </div>
 
-            {/* 오른쪽: 다음 버튼 */}
+            {/* 다음 */}
             <div>
               <PaginationItem>
                 <PaginationNext
@@ -152,7 +196,7 @@ export function RankingTable<T>({ data, columns }: RankingTableProps<T>) {
   );
 }
 
-/* 1~3등 마름모 뱃지, 그 외는 숫자*/
+/* 1~3등 마름모 뱃지, 그 외는 숫자 */
 function RankBadge({ rank }: { rank: number }) {
   if (rank <= 3) {
     return (
@@ -174,7 +218,7 @@ function RankBadge({ rank }: { rank: number }) {
   return <span className="text-white font-medium ml-2">{rank}</span>;
 }
 
-/*행 스타일: 1~3위 그라데이션 + 짝/홀 배경색 */
+/* 행 스타일: 1~3위 그라데이션 + 짝/홀 배경색 */
 function defaultRowClassName(rank: number) {
   const isTop3 = rank <= 3;
   const even = rank % 2 === 0;

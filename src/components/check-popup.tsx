@@ -18,7 +18,6 @@ type AlarmItem = {
   createdAt: string;
 };
 
-/** mock + alarmId 부여 */
 const mock: AlarmItem[] = [
   {
     alarmId: "a1",

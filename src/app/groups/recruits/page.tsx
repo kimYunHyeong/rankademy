@@ -177,7 +177,7 @@ export default function Page() {
       <SubHeaderMain
         items={[
           { label: "내 그룹", href: "/groups" },
-          { label: "모집 게시판", href: "/groups/board" },
+          { label: "모집 게시판", href: "/groups/recruits" },
         ]}
         className="my-3"
       />

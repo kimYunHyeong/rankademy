@@ -1,21 +1,17 @@
 "use client";
 
-import { GroupInfo } from "@/components/group-info";
 import { RankingTable } from "@/components/ranking-table";
 import Image from "next/image";
 import { univUserData, Column } from "@/types";
 import { capitalize } from "@/utils/capitalize";
 import { calcWinRate } from "@/utils/calc-winrate";
 import { univUserRanking } from "@/mock/univUserRankingData";
-import { univGroupInfo } from "@/mock/groupInfoData";
 import GroupTableHeader from "@/components/group-table-header";
 import { useMemo, useState } from "react";
 import { calcRankScore } from "@/utils/calc-rank-score";
 import { useParams } from "next/navigation";
 import type { OptionMetaOf, OptionValueOf } from "@/types";
 import Link from "next/link";
-import CheckPopup from "@/components/check-popup";
-import { Switch } from "@/components/ui/switch";
 
 export default function Page() {
   // ✅ 동기 접근 (클라이언트에서만 사용)
@@ -182,39 +178,12 @@ export default function Page() {
 
   return (
     <>
-      <div className="flex justify-between items-center mb-12">
-        <div className="flex text-[14px]">
-          <Link
-            href={`recruits/${univGroupInfo.group.id}`}
-            className="flex items-center justify-center border border-[#323036] w-[120px] h-[44px] text-[#B1ACC1] rounded bg-[#25242A33] text-center mr-2"
-          >
-            모집 게시글 보기
-          </Link>
-          <Link
-            href={`${"1"}/invite`}
-            className="flex items-center justify-center border border-[#323036] w-[120px] h-[44px] text-[#B1ACC1] rounded bg-[#25242A33] text-center mr-2"
-          >
-            그룹원 초대
-          </Link>
-          <Link
-            href={`${"1"}/edit`}
-            className="flex items-center justify-center border border-[#323036] w-[120px] h-[44px] text-[#B1ACC1] rounded bg-[#25242A33] text-center"
-          >
-            그룹원 관리
-          </Link>
-        </div>
-
-        <div className="flex">
-          <span className="text-white text-xs mr-2">그룹원 모집</span>
-          <Switch />
-        </div>
+      {/* 헤더 */}
+      <div className="flex items-center justify-center text-white my-3">
+        <span>그룹원 관리</span>
       </div>
-      <CheckPopup />
+      <div className="h-20"></div>
 
-      <div className="mt-5"></div>
-
-      <GroupInfo group={univGroupInfo} />
-      <div className="h-4"></div>
       <div className="table container">
         <GroupTableHeader memberCnt={univUserRanking.length} groupId="1" />
         <RankingTable data={sortedData} columns={columns} />

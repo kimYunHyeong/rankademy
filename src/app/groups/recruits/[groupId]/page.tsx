@@ -22,10 +22,10 @@ export default function Page() {
         <div className="flex justify-between items-center mb-12">
           <div className="flex text-[14px]">
             <Link
-              href="/me/edit"
+              href={`${data.groupId}/delete`}
               className="flex items-center justify-center border border-[#323036] w-[120px] h-[44px] text-[#B1ACC1] rounded bg-[#25242A33] text-center mr-2"
             >
-              게시글 삭제(요청 로직 작성 필요)
+              게시글 삭제
             </Link>
             <Link
               href={`${data.groupId}/edit`}
@@ -34,10 +34,10 @@ export default function Page() {
               게시글 수정
             </Link>
             <Link
-              href={`/recruits/${data.groupId}/edit`}
+              href={`${data.groupId}/up`}
               className="flex items-center justify-center border border-[#323036] w-[120px] h-[44px] text-[#B1ACC1] rounded bg-[#25242A33] text-center"
             >
-              게시글 UP(요청 로직 작성 필요)
+              게시글 UP
             </Link>
           </div>
 

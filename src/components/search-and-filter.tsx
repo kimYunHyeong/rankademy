@@ -12,10 +12,24 @@ import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import Image from "next/image";
 
-export function SearchBox({ onSearch }: { onSearch: (q: string) => void }) {
+type SearchBoxProps = {
+  onSearch: (q: string) => void;
+  placeholder?: string; // 기본값: "학교 이름"
+  width?: string | number; // Tailwind 클래스 대신 직접 값 조정 가능
+};
+
+export function SearchBox({
+  onSearch,
+  placeholder = "학교 이름",
+  width = 300,
+}: SearchBoxProps) {
   const [query, setQuery] = useState("");
+
   return (
-    <div className="relative w-[300px]">
+    <div
+      className="relative"
+      style={{ width: typeof width === "number" ? `${width}px` : width }}
+    >
       <Image
         src="/images/search.png"
         alt="search"
@@ -25,12 +39,13 @@ export function SearchBox({ onSearch }: { onSearch: (q: string) => void }) {
       />
 
       <Input
-        className="pl-10 h-[44px] bg-[#1D1921]"
-        placeholder="학교 이름"
+        className="pl-10 h-[44px] bg-[#1D1921] border-[#323036]"
+        placeholder={placeholder}
         value={query}
         onChange={(e) => {
-          setQuery(e.target.value);
-          onSearch(e.target.value);
+          const value = e.target.value;
+          setQuery(value);
+          onSearch(value);
         }}
       />
     </div>
