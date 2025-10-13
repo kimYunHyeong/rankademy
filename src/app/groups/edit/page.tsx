@@ -211,11 +211,11 @@ export default function Page() {
       <div className="p-8 flex flex-col border-2 border-[#25242A] rounded bg-[#25242A33] w-full min-h-[480px] h-auto">
         {/* 그룹 이름 */}
         <div className="flex flex-col">
-          <span className="text-white text-sm">학과</span>
+          <span className="text-white text-sm">그룹 이름</span>
           <input
             className="bg-[#323036] border border-[#323036] rounded my-4 px-3 py-2 text-white"
             onChange={handle("major")}
-            placeholder="그룹이름"
+            placeholder="그룹 이름"
           />
         </div>
 
