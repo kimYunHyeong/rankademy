@@ -2,6 +2,7 @@ import Link from "next/link";
 import CheckPopup from "@/components/check-popup";
 import Image from "next/image";
 import { capitalize } from "@/utils/capitalize";
+import { SUMMONER_ICON_URL } from "@/lib/api";
 
 type scrimTeamDetailResponse = {
   scrimTeamId: number;
@@ -253,7 +254,7 @@ export default function Page() {
                     <Link href={`/user/${m.memberId}`}>
                       <div className="flex items-center gap-2 min-w-0">
                         <Image
-                          src={`https://ddragon.leagueoflegends.com/cdn/15.17.1/img/profileicon/${m.summonerIcon}.png`}
+                          src={`${SUMMONER_ICON_URL}${m.summonerIcon}.png`}
                           alt={m.summonerIcon.toString()}
                           width={30}
                           height={30}

@@ -14,7 +14,7 @@ export default function LoginCard() {
 
       <div className="my-5">
         {/* 카카오 로그인 */}
-        <Link href={`/`}>
+        <Link href={`http://api.rankademy.kr/oauth2/authorization/kakao`}>
           <div className="bg-[#FEE500] w-[572px] h-[64px] flex rounded justify-center items-center">
             <Image
               src="/images/kakao-logo.png"
@@ -30,7 +30,7 @@ export default function LoginCard() {
         </Link>
 
         {/* 네이버 로그인 */}
-        <Link href={`/`}>
+        <Link href={`http://api.rankademy.kr/oauth2/authorization/naver`}>
           <div className="bg-[#03C75A] w-[572px] h-[64px] flex rounded justify-center items-center my-5">
             <Image
               src="/images/naver-logo.png"
@@ -45,7 +45,7 @@ export default function LoginCard() {
           </div>
         </Link>
 
-        <Link href={`/`}>
+        <Link href={`http://api.rankademy.kr/oauth2/authorization/google`}>
           {/* 구글 로그인 */}
           <div className="bg-white w-[572px] h-[64px] flex rounded justify-center items-center">
             <Image
