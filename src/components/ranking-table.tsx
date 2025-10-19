@@ -36,7 +36,7 @@ export function RankingTable<T>({ data, columns }: RankingTableProps<T>) {
           {/* 헤더 */}
           <thead>
             <tr className="bg-[#24192F] text-xs text-gray-300">
-              <th className="rounded-l px-6 py-4 w-[8%] text-left">랭킹</th>
+              <th className="rounded-l px-6 py-4 w-[10%] text-left">랭킹</th>
               {columns.map((col) => (
                 <th
                   key={col.id}

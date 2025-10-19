@@ -6,7 +6,7 @@ import Image from "next/image";
 import { univUserData, Column } from "@/types";
 import { capitalize } from "@/utils/capitalize";
 import { calcWinRate } from "@/utils/calc-winrate";
-import { univUserRanking } from "@/mock/univUserRankingData";
+import { univUserRanking } from "@/mock/univUserRanking";
 import { univGroupInfo } from "@/mock/groupInfoData";
 import GroupTableHeader from "@/components/group-table-header";
 import { useMemo, useState } from "react";

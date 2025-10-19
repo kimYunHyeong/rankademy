@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { SearchBox } from "./search-and-filter";
+import { SearchBox } from "./search-box";
 import { useState } from "react";
 
 export default function InviteMember() {

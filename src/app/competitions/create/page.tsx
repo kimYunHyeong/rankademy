@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Filter } from "@/components/search-and-filter";
+import { Filter } from "@/components/search-box";
 import { summonerDTO } from "@/types";
 
 const mockSummoners: summonerDTO[] = [

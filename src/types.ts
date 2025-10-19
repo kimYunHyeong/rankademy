@@ -15,7 +15,20 @@ export interface summonerDTO {
 }
 
 /* -------------------------유저 정보----------------------------------- */
-export type position = "top" | "jungle" | "middle" | "bottom" | "utility";
+export type position = "TOP" | "JUNGLE" | "MIDDLE" | "BOTTOM" | "UTILITY";
+
+export type tier =
+  | "UNRANKED"
+  | "IRON"
+  | "BRONZE"
+  | "SILVER"
+  | "GOLD"
+  | "PLATINUM"
+  | "EMERALD"
+  | "DIAMOND"
+  | "MASTER"
+  | "GRANDMASTER"
+  | "CHALLENGER";
 
 export interface tierDTO {
   rank: string;

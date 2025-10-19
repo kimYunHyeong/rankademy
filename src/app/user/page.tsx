@@ -7,7 +7,7 @@ import Image from "next/image";
 
 import { RankingTable } from "@/components/ranking-table";
 import SubHeaderUnivRanking from "@/components/sub-header-univ-ranking";
-import SearchAndFilter from "@/components/search-and-filter";
+import SearchAndFilter from "@/components/search-box";
 import { capitalize } from "@/utils/capitalize";
 
 import type {
@@ -16,7 +16,7 @@ import type {
   OptionMetaOf,
   OptionValueOf,
 } from "@/types";
-import { univUserRanking } from "@/mock/univUserRankingData";
+import { univUserRanking } from "@/mock/univUserRanking";
 import { calcWinRate } from "@/utils/calc-winrate";
 import { calcRankScore } from "@/utils/calc-rank-score";
 

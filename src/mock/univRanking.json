@@ -7,7 +7,7 @@
     "rankerDto": {
       "id": 1,
       "summonerName": "니 카",
-      "summonerTag": "#luffy",
+      "summonerTag": "luffy",
       "summonerIcon": 1
     }
   },
@@ -19,7 +19,7 @@
     "rankerDto": {
       "id": 2,
       "summonerName": "강백호",
-      "summonerTag": "#slam",
+      "summonerTag": "slam",
       "summonerIcon": 2
     }
   },
@@ -31,7 +31,7 @@
     "rankerDto": {
       "id": 3,
       "summonerName": "바람검객",
-      "summonerTag": "#wind",
+      "summonerTag": "wind",
       "summonerIcon": 3
     }
   },
@@ -43,7 +43,7 @@
     "rankerDto": {
       "id": 4,
       "summonerName": "토끼왕",
-      "summonerTag": "#hop",
+      "summonerTag": "hop",
       "summonerIcon": 4
     }
   },
@@ -55,7 +55,7 @@
     "rankerDto": {
       "id": 5,
       "summonerName": "철학자",
-      "summonerTag": "#logic",
+      "summonerTag": "logic",
       "summonerIcon": 5
     }
   },
@@ -67,7 +67,7 @@
     "rankerDto": {
       "id": 6,
       "summonerName": "남해검",
-      "summonerTag": "#wave",
+      "summonerTag": "wave",
       "summonerIcon": 6
     }
   },
@@ -79,7 +79,7 @@
     "rankerDto": {
       "id": 7,
       "summonerName": "용의혼",
-      "summonerTag": "#draco",
+      "summonerTag": "draco",
       "summonerIcon": 7
     }
   },
@@ -91,7 +91,7 @@
     "rankerDto": {
       "id": 8,
       "summonerName": "숲속요정",
-      "summonerTag": "#elf",
+      "summonerTag": "elf",
       "summonerIcon": 8
     }
   },
@@ -103,7 +103,7 @@
     "rankerDto": {
       "id": 9,
       "summonerName": "제트",
-      "summonerTag": "#shadow",
+      "summonerTag": "shadow",
       "summonerIcon": 9
     }
   },
@@ -115,7 +115,7 @@
     "rankerDto": {
       "id": 10,
       "summonerName": "미소녀",
-      "summonerTag": "#cute",
+      "summonerTag": "cute",
       "summonerIcon": 10
     }
   },
@@ -127,7 +127,7 @@
     "rankerDto": {
       "id": 11,
       "summonerName": "술꾼",
-      "summonerTag": "#cheers",
+      "summonerTag": "cheers",
       "summonerIcon": 11
     }
   },
@@ -139,7 +139,7 @@
     "rankerDto": {
       "id": 12,
       "summonerName": "무영",
-      "summonerTag": "#silent",
+      "summonerTag": "silent",
       "summonerIcon": 12
     }
   },
@@ -151,7 +151,7 @@
     "rankerDto": {
       "id": 13,
       "summonerName": "스님",
-      "summonerTag": "#zen",
+      "summonerTag": "zen",
       "summonerIcon": 13
     }
   },
@@ -163,7 +163,7 @@
     "rankerDto": {
       "id": 14,
       "summonerName": "화가",
-      "summonerTag": "#art",
+      "summonerTag": "art",
       "summonerIcon": 14
     }
   },
@@ -175,7 +175,7 @@
     "rankerDto": {
       "id": 15,
       "summonerName": "발명왕",
-      "summonerTag": "#idea",
+      "summonerTag": "idea",
       "summonerIcon": 15
     }
   },
@@ -187,7 +187,7 @@
     "rankerDto": {
       "id": 16,
       "summonerName": "별빛",
-      "summonerTag": "#stella",
+      "summonerTag": "stella",
       "summonerIcon": 16
     }
   },
@@ -199,7 +199,7 @@
     "rankerDto": {
       "id": 17,
       "summonerName": "꽃잎",
-      "summonerTag": "#bloom",
+      "summonerTag": "bloom",
       "summonerIcon": 17
     }
   },
@@ -211,7 +211,7 @@
     "rankerDto": {
       "id": 18,
       "summonerName": "코딩러",
-      "summonerTag": "#dev",
+      "summonerTag": "dev",
       "summonerIcon": 18
     }
   },
@@ -223,7 +223,7 @@
     "rankerDto": {
       "id": 19,
       "summonerName": "드리머",
-      "summonerTag": "#dream",
+      "summonerTag": "dream",
       "summonerIcon": 19
     }
   },
@@ -235,7 +235,7 @@
     "rankerDto": {
       "id": 20,
       "summonerName": "역사가",
-      "summonerTag": "#past",
+      "summonerTag": "past",
       "summonerIcon": 20
     }
   },
@@ -247,7 +247,7 @@
     "rankerDto": {
       "id": 21,
       "summonerName": "음악가",
-      "summonerTag": "#note",
+      "summonerTag": "note",
       "summonerIcon": 21
     }
   },
@@ -259,7 +259,7 @@
     "rankerDto": {
       "id": 22,
       "summonerName": "용사",
-      "summonerTag": "#hero",
+      "summonerTag": "hero",
       "summonerIcon": 22
     }
   },
@@ -271,7 +271,7 @@
     "rankerDto": {
       "id": 23,
       "summonerName": "산꾼",
-      "summonerTag": "#mount",
+      "summonerTag": "mount",
       "summonerIcon": 23
     }
   },
@@ -283,7 +283,7 @@
     "rankerDto": {
       "id": 24,
       "summonerName": "농부",
-      "summonerTag": "#farm",
+      "summonerTag": "farm",
       "summonerIcon": 24
     }
   },
@@ -295,7 +295,7 @@
     "rankerDto": {
       "id": 25,
       "summonerName": "사자",
-      "summonerTag": "#lion",
+      "summonerTag": "lion",
       "summonerIcon": 25
     }
   },
@@ -307,7 +307,7 @@
     "rankerDto": {
       "id": 26,
       "summonerName": "호랑이",
-      "summonerTag": "#tiger",
+      "summonerTag": "tiger",
       "summonerIcon": 26
     }
   },
@@ -319,7 +319,7 @@
     "rankerDto": {
       "id": 27,
       "summonerName": "해녀",
-      "summonerTag": "#diver",
+      "summonerTag": "diver",
       "summonerIcon": 27
     }
   },
@@ -331,7 +331,7 @@
     "rankerDto": {
       "id": 28,
       "summonerName": "치유자",
-      "summonerTag": "#heal",
+      "summonerTag": "heal",
       "summonerIcon": 28
     }
   },
@@ -343,7 +343,7 @@
     "rankerDto": {
       "id": 29,
       "summonerName": "번역가",
-      "summonerTag": "#lingo",
+      "summonerTag": "lingo",
       "summonerIcon": 29
     }
   },
@@ -355,7 +355,7 @@
     "rankerDto": {
       "id": 30,
       "summonerName": "사이언티스트",
-      "summonerTag": "#lab",
+      "summonerTag": "lab",
       "summonerIcon": 30
     }
   },
@@ -367,7 +367,7 @@
     "rankerDto": {
       "id": 31,
       "summonerName": "철인",
-      "summonerTag": "#iron",
+      "summonerTag": "iron",
       "summonerIcon": 31
     }
   },
@@ -379,7 +379,7 @@
     "rankerDto": {
       "id": 32,
       "summonerName": "빛의아이",
-      "summonerTag": "#light",
+      "summonerTag": "light",
       "summonerIcon": 32
     }
   },
@@ -391,7 +391,7 @@
     "rankerDto": {
       "id": 33,
       "summonerName": "장군",
-      "summonerTag": "#general",
+      "summonerTag": "general",
       "summonerIcon": 33
     }
   }
