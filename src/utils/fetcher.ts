@@ -1,4 +1,3 @@
-// src/utils/fetcher.ts
 import { API_BASE_URL } from "@/lib/api";
 import { cookies } from "next/headers";
 
@@ -8,9 +7,9 @@ import { cookies } from "next/headers";
  * - 요청/응답 콘솔 출력 포함
  */
 export async function fetchFromAPI<T = unknown>(endpoint: string): Promise<T> {
-  // ✅ 쿠키에서 accessToken 읽기
-  const cookieStore = cookies();
-  const accessToken = cookieStore.get("accessToken")?.value;
+  // ✅ 쿠키 가져오기 (await 문법 사용 — 실제로는 동기지만 허용됨)
+  const cookieStore = await cookies();
+  const accessToken = (await cookieStore.get("accessToken"))?.value;
 
   const headers: Record<string, string> = {
     Accept: "application/json",
@@ -22,23 +21,20 @@ export async function fetchFromAPI<T = unknown>(endpoint: string): Promise<T> {
       : `Bearer ${accessToken}`;
   }
 
-  // ✅ URL 생성
   const url = endpoint.startsWith("http")
     ? endpoint
     : `${API_BASE_URL}${endpoint}`;
 
-  // ✅ 요청 로그 출력
   console.log("📤 [API Request]");
   console.log("URL:", url);
   console.log("Headers:", headers);
 
   const res = await fetch(url, {
     headers,
-    cache: "no-store", // SSR 시 최신 데이터 보장
-    credentials: "include", // 쿠키 포함
+    cache: "no-store",
+    credentials: "include",
   });
 
-  // ✅ 응답 로그 출력
   console.log("📥 [API Response]");
   console.log("Status:", res.status, res.statusText);
 
