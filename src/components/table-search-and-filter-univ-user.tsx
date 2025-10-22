@@ -1,16 +1,15 @@
 // components/table-search-and-filter-univ-user.tsx
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import Filter, { FilterOptions, FilterValue } from "@/components/filter";
-
 import SearchBox from "@/components/search-box";
 import { RankingTable } from "@/components/ranking-table";
 import type { Column } from "@/types";
-
 import { POSITION_IMG_URL, SUMMONER_ICON_URL, TIER_IMG_URL } from "@/lib/api";
 import { capitalize } from "@/utils/capitalize";
 
@@ -24,51 +23,68 @@ export default function TableSearchAndFilterUnivUser({
   data: univUserRanking[];
   options: FilterOptions;
 }) {
-  // 1) 필터 상태: ✅ 초기값은 '미선택' 의미의 빈 문자열로
-  const [filter, setFilter] = useState<FilterValue>({
-    major: "",
-    admissionYear: "",
-    mainPosition: "",
-  });
+  const router = useRouter();
+  const pathname = usePathname();
+  const sp = useSearchParams();
 
-  // 2) 검색 상태
+  // URL 현재 쿼리를 초기값으로 사용(새로고침/딥링크 대응)
+  const initial: FilterValue = {
+    major: sp.get("major") ?? "",
+    admissionYear: sp.get("admissionYear") ?? "",
+    mainPosition: sp.get("mainPosition") ?? "",
+  };
+
+  // 1) 필터 상태 (UI 표시용)
+  const [filter, setFilter] = useState<FilterValue>(initial);
+
+  // 2) 검색 상태(q는 서버로 보내지 않고 클라에서만 사용)
   const [q, setQuery] = useState("");
 
-  // 3) 필터 적용
-  const filteredByFilter = useMemo(() => {
-    const norm = (v?: string) => (v ?? "").trim();
-    const normUpper = (v?: string) => norm(v).toUpperCase();
+  // URL 쿼리 업데이트 헬퍼(빈 문자열은 삭제)
+  const pushFilterToUrl = (
+    next: FilterValue,
+    opts?: { resetPage?: boolean }
+  ) => {
+    const params = new URLSearchParams(sp.toString());
 
-    return data.filter((r) => {
-      const majorOk =
-        !norm(filter.major) || norm(r.major) === norm(filter.major);
+    const setOrDel = (key: string, val: string) => {
+      const v = (val ?? "").trim();
+      if (v) params.set(key, v);
+      else params.delete(key);
+    };
 
-      // ✅ admissionYear로 비교 (양쪽을 문자열로 변환해서 안전비교)
-      const admissionYearOk =
-        !norm(filter.admissionYear) ||
-        String(r.admissionYear) === String(filter.admissionYear);
+    setOrDel("major", next.major ?? "");
+    setOrDel("admissionYear", next.admissionYear ?? "");
+    setOrDel("mainPosition", next.mainPosition ?? "");
 
-      // ✅ 라인(포지션)은 대소문자 무시
-      const position = normUpper(filter.mainPosition);
-      const positionOk = !position || normUpper(r.mainPosition) === position;
+    // 필터 바뀌면 페이지 0으로 (페이지 쿼리를 쓰는 경우에만)
+    if (opts?.resetPage !== false) {
+      params.set("page", "0");
+    }
 
-      return majorOk && admissionYearOk && positionOk;
-    });
-  }, [data, filter]);
+    // 검색어(q)는 서버로 보내지 않으므로 여기서 만지지 않음
+    router.push(`${pathname}?${params.toString()}`, { scroll: false });
+  };
 
-  // 4) 검색 적용 (필터 결과 위에 추가로 적용)
+  // Filter 컴포넌트에서 변경 시: 상태 업데이트 + URL 반영
+  const handleFilterChange = (next: FilterValue) => {
+    setFilter(next);
+    pushFilterToUrl(next, { resetPage: true });
+  };
+
+  // 3) 검색만 클라이언트에서 적용
   const filteredData = useMemo(() => {
     const s = q.trim().toLowerCase();
-    if (!s) return filteredByFilter;
+    if (!s) return data;
 
-    return filteredByFilter.filter((r) => {
+    return data.filter((r) => {
       const nameOnly = (r.summonerName ?? "").toLowerCase();
       const nameWithTag = `${r.summonerName ?? ""}#${
         r.summonerTag ?? ""
       }`.toLowerCase();
       return nameOnly.includes(s) || nameWithTag.includes(s);
     });
-  }, [filteredByFilter, q]);
+  }, [data, q]);
 
   /* 테이블 데이터 */
   const columns: Column<univUserRanking>[] = [
@@ -176,11 +192,15 @@ export default function TableSearchAndFilterUnivUser({
     <div className="flex flex-col space-y-4 w-full">
       {/* 필터 바 | 검색 박스 */}
       <div className="w-full flex justify-between">
-        <Filter options={options} value={filter} onChange={setFilter} />
+        <Filter
+          options={options}
+          value={filter}
+          onChange={handleFilterChange}
+        />
         <SearchBox width={300} placeholder="유저 이름" onChange={setQuery} />
       </div>
 
-      {/* 테이블 */}
+      {/* 테이블 (data는 서버에서 필터링되어 내려옴, q만 클라에서 추가 필터링) */}
       <RankingTable data={filteredData} columns={columns} />
     </div>
   );

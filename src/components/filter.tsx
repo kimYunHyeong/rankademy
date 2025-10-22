@@ -27,10 +27,10 @@ const ADMISSION_YEAR_OPTIONS: FilterOption[] = Array.from(
   { length: 2025 - 1979 + 1 },
   (_, i) => {
     const year = 1979 + i;
-    const label = `${String(year).slice(2)}학번`; // '79학번', '80학번' ...
-    return { label, value: String(year) };
+    const shortYear = String(year).slice(2); // 예: '1979' -> '79'
+    return { label: `${shortYear}학번`, value: shortYear };
   }
-).reverse(); // 최신 학번(25학번)이 앞에 오도록 정렬
+).reverse();
 
 const POSITION_OPTIONS: FilterOption[] = [
   { label: "탑", value: "TOP" },
@@ -58,7 +58,15 @@ export default function Filter({
         <SelectTrigger className="w-[190px] bg-[#1D1921] border-[#323036] text-white rounded">
           <SelectValue placeholder="전공" />
         </SelectTrigger>
+
         <SelectContent className="w-[190px] bg-[#1D1921] border-[#323036] text-white rounded">
+          <SelectItem
+            key={"all"}
+            value={" "}
+            className="hover:bg-[#24192F] focus:bg-[#24192F] text-[#323036] focus:text-white "
+          >
+            {"전공"}
+          </SelectItem>
           {options.major.map((o) => (
             <SelectItem
               key={o.value}
@@ -80,6 +88,13 @@ export default function Filter({
           <SelectValue placeholder="학번" />
         </SelectTrigger>
         <SelectContent className="w-[85px] bg-[#1D1921] border-[#323036] text-white rounded">
+          <SelectItem
+            key={"all"}
+            value={" "}
+            className="hover:bg-[#24192F] focus:bg-[#24192F] text-[#323036] focus:text-white"
+          >
+            {"학번"}
+          </SelectItem>
           {ADMISSION_YEAR_OPTIONS.map((o) => (
             <SelectItem
               key={o.value}
@@ -97,10 +112,17 @@ export default function Filter({
         value={value.mainPosition}
         onValueChange={(v) => set({ mainPosition: v })}
       >
-        <SelectTrigger className="w-[85px] bg-[#1D1921] border-[#323036] text-white rounded">
+        <SelectTrigger className="w-[85px] bg-[#1D1921] border-[#323036]  text-white rounded">
           <SelectValue placeholder="라인" />
         </SelectTrigger>
         <SelectContent className="w-[85px] bg-[#1D1921] border-[#323036] text-white rounded">
+          <SelectItem
+            key={"all"}
+            value={" "}
+            className="hover:bg-[#24192F] focus:bg-[#24192F] text-[#323036] focus:text-white"
+          >
+            {"학번"}
+          </SelectItem>
           {POSITION_OPTIONS.map((o) => (
             <SelectItem
               key={o.value}

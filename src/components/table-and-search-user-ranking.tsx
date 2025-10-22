@@ -15,23 +15,6 @@ export default function TableAndSearchUserRanking({
 }: {
   data: userRanking[];
 }) {
-  /* 검색 설정 */
-  const [q, setQuery] = useState("");
-
-  /* 검색된 데이터 */
-  const filteredData = useMemo(() => {
-    if (!q) return data;
-    const s = q.trim().toLowerCase();
-
-    return data.filter((r) => {
-      const nameOnly = (r.summonerName ?? "").toLowerCase();
-      const nameWithTag = `${r.summonerName ?? ""}#${
-        r.summonerTag ?? ""
-      }`.toLowerCase();
-      return nameOnly.includes(s) || nameWithTag.includes(s);
-    });
-  }, [data, q]);
-
   /* 테이블 데이터 */
   const columns: Column<userRanking>[] = [
     {
@@ -143,11 +126,17 @@ export default function TableAndSearchUserRanking({
 
   return (
     <div className="flex flex-col space-y-4 w-full">
-      <div className=" w-full flex justify-end">
-        <SearchBox width={300} placeholder="유저 이름" onChange={setQuery} />
+      <div className="w-full flex justify-end">
+        <SearchBox
+          queryKey="userNameKey"
+          width={300}
+          placeholder="학교 이름"
+          syncToUrl
+          onSubmit={() => {}}
+        />
       </div>
 
-      <RankingTable data={filteredData} columns={columns} />
+      <RankingTable data={data} columns={columns} />
     </div>
   );
 }

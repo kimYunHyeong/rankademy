@@ -1,11 +1,12 @@
+// components/table-search-and-filter-univ-group.tsx
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import Filter, { FilterOptions, FilterValue } from "@/components/filter";
-
 import SearchBox from "@/components/search-box";
 import { RankingTable } from "@/components/ranking-table";
 import type { Column } from "@/types";
@@ -13,66 +14,76 @@ import type { Column } from "@/types";
 import { CHAMPION_IMG_URL, SUMMONER_ICON_URL, TIER_IMG_URL } from "@/lib/api";
 import { capitalize } from "@/utils/capitalize";
 
-import { univGruopRanking } from "@/app/rankings/univ/[univName]/groups/page";
+import { univGroupRanking } from "@/app/rankings/univ/[univName]/groups/page";
 
 export default function TableSearchAndFilterUnivGroup({
   data,
   options,
 }: {
-  data: univGruopRanking[];
+  data: univGroupRanking[];
   options: FilterOptions;
 }) {
-  // 1) 필터 상태: ✅ 초기값은 '미선택' 의미의 빈 문자열로
-  const [filter, setFilter] = useState<FilterValue>({
-    major: "",
-    admissionYear: "",
-    mainPosition: "",
-  });
+  const router = useRouter();
+  const pathname = usePathname();
+  const sp = useSearchParams();
 
-  // 2) 검색 상태
+  // URL 쿼리 → 초기 필터 상태
+  const initial: FilterValue = {
+    major: sp.get("major") ?? "",
+    admissionYear: sp.get("admissionYear") ?? "",
+    mainPosition: sp.get("mainPosition") ?? "",
+  };
+
+  const [filter, setFilter] = useState<FilterValue>(initial);
   const [q, setQuery] = useState("");
 
-  /*   // 3) 필터 적용
-  const filteredByFilter = useMemo(() => {
-    const norm = (v?: string) => (v ?? "").trim();
-    const normUpper = (v?: string) => norm(v).toUpperCase();
+  // 필터 → URL 쿼리로 반영(push). 빈 문자열은 삭제.
+  const pushFilterToUrl = (
+    next: FilterValue,
+    opts?: { resetPage?: boolean }
+  ) => {
+    const params = new URLSearchParams(sp.toString());
 
-    return data.filter((r) => {
-      const majorOk =
-        !norm(filter.major) || norm(r.major) === norm(filter.major);
+    const setOrDel = (k: string, v: string) => {
+      const t = (v ?? "").trim();
+      if (t) params.set(k, t);
+      else params.delete(k);
+    };
 
-      // ✅ admissionYear로 비교 (양쪽을 문자열로 변환해서 안전비교)
-      const admissionYearOk =
-        !norm(filter.admissionYear) ||
-        String(r.admissionYear) === String(filter.admissionYear);
+    setOrDel("major", next.major ?? "");
+    setOrDel("admissionYear", next.admissionYear ?? "");
+    setOrDel("mainPosition", next.mainPosition ?? "");
 
-      // ✅ 라인(포지션)은 대소문자 무시
-      const position = normUpper(filter.mainPosition);
-      const positionOk =
-        !position ||
-        normUpper(r.mainPosition) === position ||
-        normUpper(r.subPosition) === position;
+    if (opts?.resetPage !== false) params.set("page", "0"); // 필터 바뀌면 페이지 초기화
 
-      return majorOk && admissionYearOk && positionOk;
-    });
-  }, [data, filter]);
+    router.push(`${pathname}?${params.toString()}`, { scroll: false });
+  };
 
-  // 4) 검색 적용 (필터 결과 위에 추가로 적용)
+  // Filter에서 변경 시: 상태 + URL 동기화
+  const handleFilterChange = (next: FilterValue) => {
+    setFilter(next);
+    pushFilterToUrl(next, { resetPage: true });
+  };
+
+  // 검색(q)은 클라이언트에서만 적용 (디바운스 선택)
   const filteredData = useMemo(() => {
     const s = q.trim().toLowerCase();
-    if (!s) return filteredByFilter;
+    if (!s) return data;
 
-    return filteredByFilter.filter((r) => {
-      const nameOnly = (r.summonerName ?? "").toLowerCase();
-      const nameWithTag = `${r.summonerName ?? ""}#${
-        r.summonerTag ?? ""
+    return data.filter((r) => {
+      const nameOnly = (r.leader.summonerName ?? "").toLowerCase();
+      const nameWithTag = `${r.leader.summonerName ?? ""}#${
+        r.leader.summonerTag ?? ""
       }`.toLowerCase();
-      return nameOnly.includes(s) || nameWithTag.includes(s);
+      const groupName = (r.name ?? "").toLowerCase();
+      return (
+        nameOnly.includes(s) || nameWithTag.includes(s) || groupName.includes(s)
+      );
     });
-  }, [filteredByFilter, q]);
- */
-  /* 테이블 데이터 */
-  const columns: Column<univGruopRanking>[] = [
+  }, [data, q]);
+
+  /* 테이블 컬럼 */
+  const columns: Column<univGroupRanking>[] = [
     {
       id: "group",
       header: "그룹명",
@@ -81,9 +92,8 @@ export default function TableSearchAndFilterUnivGroup({
         <div className="flex items-center gap-2">
           <Link
             href={`/groups/${row.groupId}`}
-            className="flex items-center gap-2  transition"
+            className="flex items-center gap-2 transition"
           >
-            {/* 실제 이미지로 수정 */}
             <Image
               src={`${CHAMPION_IMG_URL}${row.logoImageUrl}.png`}
               alt={row.logoImageUrl}
@@ -100,31 +110,19 @@ export default function TableSearchAndFilterUnivGroup({
       id: "groupMemberCnt",
       header: "그룹 인원",
       headerClassName: "w-[10%]",
-      cell: (row) => (
-        <div className="flex items-center gap-2">
-          <span>{row.memberCnt}</span>
-        </div>
-      ),
+      cell: (row) => <span>{row.memberCnt}</span>,
     },
     {
       id: "competitionCnt",
       header: "대항전 진행",
       headerClassName: "w-[10%]",
-      cell: (row) => (
-        <div className="flex items-center gap-2">
-          <span>{row.competitionTotalCnt}</span>
-        </div>
-      ),
+      cell: (row) => <span>{row.competitionTotalCnt}</span>,
     },
     {
       id: "competitionWinCnt",
       header: "대항전 승리",
       headerClassName: "w-[10%]",
-      cell: (row) => (
-        <div className="flex items-center gap-2">
-          <span>{row.competitionWinCnt}</span>
-        </div>
-      ),
+      cell: (row) => <span>{row.competitionWinCnt}</span>,
     },
     {
       id: "tierAvg",
@@ -176,12 +174,20 @@ export default function TableSearchAndFilterUnivGroup({
     <div className="flex flex-col space-y-4 w-full">
       {/* 필터 바 | 검색 박스 */}
       <div className="w-full flex justify-between">
-        <Filter options={options} value={filter} onChange={setFilter} />
-        <SearchBox width={300} placeholder="유저 이름" onChange={setQuery} />
+        <Filter
+          options={options}
+          value={filter}
+          onChange={handleFilterChange}
+        />
+        <SearchBox
+          width={300}
+          placeholder="그룹/그룹장 검색"
+          onChange={setQuery}
+        />
       </div>
 
-      {/* 테이블 */}
-      <RankingTable data={data} columns={columns} />
+      {/* 테이블: 검색(q) 반영 위해 filteredData 사용 */}
+      <RankingTable data={filteredData} columns={columns} />
     </div>
   );
 }

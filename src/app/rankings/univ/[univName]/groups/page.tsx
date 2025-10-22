@@ -11,7 +11,7 @@ const mockOptions = {
   ],
 };
 
-export type univGruopRanking = {
+export type univGroupRanking = {
   groupId: number;
   name: string;
   logoImageUrl: string;
@@ -33,24 +33,54 @@ export type univGruopRanking = {
   };
 };
 
+type Search = {
+  page?: string;
+  major?: string;
+  admissionYear?: string;
+  mainPosition?: string;
+};
+
 export default async function UnivGruopRankingPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ univName: string }>;
+  searchParams: Promise<Search>;
 }) {
-  const { univName } = await params;
-  const decodedUnivName = decodeURIComponent(univName);
-  let data: univGruopRanking[] = [];
+  const { univName } = await params; // URL 인코딩된 상태
+  const sp = await searchParams; // 쿼리 객체
 
-  /*   try {
+  const decodedUnivName = decodeURIComponent(univName);
+
+  // 쿼리 파싱
+  const page = Number(sp.page ?? "0") || 0;
+  const major = sp.major ?? "";
+  const admissionYear =
+    sp.admissionYear != null && sp.admissionYear !== ""
+      ? Number(sp.admissionYear)
+      : undefined;
+  const mainPosition = sp.mainPosition ?? "";
+
+  // 안전한 URLSearchParams 생성
+  const queryParams = new URLSearchParams();
+  queryParams.set("page", String(page));
+  if (major) queryParams.set("major", major);
+  if (admissionYear != null && !Number.isNaN(admissionYear)) {
+    queryParams.set("admissionYear", String(admissionYear));
+  }
+  if (mainPosition) queryParams.set("mainPosition", mainPosition);
+
+  let data: univGroupRanking[] = [];
+  try {
+    // ⚠️ API 경로에는 "인코딩된" 세그먼트를 쓰는 게 안전합니다.
     const res = await fetchFromAPI(
-      `/rankings/univ/"서울과학기술대학교"/groups`
+      `/rankings/univ/${univName}?${queryParams.toString()}`
     );
-    data = res as univGruopRanking[];
+    data = (res ?? []) as univGroupRanking[];
   } catch (err) {
     console.error("데이터를 불러오지 못했습니다:", err);
     data = [];
-  } */
+  }
 
   return (
     <>
@@ -73,10 +103,7 @@ export default async function UnivGruopRankingPage({
       />
 
       <div className=" mx-auto px-6">
-        <TableSearchAndFilterUnivGroup
-          data={mockUnivGroupRanking}
-          options={mockOptions}
-        />
+        <TableSearchAndFilterUnivGroup data={data} options={mockOptions} />
       </div>
     </>
   );

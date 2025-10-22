@@ -16,18 +16,11 @@ export type univRanking = {
   };
 };
 
+const mock: univRanking[] = mockUnivRanking;
+
 export default async function Home() {
-  let data: univRanking[] = [];
-
-  try {
-    const res = await fetchFromAPI("/rankings/univ");
-    data = res as univRanking[];
-  } catch (err) {
-    console.error("데이터를 불러오지 못했습니다:", err);
-    data = []; //fallback
-  }
-
-  const mock: univRanking[] = mockUnivRanking;
+  const res = (await fetchFromAPI("/rankings/univ")) as univRanking[];
+  /*   const data = res.content; */
 
   return (
     <>
@@ -38,7 +31,7 @@ export default async function Home() {
         ]}
       />
       <div className="h-20"></div>
-      <TableAndSearchMain data={mock} />
+      <TableAndSearchMain data={res} />
     </>
   );
 }

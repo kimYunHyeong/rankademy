@@ -24,16 +24,14 @@ export type userRanking = {
   subPosition: string;
 };
 
-export default async function UserRankingPage() {
-  let data: userRanking[] = [];
+type ApiRes = {
+  content: userRanking[];
+  page: string;
+};
 
-  try {
-    const res = await fetchFromAPI("/rankings/univ");
-    data = res as userRanking[];
-  } catch (err) {
-    console.error("데이터를 불러오지 못했습니다:", err);
-    data = []; //fallback
-  }
+export default async function UserRankingPage() {
+  const res = (await fetchFromAPI("/rankings/users")) as ApiRes;
+  const userRanking = res.content as userRanking[];
 
   const mock: userRanking[] = mockUserRanking;
 
@@ -46,7 +44,7 @@ export default async function UserRankingPage() {
         ]}
       />
       <div className="h-20"></div>
-      <TableAndSearchUserRanking data={mock} />
+      <TableAndSearchUserRanking data={userRanking} />
     </>
   );
 }

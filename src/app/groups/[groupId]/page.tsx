@@ -1,224 +1,185 @@
-"use client";
-
 import { GroupInfo } from "@/components/group-info";
-import { RankingTable } from "@/components/ranking-table";
-import Image from "next/image";
-import { univUserData, Column } from "@/types";
-import { capitalize } from "@/utils/capitalize";
-import { calcWinRate } from "@/utils/calc-winrate";
-import { univUserRanking } from "@/mock/univUserRanking";
 import { univGroupInfo } from "@/mock/groupInfoData";
-import GroupTableHeader from "@/components/group-table-header";
-import { useMemo, useState } from "react";
-import { calcRankScore } from "@/utils/calc-rank-score";
-import { useParams } from "next/navigation";
-import type { OptionMetaOf, OptionValueOf } from "@/types";
 import Link from "next/link";
 import CheckPopup from "@/components/check-popup";
 import { Switch } from "@/components/ui/switch";
+import { tier } from "@/types";
 
-export default function Page() {
-  // ✅ 동기 접근 (클라이언트에서만 사용)
-  const { univName: raw } = useParams<{ univName: string }>();
-  const univName = decodeURIComponent(String(raw ?? ""));
+import { fetchFromAPI } from "@/utils/fetcher";
+import GroupTable from "@/components/group-table";
 
-  const sortOptions = [
-    { value: "rank", label: "랭크순", meta: { type: "number" } },
-    { value: "winrate", label: "승률순", meta: { type: "number" } },
-  ] as const;
+import { mockGroupDetail } from "@/mock/groupDetail";
 
-  type SortValue = OptionValueOf<typeof sortOptions>;
-  type SortMeta = OptionMetaOf<typeof sortOptions>;
+/* 그룹 상세 정보 */
+export type GroupDetail = {
+  groupId: number;
+  name: string;
+  about: string;
+  logoImageUrl: string;
+  avgTierInfo: {
+    tier: tier;
+    rank: string;
+    lp: number;
+    mappedTier: number;
+  };
+  competitionInfo: {
+    winCount: number;
+    lossCount: number;
+    winRate: number;
+  };
+  capacity: number;
+  memberCnt: number;
+  leader: {
+    id: number;
+    summonerName: string;
+    summonerTag?: string;
+    summonerIcon: number;
+  };
+  createdAt: string;
+  isJoined: boolean;
+  isLeader: boolean;
+};
 
-  const [sortKey, setSortKey] = useState<SortValue>("rank");
-  const [query, setQuery] = useState("");
+/* 최근 대항전 정보 */
+export type RecentCompetition = {
+  groupId: number;
+  groupName: string;
+  isWin: boolean;
+};
 
-  // ✅ 원본 리스트
-  const baseData = useMemo<univUserData[]>(
-    () =>
-      Array.isArray(univUserRanking) ? (univUserRanking as univUserData[]) : [],
-    []
-  );
+const mockRecentCompetitionData: RecentCompetition[] = [
+  {
+    groupId: 1,
+    groupName: "string",
+    isWin: true,
+  },
+  {
+    groupId: 2,
+    groupName: "string",
+    isWin: true,
+  },
+  {
+    groupId: 12,
+    groupName: "string",
+    isWin: false,
+  },
+];
 
-  // ✅ 검색 필터
-  const filteredData = useMemo<univUserData[]>(() => {
-    if (!query) return baseData;
-    const q = query.toLowerCase();
-    return baseData.filter((row) => {
-      const name = (row.user?.userName ?? "").toLowerCase();
-      const tag = (row.user?.userTag ?? "").toLowerCase();
-      const univ = (row.univName ?? "").toLowerCase();
-      return name.includes(q) || tag.includes(q) || univ.includes(q);
-    });
-  }, [baseData, query]);
+/* 그룹 멤버 정보 */
+export type GroupMember = {
+  summonerName: string;
+  summonerTag: string;
+  summonerIconId: number;
+  major: string;
+  admissionYear: number;
+  mainPosition: string;
+  subPosition: string;
+  tierInfo: {
+    tier: string;
+    rank: string;
+    lp: number;
+    mappedTier: number;
+  };
+  recordInfo: {
+    winCount: number;
+    lossCount: number;
+    winRate: number;
+  };
+};
 
-  // ✅ 정렬
-  const sortedData = useMemo<univUserData[]>(() => {
-    const num = (x: unknown) => (typeof x === "number" ? x : 0);
-    const getWinRate = (row: univUserData) =>
-      calcWinRate(row.record?.win ?? 0, row.record?.cnt ?? 0);
-    const getRankScore = (row: univUserData) =>
-      calcRankScore(row.tier?.rank, row.tier?.lp, row.tier?.tier);
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ groupId: string }>;
+}) {
+  const { groupId } = await params;
 
-    const out = [...filteredData].sort((a, b) => {
-      let diff = 0;
-      if (sortKey === "rank") diff = getRankScore(b) - getRankScore(a);
-      else if (sortKey === "winrate") diff = getWinRate(b) - getWinRate(a);
-      else diff = num((b as any)[sortKey]) - num((a as any)[sortKey]);
+  /* const groupDetailData = mockGroupDetail; */
+  let groupDetailData: GroupDetail;
 
-      if (diff !== 0) return diff;
-      const nameDiff = (a.user.userName ?? "").localeCompare(
-        b.user.userName ?? ""
-      );
-      if (nameDiff !== 0) return nameDiff;
-      return (a.univName ?? "").localeCompare(b.univName ?? "");
-    });
-    return out;
-  }, [filteredData, sortKey]);
-  const columns: Column<univUserData>[] = [
-    {
-      id: "user",
-      header: "유저명",
-      headerClassName: "w-[20%]",
-      cell: (row) => (
-        <Link href={`/user/${row.puuid}`}>
-          <div className="flex items-center gap-2">
-            <Image
-              src={`https://ddragon.leagueoflegends.com/cdn/15.17.1/img/champion/${row.user.icon}.png`}
-              alt={row.user.icon}
-              width={30}
-              height={30}
-            />
-            <span>{row.user.userName}</span>
-            <span>{row.user.userTag}</span>
-          </div>
-        </Link>
-      ),
-    },
-    {
-      id: "major",
-      header: "전공",
-      headerClassName: "w-[18%]",
-      cell: (row) => (
-        <div className="flex flex-col">
-          <span>{row.major.major}</span>
-          <span>{row.major.admissionYear}학번</span>
-        </div>
-      ),
-    },
-    {
-      id: "position",
-      header: "라인",
-      headerClassName: "w-[10%]",
-      cell: (row) => (
-        <div className="flex items-center gap-2">
-          <Image
-            src={`https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-static-assets/global/default/svg/position-${row.position.main}.svg`}
-            alt={row.position.main}
-            width={24}
-            height={24}
-          />
-          <Image
-            src={`https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-static-assets/global/default/svg/position-${row.position.sub}.svg`}
-            alt={row.position.sub}
-            width={24}
-            height={24}
-          />
-        </div>
-      ),
-    },
-    {
-      id: "tier",
-      header: "티어",
-      headerClassName: "w-[14%]",
-      cell: (row) => (
-        <div className="flex items-center gap-2">
-          <Image
-            src={`https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-static-assets/global/default/ranked-mini-crests/${row.tier.rank}.svg`}
-            alt={row.tier.rank}
-            width={30}
-            height={30}
-          />
-          <div>
-            <div className="flex">
-              <span>{capitalize(row.tier.rank)}</span>
-              <span className="w-1" />
-              <span>{row.tier.tier}</span>
-            </div>
-            <span>{row.tier.lp}</span>
-          </div>
-        </div>
-      ),
-    },
-    {
-      id: "winRate",
-      header: "승률",
-      headerClassName: "w-[30%]",
-      cell: (row) => {
-        const win = row.record.win;
-        const cnt = row.record.cnt;
-        const pct = calcWinRate(win, cnt);
+  try {
+    const res = await fetchFromAPI(`/groups/${groupId}`);
 
-        return (
-          <div className="flex items-center gap-2 w-full">
-            <div className="relative flex-1 w-[160px] h-[30px] border-[#323036] rounded-[4px] bg-[#110D17] overflow-hidden">
-              <div
-                className="h-full bg-[#FF567980]"
-                style={{ width: `${pct}%` }}
-              />
-              <span className="absolute left-2 top-1/2 -translate-y-1/2 text-xs text-white font-medium">
-                {win}승
-              </span>
-              <span className="absolute right-2 top-1/2 -translate-y-1/2 text-xs text-white font-medium">
-                {cnt - win}패
-              </span>
-            </div>
-            <span className="ml-3 text-sm text-white">{pct}%</span>
-          </div>
-        );
+    groupDetailData = res as GroupDetail;
+  } catch (err) {
+    console.error("데이터를 불러오지 못했습니다:", err);
+    groupDetailData = {
+      groupId: 0,
+      name: "string",
+      about: "string",
+      logoImageUrl: "Ezreal",
+      avgTierInfo: {
+        tier: "UNRANKED" as tier,
+        rank: "1",
+        lp: 0,
+        mappedTier: 0,
       },
-    },
-  ];
+      competitionInfo: {
+        winCount: 0,
+        lossCount: 0,
+        winRate: 0,
+      },
+      capacity: 0,
+      memberCnt: 0,
+      leader: {
+        id: 0,
+        summonerName: "string",
+        summonerTag: "string",
+        summonerIcon: 0,
+      },
+      createdAt: "string",
+      isJoined: true,
+      isLeader: true,
+    }; //fallback
+  }
 
   return (
     <>
-      <div className="flex justify-between items-center mb-12">
-        <div className="flex text-[14px]">
-          <Link
-            href={`recruits/${univGroupInfo.group.id}`}
-            className="flex items-center justify-center border border-[#323036] w-[120px] h-[44px] text-[#B1ACC1] rounded bg-[#25242A33] text-center mr-2"
-          >
-            모집 게시글 보기
-          </Link>
-          <Link
-            href={`${"1"}/invite`}
-            className="flex items-center justify-center border border-[#323036] w-[120px] h-[44px] text-[#B1ACC1] rounded bg-[#25242A33] text-center mr-2"
-          >
-            그룹원 초대
-          </Link>
-          <Link
-            href={`${"1"}/edit`}
-            className="flex items-center justify-center border border-[#323036] w-[120px] h-[44px] text-[#B1ACC1] rounded bg-[#25242A33] text-center"
-          >
-            그룹원 관리
-          </Link>
-        </div>
+      {/* 🔹 그룹 리더일 때만 버튼들 + 스위치 + 팝업 표시 */}
+      {groupDetailData.isLeader && (
+        <>
+          {/* 상단 버튼들 */}
+          <div className="flex justify-between items-center mb-12">
+            <div className="flex text-[14px]">
+              <Link
+                href={`recruits/${univGroupInfo.group.id}`}
+                className="flex items-center justify-center border border-[#323036] w-[120px] h-[44px] text-[#B1ACC1] rounded bg-[#25242A33] text-center mr-2"
+              >
+                모집 게시글 보기
+              </Link>
+              <Link
+                href={`${groupDetailData.groupId}/invite`}
+                className="flex items-center justify-center border border-[#323036] w-[120px] h-[44px] text-[#B1ACC1] rounded bg-[#25242A33] text-center mr-2"
+              >
+                그룹원 초대
+              </Link>
+              <Link
+                href={`${groupDetailData.groupId}/edit`}
+                className="flex items-center justify-center border border-[#323036] w-[120px] h-[44px] text-[#B1ACC1] rounded bg-[#25242A33] text-center"
+              >
+                그룹원 관리
+              </Link>
+            </div>
 
-        <div className="flex">
-          <span className="text-white text-xs mr-2">그룹원 모집</span>
-          <Switch />
-        </div>
-      </div>
-      <CheckPopup />
+            {/* 그룹원 모집 스위치 */}
+            <div className="flex">
+              <span className="text-white text-xs mr-2">그룹원 모집</span>
+              <Switch />
+            </div>
+          </div>
+          <CheckPopup />
+        </>
+      )}
 
       <div className="mt-5"></div>
 
-      <GroupInfo group={univGroupInfo} />
+      <GroupInfo
+        groupDetailData={groupDetailData}
+        recentCompetitionData={mockRecentCompetitionData}
+      />
+
       <div className="h-4"></div>
-      <div className="table container">
-        <GroupTableHeader memberCnt={univUserRanking.length} groupId="1" />
-        <RankingTable data={sortedData} columns={columns} />
-      </div>
+      <GroupTable groupDetailData={groupDetailData} />
     </>
   );
 }
