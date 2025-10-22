@@ -117,7 +117,9 @@ export default function TableAndSearchUserRanking({
               </span>
             </div>
             {/* % */}
-            <span className="ml-3 text-sm text-white">{row.winRate}%</span>
+            <span className="ml-3 text-sm text-white">
+              {Math.floor(row.winRate)}%
+            </span>
           </div>
         );
       },

@@ -1,84 +1,17 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import { useParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 
-import { RankingTable } from "@/components/ranking-table";
-import SubHeaderUnivRanking from "@/components/sub-header-univ-ranking";
-import SearchAndFilter from "@/components/search-box";
+/* import { RankingTable } from "@/components/ranking-table"; */
+
 import { capitalize } from "@/utils/capitalize";
 
-import type {
-  univUserData,
-  Column,
-  OptionMetaOf,
-  OptionValueOf,
-} from "@/types";
-import { univUserRanking } from "@/mock/univUserRanking";
+import type { univUserData, Column } from "@/types";
+
 import { calcWinRate } from "@/utils/calc-winrate";
-import { calcRankScore } from "@/utils/calc-rank-score";
 
 export default function Page() {
-  // ✅ 동기 접근 (클라이언트에서만 사용)
-  const { univName: raw } = useParams<{ univName: string }>();
-  const univName = decodeURIComponent(String(raw ?? ""));
-
-  const sortOptions = [
-    { value: "rank", label: "랭크순", meta: { type: "number" } },
-    { value: "winrate", label: "승률순", meta: { type: "number" } },
-  ] as const;
-
-  type SortValue = OptionValueOf<typeof sortOptions>;
-  type SortMeta = OptionMetaOf<typeof sortOptions>;
-
-  const [sortKey, setSortKey] = useState<SortValue>("rank");
-  const [query, setQuery] = useState("");
-
-  // ✅ 원본 리스트
-  const baseData = useMemo<univUserData[]>(
-    () =>
-      Array.isArray(univUserRanking) ? (univUserRanking as univUserData[]) : [],
-    []
-  );
-
-  // ✅ 검색 필터
-  const filteredData = useMemo<univUserData[]>(() => {
-    if (!query) return baseData;
-    const q = query.toLowerCase();
-    return baseData.filter((row) => {
-      const name = (row.user?.userName ?? "").toLowerCase();
-      const tag = (row.user?.userTag ?? "").toLowerCase();
-      const univ = (row.univName ?? "").toLowerCase();
-      return name.includes(q) || tag.includes(q) || univ.includes(q);
-    });
-  }, [baseData, query]);
-
-  // ✅ 정렬
-  const sortedData = useMemo<univUserData[]>(() => {
-    const num = (x: unknown) => (typeof x === "number" ? x : 0);
-    const getWinRate = (row: univUserData) =>
-      calcWinRate(row.record?.win ?? 0, row.record?.cnt ?? 0);
-    const getRankScore = (row: univUserData) =>
-      calcRankScore(row.tier?.rank, row.tier?.lp, row.tier?.tier);
-
-    const out = [...filteredData].sort((a, b) => {
-      let diff = 0;
-      if (sortKey === "rank") diff = getRankScore(b) - getRankScore(a);
-      else if (sortKey === "winrate") diff = getWinRate(b) - getWinRate(a);
-      else diff = num((b as any)[sortKey]) - num((a as any)[sortKey]);
-
-      if (diff !== 0) return diff;
-      const nameDiff = (a.user.userName ?? "").localeCompare(
-        b.user.userName ?? ""
-      );
-      if (nameDiff !== 0) return nameDiff;
-      return (a.univName ?? "").localeCompare(b.univName ?? "");
-    });
-    return out;
-  }, [filteredData, sortKey]);
-
   const columns: Column<univUserData>[] = [
     {
       id: "user",
@@ -187,7 +120,7 @@ export default function Page() {
   return (
     <>
       {/* 상단 고정 헤더 */}
-      <SubHeaderUnivRanking
+      {/* <SubHeaderUnivRanking
         univName={univName}
         univNameEn="SEOUL NATIONAL UNIVERSITY OF SCIENCE AND TECHNOLOGY"
         logoSrc={`/univ-emblem/${univName}.png`}
@@ -196,10 +129,10 @@ export default function Page() {
           { label: "유저 랭킹", href: `/rankings/univ/${univName}/users` },
         ]}
         headerHeight={260}
-      />
+      /> */}
 
       <div className=" mx-auto px-6">
-        <SearchAndFilter<SortValue, SortMeta>
+        {/*  <SearchAndFilter<SortValue, SortMeta>
           onSearch={setQuery}
           filterProps={{
             value: sortKey,
@@ -209,7 +142,7 @@ export default function Page() {
           }}
         />
 
-        <RankingTable key={sortKey} data={sortedData} columns={columns} />
+        <RankingTable key={sortKey} data={sortedData} columns={columns} /> */}
       </div>
     </>
   );

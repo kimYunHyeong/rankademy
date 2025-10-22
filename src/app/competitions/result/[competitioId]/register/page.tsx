@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 /** 이미지 업로드 컴포넌트 */
-export function GroupImageUpload({
+function GroupImageUpload({
   onChange,
   initialPreviewUrl,
   accept = "image/*",

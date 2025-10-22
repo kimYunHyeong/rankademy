@@ -1,23 +1,63 @@
+// src/utils/fetcher.ts
 import { API_BASE_URL } from "@/lib/api";
+import { cookies } from "next/headers";
 
-export async function fetchFromAPI(endpoint: string, options?: RequestInit) {
-  const token =
-    "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJob25naGN5MDFAZ21haWwuY29tIiwiaWQiOjE2LCJzdW1tb25lck5hbWUiOiLtmY3ssKzsmIFfR09PR0xFIiwiaXNBdXRob3JpemVkIjpmYWxzZSwicm9sZSI6IlJPTEVfVVNFUiIsImlhdCI6MTc2MTA0OTczMiwiZXhwIjoxNzYxMTM2MTMyfQ.x8JmYziRJiJaFmWglDLlpRgzRo3_0x_VwuXjM_joaYU";
+/**
+ * 서버 전용 fetcher
+ * - 쿠키에서 accessToken을 읽어서 Authorization 헤더 자동 추가
+ * - 요청/응답 콘솔 출력 포함
+ */
+export async function fetchFromAPI<T = unknown>(endpoint: string): Promise<T> {
+  // ✅ 쿠키에서 accessToken 읽기
+  const cookieStore = cookies();
+  const accessToken = cookieStore.get("accessToken")?.value;
 
-  const res = await fetch(`${API_BASE_URL}${endpoint}`, {
-    ...options,
-    headers: {
-      ...(options?.headers || {}),
-      Authorization: `Bearer ${token}`,
-    },
+  const headers: Record<string, string> = {
+    Accept: "application/json",
+  };
+
+  if (accessToken) {
+    headers["Authorization"] = accessToken.startsWith("Bearer ")
+      ? accessToken
+      : `Bearer ${accessToken}`;
+  }
+
+  // ✅ URL 생성
+  const url = endpoint.startsWith("http")
+    ? endpoint
+    : `${API_BASE_URL}${endpoint}`;
+
+  // ✅ 요청 로그 출력
+  console.log("📤 [API Request]");
+  console.log("URL:", url);
+  console.log("Headers:", headers);
+
+  const res = await fetch(url, {
+    headers,
+    cache: "no-store", // SSR 시 최신 데이터 보장
+    credentials: "include", // 쿠키 포함
   });
 
-  if (!res.ok) throw new Error(`API Error: ${res.status}`);
+  // ✅ 응답 로그 출력
+  console.log("📥 [API Response]");
+  console.log("Status:", res.status, res.statusText);
 
-  // 응답 복제해서 로그 출력
   const cloned = res.clone();
-  const data = await cloned.json();
-  console.log("✅ API Response:", data);
+  let bodyText = "";
+  try {
+    bodyText = await cloned.text();
+    console.log("Response Body:", bodyText);
+  } catch (e) {
+    console.warn("⚠️ 응답 본문을 읽을 수 없음:", e);
+  }
 
-  return res.json();
+  if (!res.ok) {
+    throw new Error(`API Error: ${res.status} - ${bodyText.slice(0, 300)}`);
+  }
+
+  try {
+    return JSON.parse(bodyText) as T;
+  } catch {
+    return bodyText as unknown as T;
+  }
 }

@@ -60,7 +60,7 @@ export type ApiResponse = {
   competitions: competition[];
 };
 
-export function CompetitionTable({ data }: { data: ApiResponse }) {
+export default function CompetitionTable({ data }: { data: ApiResponse }) {
   const competitions = data.competitions;
   const [openIds, setOpenIds] = React.useState<Set<string>>(new Set());
   const toggleRow = (id: string) =>

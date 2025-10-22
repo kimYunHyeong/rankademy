@@ -1,4 +1,4 @@
-import { CompetitionTable } from "@/components/competition-table";
+import CompetitionTable from "@/components/competition-table";
 import { ApiResponse } from "@/components/competition-table";
 
 const mock = {
@@ -15,35 +15,35 @@ const mock = {
         teamMembers: [
           {
             memberId: 1,
-            position: "top",
+            position: "TOP",
             summonerName: "myTeamLeader",
             summonerTag: "KR1",
             summonerIcon: "Kaisa",
           },
           {
             memberId: 4,
-            position: "jungle",
+            position: "JUNGLE",
             summonerName: "myTeammember0",
             summonerTag: "KR1",
             summonerIcon: "Kaisa",
           },
           {
             memberId: 5,
-            position: "middle",
+            position: "MIDDLE",
             summonerName: "myTeammember1",
             summonerTag: "KR1",
             summonerIcon: "Kaisa",
           },
           {
             memberId: 6,
-            position: "bottom",
+            position: "BOTTOM",
             summonerName: "myTeammember2",
             summonerTag: "KR1",
             summonerIcon: "Kaisa",
           },
           {
             memberId: 7,
-            position: "utility",
+            position: "UTILITY",
             summonerName: "myTeammember3",
             summonerTag: "KR1",
             summonerIcon: "Kaisa",
@@ -58,35 +58,35 @@ const mock = {
         teamMembers: [
           {
             memberId: 2,
-            position: "top",
+            position: "TOP",
             summonerName: "otherTeamLeader",
             summonerTag: "KR1",
             summonerIcon: "Kaisa",
           },
           {
             memberId: 8,
-            position: "jungle",
+            position: "JUNGLE",
             summonerName: "otherTeammember0",
             summonerTag: "KR1",
             summonerIcon: "Kaisa",
           },
           {
             memberId: 9,
-            position: "middle",
+            position: "MIDDLE",
             summonerName: "otherTeammember1",
             summonerTag: "KR1",
             summonerIcon: "Kaisa",
           },
           {
             memberId: 10,
-            position: "bottom",
+            position: "BOTTOM",
             summonerName: "otherTeammember2",
             summonerTag: "KR1",
             summonerIcon: "Kaisa",
           },
           {
             memberId: 11,
-            position: "utility",
+            position: "UTILITY",
             summonerName: "otherTeammember3",
             summonerTag: "KR1",
             summonerIcon: "Kaisa",
@@ -129,35 +129,35 @@ const mock = {
         teamMembers: [
           {
             memberId: 1,
-            position: "top",
+            position: "TOP",
             summonerName: "myTeamLeader",
             summonerTag: "KR1",
             summonerIcon: "Kaisa",
           },
           {
             memberId: 4,
-            position: "jungle",
+            position: "JUNGLE",
             summonerName: "myTeammember0",
             summonerTag: "KR1",
             summonerIcon: "Kaisa",
           },
           {
             memberId: 5,
-            position: "middle",
+            position: "MIDDLE",
             summonerName: "myTeammember1",
             summonerTag: "KR1",
             summonerIcon: "Kaisa",
           },
           {
             memberId: 6,
-            position: "bottom",
+            position: "BOTTOM",
             summonerName: "myTeammember2",
             summonerTag: "KR1",
             summonerIcon: "Kaisa",
           },
           {
             memberId: 7,
-            position: "utility",
+            position: "UTILITY",
             summonerName: "myTeammember3",
             summonerTag: "KR1",
             summonerIcon: "Kaisa",
@@ -172,35 +172,35 @@ const mock = {
         teamMembers: [
           {
             memberId: 2,
-            position: "top",
+            position: "TOP",
             summonerName: "otherTeamLeader",
             summonerTag: "KR1",
             summonerIcon: "Kaisa",
           },
           {
             memberId: 8,
-            position: "jungle",
+            position: "JUNGLE",
             summonerName: "otherTeammember0",
             summonerTag: "KR1",
             summonerIcon: "Kaisa",
           },
           {
             memberId: 9,
-            position: "middle",
+            position: "MIDDLE",
             summonerName: "otherTeammember1",
             summonerTag: "KR1",
             summonerIcon: "Kaisa",
           },
           {
             memberId: 10,
-            position: "bottom",
+            position: "BOTTOM",
             summonerName: "otherTeammember2",
             summonerTag: "KR1",
             summonerIcon: "Kaisa",
           },
           {
             memberId: 11,
-            position: "utility",
+            position: "UTILITY",
             summonerName: "otherTeammember3",
             summonerTag: "KR1",
             summonerIcon: "Kaisa",

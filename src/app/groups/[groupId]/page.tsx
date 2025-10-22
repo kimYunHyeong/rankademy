@@ -1,4 +1,4 @@
-import { GroupInfo } from "@/components/group-info";
+import GroupInfo from "@/components/group-info";
 import { univGroupInfo } from "@/mock/groupInfoData";
 import Link from "next/link";
 import CheckPopup from "@/components/check-popup";
@@ -172,11 +172,11 @@ export default async function Page({
       )}
 
       <div className="mt-5"></div>
-
+      {/* 
       <GroupInfo
         groupDetailData={groupDetailData}
         recentCompetitionData={mockRecentCompetitionData}
-      />
+      /> */}
 
       <div className="h-4"></div>
       <GroupTable groupDetailData={groupDetailData} />

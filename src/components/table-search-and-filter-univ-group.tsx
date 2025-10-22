@@ -180,9 +180,11 @@ export default function TableSearchAndFilterUnivGroup({
           onChange={handleFilterChange}
         />
         <SearchBox
+          queryKey="univNameKey"
           width={300}
-          placeholder="그룹/그룹장 검색"
-          onChange={setQuery}
+          placeholder="학교 이름"
+          syncToUrl
+          onSubmit={() => {}}
         />
       </div>
 

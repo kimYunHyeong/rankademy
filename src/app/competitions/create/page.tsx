@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Filter } from "@/components/search-box";
+/* import { Filter } from "@/components/search-box"; */
 import { summonerDTO } from "@/types";
 
 const mockSummoners: summonerDTO[] = [
@@ -57,7 +57,7 @@ type Props = {
   placeholder?: string;
 };
 
-export function TeamRegisterInput({ positionIcon, placeholder }: Props) {
+function TeamRegisterInput({ positionIcon, placeholder }: Props) {
   const [input, setInput] = useState("");
   const [selected, setSelected] = useState<summonerDTO | null>(null);
 
@@ -145,7 +145,7 @@ export default function Page() {
           {/* 소속 그룹 */}
           <div className="flex flex-col mb-5">
             <span className="text-white text-sm mb-2">소속 그룹</span>
-            <Filter options={filterData} />
+            {/*       <Filter options={filterData} /> */}
           </div>
 
           {/* 팀원 등록 */}

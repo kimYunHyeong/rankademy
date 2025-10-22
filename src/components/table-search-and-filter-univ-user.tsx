@@ -197,9 +197,14 @@ export default function TableSearchAndFilterUnivUser({
           value={filter}
           onChange={handleFilterChange}
         />
-        <SearchBox width={300} placeholder="유저 이름" onChange={setQuery} />
+        <SearchBox
+          queryKey="univNameKey"
+          width={300}
+          placeholder="학교 이름"
+          syncToUrl
+          onSubmit={() => {}}
+        />
       </div>
-
       {/* 테이블 (data는 서버에서 필터링되어 내려옴, q만 클라에서 추가 필터링) */}
       <RankingTable data={filteredData} columns={columns} />
     </div>

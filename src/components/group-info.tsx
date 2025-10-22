@@ -54,7 +54,7 @@ export default function WinRateDonut({
   );
 }
 
-export function GroupInfo({
+function GroupInfo({
   groupDetailData,
   recentCompetitionData,
 }: {

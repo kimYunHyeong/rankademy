@@ -24,16 +24,24 @@ export type userRanking = {
   subPosition: string;
 };
 
+type page = {
+  size: number;
+  number: number;
+  totalElements: number;
+  totalPages: number;
+};
+
 type ApiRes = {
   content: userRanking[];
-  page: string;
+  page: page;
 };
+
+const mock: userRanking[] = mockUserRanking;
 
 export default async function UserRankingPage() {
   const res = (await fetchFromAPI("/rankings/users")) as ApiRes;
   const userRanking = res.content as userRanking[];
-
-  const mock: userRanking[] = mockUserRanking;
+  const page = res.page as page;
 
   return (
     <>

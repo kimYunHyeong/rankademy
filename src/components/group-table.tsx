@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { RankingTable } from "@/components/ranking-table";
+/* import { RankingTable } from "@/components/ranking-table"; */
 import type { Column } from "@/types";
 import { SUMMONER_ICON_URL, TIER_IMG_URL } from "@/lib/api";
 import { capitalize } from "@/utils/capitalize";
@@ -130,7 +130,7 @@ export default function GroupTable({
         isJoined={groupDetailData.isJoined}
         isLeader={groupDetailData.isLeader}
       />
-      <RankingTable data={mockGroupMembers} columns={columns} />
+      {/*       <RankingTable data={mockGroupMembers} columns={columns} /> */}
     </div>
   );
 }

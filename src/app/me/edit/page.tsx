@@ -57,7 +57,7 @@ function PositionSquare({ value }: { value?: Position }) {
   );
 }
 
-export function PositionPicker({
+function PositionPicker({
   value,
   onChange,
 }: {

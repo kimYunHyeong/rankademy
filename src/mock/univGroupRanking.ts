@@ -1,4 +1,4 @@
-import { univGruopRanking } from "@/app/rankings/univ/[univName]/groups/page";
+import { univGroupRanking } from "@/app/rankings/univ/[univName]/groups/page";
 
 export const mockUnivGroupRanking = [
   {
@@ -257,4 +257,4 @@ export const mockUnivGroupRanking = [
       summonerIcon: 96,
     },
   },
-] satisfies univGruopRanking[];
+] satisfies univGroupRanking[];
