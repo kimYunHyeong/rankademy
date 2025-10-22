@@ -15,13 +15,13 @@ export default function InviteMember() {
           <span className="text-sm text-[#B1ACC1] mb-4">
             소환사의 이름을 검색하여 그룹원 초대를 보내 보세요
           </span>
-          <SearchBox
-            queryKey="univNameKey"
-            width={300}
-            placeholder="학교 이름"
-            syncToUrl
-            onSubmit={() => {}}
-          />
+          <div className=" w-full flex justify-end">
+            <SearchBox
+              width={300}
+              placeholder="학교 이름"
+              onChange={setQuery}
+            />
+          </div>
         </div>
 
         <button

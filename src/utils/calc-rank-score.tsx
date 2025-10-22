@@ -46,7 +46,11 @@ function normalizeDivision(tier?: unknown): string | undefined {
  * @param lp   ex) 0 ~ 999
  * @param tier ex) "I" | "II" | "III" | "IV" | 1 | 2 | 3 | 4 | undefined
  */
-function calcRankScore(rank?: unknown, lp?: unknown, tier?: unknown): number {
+export function calcRankScore(
+  rank?: unknown,
+  lp?: unknown,
+  tier?: unknown
+): number {
   const rkey = normalizeRank(rank);
   const base = rkey ? RANK_BASE[rkey] ?? 0 : 0;
 

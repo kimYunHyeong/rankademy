@@ -179,13 +179,13 @@ export default function TableSearchAndFilterUnivGroup({
           value={filter}
           onChange={handleFilterChange}
         />
-        <SearchBox
+        {/*         <SearchBox
           queryKey="univNameKey"
           width={300}
           placeholder="학교 이름"
           syncToUrl
           onSubmit={() => {}}
-        />
+        /> */}
       </div>
 
       {/* 테이블: 검색(q) 반영 위해 filteredData 사용 */}

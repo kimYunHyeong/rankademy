@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo, useState } from "react";
 import { RankingTable } from "@/components/ranking-table";
 import type { Column } from "@/types";
 import Image from "next/image";
@@ -9,6 +10,17 @@ import SearchBox from "@/components/search-box";
 import { univRanking } from "../app/page";
 
 export default function TableAndSearchMain({ data }: { data: univRanking[] }) {
+  /* 검색 설정 */
+  const [q, setQuery] = useState("");
+
+  /* 검색된 데이터 */
+  const filteredData = useMemo(() => {
+    if (!q) return data;
+    const s = q.toLowerCase();
+    return data.filter((r) => (r.univName ?? "").toLowerCase().includes(s));
+  }, [data, q]);
+
+  /* 표 데이터 */
   const columns: Column<univRanking>[] = [
     {
       id: "univ",
@@ -73,17 +85,11 @@ export default function TableAndSearchMain({ data }: { data: univRanking[] }) {
 
   return (
     <div className="flex flex-col space-y-4 w-full">
-      <div className="w-full flex justify-end">
-        <SearchBox
-          queryKey="univNameKey"
-          width={300}
-          placeholder="학교 이름"
-          syncToUrl
-          onSubmit={() => {}}
-        />
+      <div className=" w-full flex justify-end">
+        <SearchBox width={300} placeholder="학교 이름" onChange={setQuery} />
       </div>
 
-      <RankingTable data={data} columns={columns} />
+      <RankingTable data={filteredData} columns={columns} />
     </div>
   );
 }

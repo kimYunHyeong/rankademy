@@ -16,10 +16,19 @@ export type univRanking = {
   };
 };
 
+type APIres = {
+  content: string;
+};
+
 const mock: univRanking[] = mockUnivRanking;
 
 export default async function Home() {
-  const res = (await fetchFromAPI("/rankings/univ")) as univRanking[];
+  const res = (await fetchFromAPI(
+    "/rankings/univ" /* , {
+    userNameKey: "안녕",
+  } */
+  )) as univRanking[];
+
   /*   const data = res.content; */
 
   return (

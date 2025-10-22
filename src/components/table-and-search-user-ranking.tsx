@@ -129,13 +129,7 @@ export default function TableAndSearchUserRanking({
   return (
     <div className="flex flex-col space-y-4 w-full">
       <div className="w-full flex justify-end">
-        <SearchBox
-          queryKey="userNameKey"
-          width={300}
-          placeholder="학교 이름"
-          syncToUrl
-          onSubmit={() => {}}
-        />
+        {/*  <SearchBox width={300} placeholder="학교 이름" onChange={setQuery} /> */}
       </div>
 
       <RankingTable data={data} columns={columns} />
