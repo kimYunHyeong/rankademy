@@ -1,20 +1,30 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import { RankingTable } from "@/components/ranking-table";
-import type { Column } from "@/types";
+import { useState } from "react";
+import RankingTable from "@/components/ranking-table";
+import type { Column, paginationData, Query } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
-import { POSITION_IMG_URL, SUMMONER_ICON_URL, TIER_IMG_URL } from "@/lib/api";
+import { SUMMONER_ICON_URL } from "@/lib/api";
 import SearchBox from "@/components/search-box";
-import { userRanking } from "@/app/rankings/page";
+import { userRanking } from "../page";
+import PaginationComponent from "@/components/pagination";
+import { POSITION_IMG_URL, TIER_IMG_URL } from "@/lib/api";
 import { capitalize } from "@/utils/capitalize";
 
-export default function TableAndSearchUserRanking({
-  data,
+export default function UserRankingSection({
+  tableData,
+  apiurl,
+  pageData,
 }: {
-  data: userRanking[];
+  tableData: userRanking[];
+  apiurl: string;
+  pageData: paginationData;
 }) {
+  const [pageState, setPageData] = useState<paginationData>(pageData);
+
+  const [query, setQuery] = useState<Query>({ page: 0, univNameKey: "" });
+
   /* 테이블 데이터 */
   const columns: Column<userRanking>[] = [
     {
@@ -125,14 +135,39 @@ export default function TableAndSearchUserRanking({
       },
     },
   ];
-
   return (
     <div className="flex flex-col space-y-4 w-full">
+      {/* 검색창 */}
       <div className="w-full flex justify-end">
-        {/*  <SearchBox width={300} placeholder="학교 이름" onChange={setQuery} /> */}
+        <SearchBox
+          placeholder="학교 이름으로 검색"
+          onSubmit={(value) => {
+            setQuery((prev) => ({
+              ...prev,
+              userNameKey: value || undefined,
+            }));
+          }}
+        />
       </div>
 
-      {/*   <RankingTable data={data} columns={columns} /> */}
+      {/* 랭킹 테이블 query 변경 시  재요청 */}
+      <RankingTable
+        apiurl={apiurl}
+        query={query}
+        data={tableData}
+        columns={columns}
+        pageSize={pageData.size}
+      />
+
+      {/* 페이지네이션 */}
+      <PaginationComponent
+        pageData={pageState}
+        onPageChange={(qs) => {
+          const p = Number((qs.split("=").pop() || "1").trim());
+          if (!Number.isFinite(p) || p < 1) return;
+          setQuery((prev) => ({ ...prev, page: p }));
+        }}
+      />
     </div>
   );
 }

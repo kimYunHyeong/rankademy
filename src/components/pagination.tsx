@@ -9,10 +9,10 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import { pageData } from "@/types";
+import { paginationData } from "@/types";
 
 type Props = {
-  pageData: pageData; // number: 0-based 가정
+  pageData: paginationData; // number: 0-based 가정
   onPageChange?: (queryString: string) => void; // "page=0" 형식
 };
 

@@ -8,7 +8,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import Filter, { FilterOptions, FilterValue } from "@/components/filter";
 import SearchBox from "@/components/search-box";
-import { RankingTable } from "@/components/ranking-table";
+import RankingTable from "@/components/ranking-table";
 import type { Column } from "@/types";
 
 import { CHAMPION_IMG_URL, SUMMONER_ICON_URL, TIER_IMG_URL } from "@/lib/api";

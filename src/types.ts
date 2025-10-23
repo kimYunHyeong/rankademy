@@ -18,7 +18,7 @@ export type tier =
   | "CHALLENGER";
 
 /* 페이지네이션 데이터 */
-export type pageData = {
+export type paginationData = {
   size: number;
   number: number; //쿼리로 몇 번째 페이지를 요청했는지
   totalElements: number;
@@ -46,6 +46,10 @@ export type Column<T> = {
   cell?: (row: T, rowIndex: number) => React.ReactNode; //row.icon 등과 같이 셀을 불러올 때 사용
   accessorKey?: keyof T; //단순 키 접근용 (cell이 없을 때 사용)
 };
+
+/* 쿼리값 변경 */
+export type QueryValue = string | number | boolean | null | undefined;
+export type Query = Record<string, QueryValue>;
 
 /* ---------------------대학 정보------------------------------- */
 export interface UnivData {

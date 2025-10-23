@@ -5,14 +5,10 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { RankingTableProps } from "@/types";
 import { serverFetchFromAPI } from "@/utils/fetcher.server";
-
-type QueryValue = string | number | boolean | undefined | null;
-type Query = Record<string, QueryValue>;
+import { Query } from "@/types";
 
 type Props<T> = RankingTableProps<T> & {
-  /** 요청 보낼 백엔드 엔드포인트 (예: "/rankings/univ") */
   apiurl: string;
-  /** 쿼리 오브젝트 (예: { page: 5, major: "EE" }) */
   query?: Query;
   /** (선택) 새 데이터 도착 시 상위에 전달 */
   onData?: (rows: T[], raw: any) => void;
@@ -32,7 +28,6 @@ function extractRows<T>(res: any): T[] {
 export default function RankingTable<T>({
   data,
   columns,
-  pageSize,
   apiurl,
   query,
 }: Props<T>) {

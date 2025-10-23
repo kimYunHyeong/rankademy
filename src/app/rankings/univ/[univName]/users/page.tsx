@@ -1,6 +1,6 @@
 import SubHeaderUnivRanking from "@/components/sub-header-univ-ranking";
 import TableSearchAndFilterUnivUser from "@/components/table-search-and-filter-univ-user";
-import { fetchFromAPI } from "@/utils/fetcher";
+import { serverFetchFromAPI } from "@/utils/fetcher.server";
 import type { position, tier } from "@/types";
 
 const mockOptions = {
@@ -66,7 +66,7 @@ export default async function UnivUserRankingPage({
   let data: univUserRanking[] = [];
   try {
     // ⚠️ API 경로에는 "인코딩된" 세그먼트를 쓰는 게 안전합니다.
-    const res = await fetchFromAPI(
+    const res = await serverFetchFromAPI(
       `/rankings/univ/${univName}?${queryParams.toString()}`
     );
     data = (res ?? []) as univUserRanking[];

@@ -1,8 +1,17 @@
-import type { tier } from "@/types";
+import UserRankingSection from "./_components/userRankingSection";
 import SubHeaderMain from "@/components/sub-header-main";
-import TableAndSearchUserRanking from "@/components/table-and-search-user-ranking";
+import { serverFetchFromAPI } from "@/utils/fetcher.server";
+import { paginationData } from "@/types";
+import { tier } from "@/types";
+
+/* 목데이터 */
+
 import { mockUserRanking } from "@/mock/userRanking";
-import { fetchFromAPI } from "@/utils/fetcher";
+
+const mock: userRanking[] = mockUserRanking;
+
+/* API URL */
+const apiUrl = "/rankings/users";
 
 export type userRanking = {
   userId: number;
@@ -24,24 +33,16 @@ export type userRanking = {
   subPosition: string;
 };
 
-type page = {
-  size: number;
-  number: number;
-  totalElements: number;
-  totalPages: number;
-};
-
-type ApiRes = {
+type APIres = {
   content: userRanking[];
-  page: page;
+  page: paginationData;
 };
-
-const mock: userRanking[] = mockUserRanking;
 
 export default async function UserRankingPage() {
-  const res = (await fetchFromAPI("/rankings/users")) as ApiRes;
-  const userRanking = res.content as userRanking[];
-  const page = res.page as page;
+  const res = (await serverFetchFromAPI(apiUrl)) as APIres;
+
+  const tableData = res.content;
+  const pageData = res.page;
 
   return (
     <>
@@ -52,7 +53,11 @@ export default async function UserRankingPage() {
         ]}
       />
       <div className="h-20"></div>
-      <TableAndSearchUserRanking data={userRanking} />
+      <UserRankingSection
+        tableData={tableData}
+        apiurl={apiUrl}
+        pageData={pageData}
+      />
     </>
   );
 }

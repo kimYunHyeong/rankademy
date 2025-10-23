@@ -5,7 +5,7 @@ import CheckPopup from "@/components/check-popup";
 import { Switch } from "@/components/ui/switch";
 import { tier } from "@/types";
 
-import { fetchFromAPI } from "@/utils/fetcher";
+import { serverFetchFromAPI } from "@/utils/fetcher.server";
 import GroupTable from "@/components/group-table";
 
 import { mockGroupDetail } from "@/mock/groupDetail";
@@ -98,7 +98,7 @@ export default async function Page({
   let groupDetailData: GroupDetail;
 
   try {
-    const res = await fetchFromAPI(`/groups/${groupId}`);
+    const res = await serverFetchFromAPI(`/groups/${groupId}`);
 
     groupDetailData = res as GroupDetail;
   } catch (err) {

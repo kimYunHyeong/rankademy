@@ -2,16 +2,13 @@
 
 import { useState } from "react";
 import RankingTable from "@/components/ranking-table";
-import type { Column, pageData } from "@/types";
+import type { Column, paginationData, Query } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
 import { SUMMONER_ICON_URL } from "@/lib/api";
 import SearchBox from "@/components/search-box";
 import { univRanking } from "../app/page";
 import PaginationComponent from "@/components/pagination";
-
-type QueryValue = string | number | boolean | null | undefined;
-type Query = Record<string, QueryValue>;
 
 export default function UnivRankingSection({
   tableData,
@@ -20,10 +17,9 @@ export default function UnivRankingSection({
 }: {
   tableData: univRanking[];
   apiurl: string;
-  pageData: pageData;
+  pageData: paginationData;
 }) {
-  const [tableState, setTableData] = useState<univRanking[]>(tableData);
-  const [pageState, setPageData] = useState<pageData>(pageData);
+  const [pageState, setPageData] = useState<paginationData>(pageData);
 
   const [query, setQuery] = useState<Query>({ page: 0, univNameKey: "" });
 
@@ -91,7 +87,7 @@ export default function UnivRankingSection({
 
   return (
     <div className="flex flex-col space-y-4 w-full">
-      {/* 🔍 검색창 */}
+      {/* 검색창 */}
       <div className="w-full flex justify-end">
         <SearchBox
           placeholder="학교 이름으로 검색"
@@ -104,7 +100,7 @@ export default function UnivRankingSection({
         />
       </div>
 
-      {/* 🏫 랭킹 테이블 (query 변경 시 내부에서 자동 재요청) */}
+      {/* 랭킹 테이블 query 변경 시  재요청 */}
       <RankingTable
         apiurl={apiurl}
         query={query}
@@ -113,7 +109,7 @@ export default function UnivRankingSection({
         pageSize={pageData.size}
       />
 
-      {/* 📄 페이지네이션 */}
+      {/* 페이지네이션 */}
       <PaginationComponent
         pageData={pageState}
         onPageChange={(qs) => {
