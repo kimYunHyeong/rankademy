@@ -1,7 +1,14 @@
+import UnivRankingSection from "@/_components/univRankingSection";
 import SubHeaderMain from "@/components/sub-header-main";
+import { serverFetchFromAPI } from "@/utils/fetcher.server";
+import { pageData } from "@/types";
+
+/* 목데이터 */
 import mockUnivRanking from "@/mock/univRanking.json";
-import { fetchFromAPI } from "@/utils/fetcher";
-import TableAndSearchMain from "@/components/table-and-search-main";
+const mock: univRanking[] = mockUnivRanking;
+
+/* API URL */
+const apiUrl = "/rankings/univ";
 
 export type univRanking = {
   univName: string;
@@ -17,19 +24,15 @@ export type univRanking = {
 };
 
 type APIres = {
-  content: string;
+  content: univRanking[];
+  page: pageData;
 };
 
-const mock: univRanking[] = mockUnivRanking;
-
 export default async function Home() {
-  const res = (await fetchFromAPI(
-    "/rankings/univ" /* , {
-    userNameKey: "안녕",
-  } */
-  )) as univRanking[];
+  const res = (await serverFetchFromAPI("/rankings/univ")) as APIres;
 
-  /*   const data = res.content; */
+  const tableData = res.content;
+  const pageData = res.page;
 
   return (
     <>
@@ -40,7 +43,11 @@ export default async function Home() {
         ]}
       />
       <div className="h-20"></div>
-      <TableAndSearchMain data={res} />
+      <UnivRankingSection
+        tableData={tableData}
+        apiurl={apiUrl}
+        pageData={pageData}
+      />
     </>
   );
 }

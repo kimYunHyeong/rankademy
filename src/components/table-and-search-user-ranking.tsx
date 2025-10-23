@@ -132,7 +132,7 @@ export default function TableAndSearchUserRanking({
         {/*  <SearchBox width={300} placeholder="학교 이름" onChange={setQuery} /> */}
       </div>
 
-      <RankingTable data={data} columns={columns} />
+      {/*   <RankingTable data={data} columns={columns} /> */}
     </div>
   );
 }

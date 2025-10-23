@@ -48,9 +48,9 @@ export async function fetchFromAPI<T = unknown>(
     });
   }
 
-  console.log("📤 [API Request]");
+  /*   console.log("📤 [API Request]");
   console.log("URL:", url.toString());
-  console.log("Headers:", headers);
+  console.log("Headers:", headers); */
 
   const res = await fetch(url.toString(), {
     headers,
@@ -65,7 +65,7 @@ export async function fetchFromAPI<T = unknown>(
   let bodyText = "";
   try {
     bodyText = await cloned.text();
-    /* console.log("Response Body:", bodyText); */
+    console.log("Response Body:", bodyText);
   } catch (e) {
     /* console.warn("⚠️ 응답 본문을 읽을 수 없음:", e); */
   }

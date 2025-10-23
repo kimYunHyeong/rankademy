@@ -2,34 +2,84 @@
 
 import React from "react";
 import { usePathname } from "next/navigation";
-import { RankingTableProps } from "@/types";
 import Link from "next/link";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
+import { RankingTableProps } from "@/types";
+import { serverFetchFromAPI } from "@/utils/fetcher.server";
 
-export function RankingTable<T>({ data, columns }: RankingTableProps<T>) {
-  // 편집 페이지 감지 (/groups/[groupId]/edit/* 포함)
+type QueryValue = string | number | boolean | undefined | null;
+type Query = Record<string, QueryValue>;
+
+type Props<T> = RankingTableProps<T> & {
+  /** 요청 보낼 백엔드 엔드포인트 (예: "/rankings/univ") */
+  apiurl: string;
+  /** 쿼리 오브젝트 (예: { page: 5, major: "EE" }) */
+  query?: Query;
+  /** (선택) 새 데이터 도착 시 상위에 전달 */
+  onData?: (rows: T[], raw: any) => void;
+  /** (선택) 로딩 상태 전달 */
+  onLoadingChange?: (loading: boolean) => void;
+};
+
+function extractRows<T>(res: any): T[] {
+  if (Array.isArray(res)) return res as T[];
+  if (Array.isArray(res?.content)) return res.content as T[];
+  if (Array.isArray(res?.data)) return res.data as T[];
+  if (Array.isArray(res?.items)) return res.items as T[];
+  if (Array.isArray(res?.list)) return res.list as T[];
+  return [];
+}
+
+export default function RankingTable<T>({
+  data,
+  columns,
+  pageSize,
+  apiurl,
+  query,
+}: Props<T>) {
   const pathname = usePathname();
   const isEditPage = /\/groups\/[^/]+\/edit(?:\/.*)?$/.test(pathname ?? "");
 
-  // ✅ 페이지네이션 상태
-  const pageSize = 15;
-  const [page, setPage] = React.useState(1);
+  // ✅ 내부 표시용 데이터 상태 (초기값은 props.data)
+  const [rows, setRows] = React.useState<T[]>(() => data ?? []);
+  const [loading, setLoading] = React.useState(false);
+  const [error, setError] = React.useState<unknown>(null);
 
-  const total = data.length;
-  const totalPages = Math.max(1, Math.ceil(total / pageSize));
-  const start = (page - 1) * pageSize;
-  const end = Math.min(start + pageSize, total);
-  const pageData = data.slice(start, end);
+  // ✅ query / apiurl 변경 시마다 재요청
+  React.useEffect(() => {
+    let alive = true;
+
+    const run = async () => {
+      setLoading(true);
+
+      setError(null);
+      try {
+        const res = await serverFetchFromAPI(apiurl, { query });
+        const nextRows = extractRows<T>(res);
+        if (!alive) return;
+        setRows(nextRows);
+      } catch (e) {
+        if (!alive) return;
+        setError(e);
+        console.error("RankingTable fetch failed:", e);
+      }
+    };
+
+    run();
+    return () => {
+      alive = false;
+    };
+  }, [apiurl, JSON.stringify(query)]); // ⚠️ query 변경 감지
 
   return (
-    <div className="w-full min-h-screen">
+    <div className="w-full">
+      {/* 로딩/에러 간단 처리 (원하면 커스텀 UI로 교체) */}
+      {/*       {loading && (
+        <div className="mb-2 text-xs text-[#B1ACC1]">불러오는 중…</div>
+      )}
+      {error && (
+        <div className="mb-2 text-xs text-red-400">데이터 로드 실패</div>
+      )} */}
+
       {/* 가로 스크롤 보호 래퍼 */}
       <div className="w-full overflow-x-auto">
         <table className="w-full table-fixed border-separate border-spacing-y-1">
@@ -52,8 +102,9 @@ export function RankingTable<T>({ data, columns }: RankingTableProps<T>) {
 
           {/* 바디 */}
           <tbody className="text-xs divide-y divide-[#2E223F]">
-            {pageData.map((row, i) => {
-              const rank = start + i + 1;
+            {rows.map((row, i) => {
+              // 기존 계산 로직 유지: pageSize를 오프셋처럼 사용
+              const rank = i + 1;
               return (
                 <tr
                   key={rank}
@@ -69,7 +120,7 @@ export function RankingTable<T>({ data, columns }: RankingTableProps<T>) {
                     {isEditPage && (
                       <div
                         className="
-                        border border-[#FF567980] rounded
+                          border border-[#FF567980] rounded
                           absolute inset-0 z-10
                           opacity-0 group-hover:opacity-100 transition-opacity
                           pointer-events-none
@@ -85,15 +136,9 @@ export function RankingTable<T>({ data, columns }: RankingTableProps<T>) {
                         {/* 중앙 버튼 */}
                         <div className="absolute inset-0 flex items-center justify-center">
                           <Link href={`delete`}>
-                            {" "}
                             <button
                               onClick={() => console.log("추방하시겠습니까")}
-                              className="
-                              pointer-events-auto
-                              text-white 
-                              px-4 py-2 font-medium
-                              shadow-sm
-                            "
+                              className="pointer-events-auto text-white px-4 py-2 font-medium shadow-sm"
                             >
                               추방하기
                             </button>
@@ -132,65 +177,6 @@ export function RankingTable<T>({ data, columns }: RankingTableProps<T>) {
             })}
           </tbody>
         </table>
-      </div>
-
-      <div className="my-4" />
-
-      {/* 페이지네이션 */}
-      <div className="w-full mt-4">
-        <Pagination className="w-full">
-          <PaginationContent className="flex w-full justify-between items-center">
-            {/* 이전 */}
-            <div>
-              <PaginationItem>
-                <PaginationPrevious
-                  onClick={() => setPage((p) => Math.max(1, p - 1))}
-                  className={`rounded-sm w-[28px] h-[28px] px-3 py-1 text-sm font-medium transition-colors
-                    border border-[#323036] text-[#B1ACC1]
-                    hover:bg-[#FF5679] hover:text-[#110D17] hover:border-none
-                    ${page === 1 ? "pointer-events-none opacity-50" : ""}`}
-                />
-              </PaginationItem>
-            </div>
-
-            {/* 페이지 숫자 */}
-            <div className="flex gap-2">
-              {Array.from({ length: totalPages }).map((_, i) => (
-                <PaginationItem key={i}>
-                  <PaginationLink
-                    isActive={page === i + 1}
-                    onClick={() => setPage(i + 1)}
-                    className={`w-[28px] h-[28px] rounded-sm px-3 py-1 text-sm font-medium transition-colors
-                      ${
-                        page === i + 1
-                          ? "bg-[#FF5679] text-[#110D17] border-none"
-                          : "border border-[#323036] text-[#B1ACC1] hover:bg-[#FF5679] hover:text-[#110D17] hover:border-none"
-                      }`}
-                  >
-                    {i + 1}
-                  </PaginationLink>
-                </PaginationItem>
-              ))}
-            </div>
-
-            {/* 다음 */}
-            <div>
-              <PaginationItem>
-                <PaginationNext
-                  onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
-                  className={`rounded-sm w-[28px] h-[28px] px-3 py-1 text-sm font-medium transition-colors
-                    border border-[#323036] text-[#B1ACC1]
-                    hover:bg-[#FF5679] hover:text-[#110D17] hover:border-none
-                    ${
-                      page === totalPages
-                        ? "pointer-events-none opacity-50"
-                        : ""
-                    }`}
-                />
-              </PaginationItem>
-            </div>
-          </PaginationContent>
-        </Pagination>
       </div>
     </div>
   );

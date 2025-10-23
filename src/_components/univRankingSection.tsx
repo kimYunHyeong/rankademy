@@ -1,26 +1,32 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import { RankingTable } from "@/components/ranking-table";
-import type { Column } from "@/types";
+import { useState } from "react";
+import RankingTable from "@/components/ranking-table";
+import type { Column, pageData } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
 import { SUMMONER_ICON_URL } from "@/lib/api";
 import SearchBox from "@/components/search-box";
 import { univRanking } from "../app/page";
+import PaginationComponent from "@/components/pagination";
 
-export default function TableAndSearchMain({ data }: { data: univRanking[] }) {
-  /* 검색 설정 */
-  const [q, setQuery] = useState("");
+type QueryValue = string | number | boolean | null | undefined;
+type Query = Record<string, QueryValue>;
 
-  /* 검색된 데이터 */
-  const filteredData = useMemo(() => {
-    if (!q) return data;
-    const s = q.toLowerCase();
-    return data.filter((r) => (r.univName ?? "").toLowerCase().includes(s));
-  }, [data, q]);
+export default function UnivRankingSection({
+  tableData,
+  apiurl,
+  pageData,
+}: {
+  tableData: univRanking[];
+  apiurl: string;
+  pageData: pageData;
+}) {
+  const [tableState, setTableData] = useState<univRanking[]>(tableData);
+  const [pageState, setPageData] = useState<pageData>(pageData);
 
-  /* 표 데이터 */
+  const [query, setQuery] = useState<Query>({ page: 0, univNameKey: "" });
+
   const columns: Column<univRanking>[] = [
     {
       id: "univ",
@@ -85,11 +91,37 @@ export default function TableAndSearchMain({ data }: { data: univRanking[] }) {
 
   return (
     <div className="flex flex-col space-y-4 w-full">
-      <div className=" w-full flex justify-end">
-        <SearchBox width={300} placeholder="학교 이름" onChange={setQuery} />
+      {/* 🔍 검색창 */}
+      <div className="w-full flex justify-end">
+        <SearchBox
+          placeholder="학교 이름으로 검색"
+          onSubmit={(value) => {
+            setQuery((prev) => ({
+              ...prev,
+              univNameKey: value || undefined,
+            }));
+          }}
+        />
       </div>
 
-      <RankingTable data={filteredData} columns={columns} />
+      {/* 🏫 랭킹 테이블 (query 변경 시 내부에서 자동 재요청) */}
+      <RankingTable
+        apiurl={apiurl}
+        query={query}
+        data={tableData}
+        columns={columns}
+        pageSize={pageData.size}
+      />
+
+      {/* 📄 페이지네이션 */}
+      <PaginationComponent
+        pageData={pageState}
+        onPageChange={(qs) => {
+          const p = Number((qs.split("=").pop() || "1").trim());
+          if (!Number.isFinite(p) || p < 1) return;
+          setQuery((prev) => ({ ...prev, page: p }));
+        }}
+      />
     </div>
   );
 }

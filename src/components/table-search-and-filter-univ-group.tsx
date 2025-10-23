@@ -189,7 +189,7 @@ export default function TableSearchAndFilterUnivGroup({
       </div>
 
       {/* 테이블: 검색(q) 반영 위해 filteredData 사용 */}
-      <RankingTable data={filteredData} columns={columns} />
+      {/*  <RankingTable data={filteredData} columns={columns} /> */}
     </div>
   );
 }
