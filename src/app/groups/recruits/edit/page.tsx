@@ -112,7 +112,7 @@ export default function Page() {
     }, 0);
   };
 
-  const onFilesSelected: React.ChangeEventHandler<HTMLInputElement> = async (
+  /*  const onFilesSelected: React.ChangeEventHandler<HTMLInputElement> = async (
     e
   ) => {
     const files = Array.from(e.target.files ?? []);
@@ -123,16 +123,16 @@ export default function Page() {
       setForm((prev) => ({ ...prev, images: [...prev.images, dataUrl] }));
     }
     e.currentTarget.value = ""; // 같은 파일 재선택 허용
-  };
+  }; */
 
-  const fileToDataURL = (file: File) =>
+  /* const fileToDataURL = (file: File) =>
     new Promise<string>((resolve, reject) => {
       const reader = new FileReader();
       reader.onload = () => resolve(String(reader.result));
       reader.onerror = reject;
       reader.readAsDataURL(file);
     });
-
+ */
   const onSubmit = () => {
     if (!form.groupId) {
       alert("그룹을 선택해주세요.");
@@ -217,14 +217,14 @@ export default function Page() {
                 className="rounded object-contain"
               />
             </Toggle>
-            <input
+            {/* <input
               ref={fileInputRef}
               type="file"
               accept="image/*"
               multiple
               hidden
               onChange={onFilesSelected}
-            />
+            /> */}
 
             {/* Bold */}
             <Toggle

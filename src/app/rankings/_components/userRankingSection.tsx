@@ -140,7 +140,7 @@ export default function UserRankingSection({
       {/* 검색창 */}
       <div className="w-full flex justify-end">
         <SearchBox
-          placeholder="학교 이름으로 검색"
+          placeholder="유저 이름"
           onSubmit={(value) => {
             setQuery((prev) => ({
               ...prev,

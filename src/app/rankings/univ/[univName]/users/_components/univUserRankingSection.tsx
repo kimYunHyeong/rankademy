@@ -1,92 +1,56 @@
-// components/table-search-and-filter-univ-user.tsx
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useState } from "react";
+import RankingTable from "@/components/ranking-table";
+import type { Column, paginationData, Query } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-
-import Filter, { FilterOptions, FilterValue } from "@/components/filter";
-import SearchBox from "@/components/search-box";
-import RankingTable from "@/components/ranking-table";
-import type { Column } from "@/types";
 import { POSITION_IMG_URL, SUMMONER_ICON_URL, TIER_IMG_URL } from "@/lib/api";
+import SearchBox from "@/components/search-box";
+import { univUserRanking } from "../page";
+import PaginationComponent from "@/components/pagination";
 import { capitalize } from "@/utils/capitalize";
+import Filter from "@/components/filter";
+import { FilterValue } from "@/components/filter";
 
-// 프로젝트 타입에 맞춰 import
-import { univUserRanking } from "@/app/rankings/univ/[univName]/users/page";
+const mockOptions = {
+  major: [
+    { label: "컴퓨터공학과", value: "컴퓨터공학과" },
+    { label: "전자공학과", value: "전자공학과" },
+  ],
+};
 
-export default function TableSearchAndFilterUnivUser({
-  data,
-  options,
+export default function UnivUserRankingSection({
+  tableData,
+  apiurl,
+  pageData,
+  univName,
 }: {
-  data: univUserRanking[];
-  options: FilterOptions;
+  tableData: univUserRanking[];
+  apiurl: string;
+  pageData: paginationData;
+  univName: string;
 }) {
-  const router = useRouter();
-  const pathname = usePathname();
-  const sp = useSearchParams();
+  /* 필터 */
+  const [filters, setFilters] = useState<FilterValue>({
+    major: "",
+    admissionYear: "",
+    mainPosition: "",
+  });
 
-  // URL 현재 쿼리를 초기값으로 사용(새로고침/딥링크 대응)
-  const initial: FilterValue = {
-    major: sp.get("major") ?? "",
-    admissionYear: sp.get("admissionYear") ?? "",
-    mainPosition: sp.get("mainPosition") ?? "",
-  };
+  /* 페이지네이션 */
+  const [pageState, setPageData] = useState<paginationData>(pageData);
 
-  // 1) 필터 상태 (UI 표시용)
-  const [filter, setFilter] = useState<FilterValue>(initial);
+  const [query, setQuery] = useState<Query>({
+    page: 0,
+    univName: univName,
+    groupNameKey: "",
+    major: "",
+    admissionYear: "",
+    mainPosition: "",
+  });
 
-  // 2) 검색 상태(q는 서버로 보내지 않고 클라에서만 사용)
-  const [q, setQuery] = useState("");
-
-  // URL 쿼리 업데이트 헬퍼(빈 문자열은 삭제)
-  const pushFilterToUrl = (
-    next: FilterValue,
-    opts?: { resetPage?: boolean }
-  ) => {
-    const params = new URLSearchParams(sp.toString());
-
-    const setOrDel = (key: string, val: string) => {
-      const v = (val ?? "").trim();
-      if (v) params.set(key, v);
-      else params.delete(key);
-    };
-
-    setOrDel("major", next.major ?? "");
-    setOrDel("admissionYear", next.admissionYear ?? "");
-    setOrDel("mainPosition", next.mainPosition ?? "");
-
-    // 필터 바뀌면 페이지 0으로 (페이지 쿼리를 쓰는 경우에만)
-    if (opts?.resetPage !== false) {
-      params.set("page", "0");
-    }
-
-    // 검색어(q)는 서버로 보내지 않으므로 여기서 만지지 않음
-    router.push(`${pathname}?${params.toString()}`, { scroll: false });
-  };
-
-  // Filter 컴포넌트에서 변경 시: 상태 업데이트 + URL 반영
-  const handleFilterChange = (next: FilterValue) => {
-    setFilter(next);
-    pushFilterToUrl(next, { resetPage: true });
-  };
-
-  // 3) 검색만 클라이언트에서 적용
-  const filteredData = useMemo(() => {
-    const s = q.trim().toLowerCase();
-    if (!s) return data;
-
-    return data.filter((r) => {
-      const nameOnly = (r.summonerName ?? "").toLowerCase();
-      const nameWithTag = `${r.summonerName ?? ""}#${
-        r.summonerTag ?? ""
-      }`.toLowerCase();
-      return nameOnly.includes(s) || nameWithTag.includes(s);
-    });
-  }, [data, q]);
-
-  /* 테이블 데이터 */
+  /* 테이블 컬럼 */
   const columns: Column<univUserRanking>[] = [
     {
       id: "user",
@@ -182,7 +146,9 @@ export default function TableSearchAndFilterUnivUser({
               {row.lossCount}패
             </span>
           </div>
-          <span className="ml-3 text-sm text-white">{row.winRate}%</span>
+          <span className="ml-3 text-sm text-white">
+            {Math.floor(row.winRate)}%
+          </span>
         </div>
       ),
     },
@@ -193,20 +159,47 @@ export default function TableSearchAndFilterUnivUser({
       {/* 필터 바 | 검색 박스 */}
       <div className="w-full flex justify-between">
         <Filter
-          options={options}
-          value={filter}
-          onChange={handleFilterChange}
+          options={mockOptions}
+          value={filters}
+          onChange={(v) => {
+            setFilters(v);
+            setQuery((prev) => ({
+              ...prev,
+              major: v.major,
+              admissionYear: v.admissionYear,
+              mainPosition: v.mainPosition,
+            }));
+          }}
         />
-        {/*         <SearchBox
-          queryKey="univNameKey"
-          width={300}
-          placeholder="학교 이름"
-          syncToUrl
-          onSubmit={() => {}}
-        /> */}
+        <SearchBox
+          placeholder="유저 이름"
+          onSubmit={(value) => {
+            setQuery((prev) => ({
+              ...prev,
+              userNameKey: value || undefined,
+            }));
+          }}
+        />
       </div>
-      {/* 테이블 (data는 서버에서 필터링되어 내려옴, q만 클라에서 추가 필터링) */}
-      {/* <RankingTable data={filteredData} columns={columns} /> */}
+
+      {/* 랭킹 테이블 query 변경 시 재요청 */}
+      <RankingTable
+        apiurl={apiurl}
+        query={query}
+        data={tableData}
+        columns={columns}
+        pageSize={pageData.size}
+      />
+
+      {/* 페이지네이션 */}
+      <PaginationComponent
+        pageData={pageState}
+        onPageChange={(qs) => {
+          const p = Number((qs.split("=").pop() || "1").trim());
+          if (!Number.isFinite(p) || p < 1) return;
+          setQuery((prev) => ({ ...prev, page: p }));
+        }}
+      />
     </div>
   );
 }

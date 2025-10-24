@@ -90,7 +90,7 @@ export default function UnivRankingSection({
       {/* 검색창 */}
       <div className="w-full flex justify-end">
         <SearchBox
-          placeholder="학교 이름으로 검색"
+          placeholder="학교 이름"
           onSubmit={(value) => {
             setQuery((prev) => ({
               ...prev,
@@ -100,7 +100,7 @@ export default function UnivRankingSection({
         />
       </div>
 
-      {/* 랭킹 테이블 query 변경 시  재요청 */}
+      {/* 랭킹 테이블 query 변경 시 재요청 */}
       <RankingTable
         apiurl={apiurl}
         query={query}

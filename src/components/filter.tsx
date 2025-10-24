@@ -9,14 +9,11 @@ import {
   SelectItem,
 } from "@/components/ui/select";
 import Image from "next/image";
+import { X } from "lucide-react";
 import { POSITION_IMG_URL } from "@/lib/api";
 
 export type FilterOption = { label: string; value: string };
-
-export type FilterOptions = {
-  major: FilterOption[];
-};
-
+export type FilterOptions = { major: FilterOption[] };
 export type FilterValue = {
   major: string;
   admissionYear: string;
@@ -27,7 +24,7 @@ const ADMISSION_YEAR_OPTIONS: FilterOption[] = Array.from(
   { length: 2025 - 1979 + 1 },
   (_, i) => {
     const year = 1979 + i;
-    const shortYear = String(year).slice(2); // 예: '1979' -> '79'
+    const shortYear = String(year).slice(2);
     return { label: `${shortYear}학번`, value: shortYear };
   }
 ).reverse();
@@ -54,92 +51,81 @@ export default function Filter({
   return (
     <div className="flex items-center gap-3 flex-wrap">
       {/* 전공 */}
-      <Select value={value.major} onValueChange={(v) => set({ major: v })}>
-        <SelectTrigger className="w-[190px] bg-[#1D1921] border-[#323036] text-white rounded">
-          <SelectValue placeholder="전공" />
-        </SelectTrigger>
-
-        <SelectContent className="w-[190px] bg-[#1D1921] border-[#323036] text-white rounded">
-          <SelectItem
-            key={"all"}
-            value={" "}
-            className="hover:bg-[#24192F] focus:bg-[#24192F] text-[#323036] focus:text-white "
-          >
-            {"전공"}
-          </SelectItem>
-          {options.major.map((o) => (
-            <SelectItem
-              key={o.value}
-              value={o.value}
-              className="hover:bg-[#24192F] focus:bg-[#24192F] focus:text-white"
-            >
-              {o.label}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
+      <div className="flex items-center">
+        <Select
+          value={value.major || undefined}
+          onValueChange={(v) => set({ major: v })}
+        >
+          <SelectTrigger className="w-[190px] bg-[#1D1921] border-[#323036] text-white rounded">
+            <SelectValue placeholder="전공" />
+          </SelectTrigger>
+          <SelectContent className="w-[190px] bg-[#1D1921] border-[#323036] text-white rounded">
+            {options.major.map((o) => (
+              <SelectItem
+                key={o.value}
+                value={o.value}
+                className="hover:bg-[#24192F] focus:bg-[#24192F] focus:text-white"
+              >
+                {o.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
 
       {/* 학번 */}
-      <Select
-        value={value.admissionYear}
-        onValueChange={(v) => set({ admissionYear: v })}
-      >
-        <SelectTrigger className="w-[85px] bg-[#1D1921] border-[#323036] text-white rounded">
-          <SelectValue placeholder="학번" />
-        </SelectTrigger>
-        <SelectContent className="w-[85px] bg-[#1D1921] border-[#323036] text-white rounded">
-          <SelectItem
-            key={"all"}
-            value={" "}
-            className="hover:bg-[#24192F] focus:bg-[#24192F] text-[#323036] focus:text-white"
-          >
-            {"학번"}
-          </SelectItem>
-          {ADMISSION_YEAR_OPTIONS.map((o) => (
-            <SelectItem
-              key={o.value}
-              value={o.value}
-              className="hover:bg-[#24192F] focus:bg-[#24192F] focus:text-white"
-            >
-              {o.label}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
+      <div className="flex items-center">
+        <Select
+          value={value.admissionYear || undefined}
+          onValueChange={(v) => set({ admissionYear: v })}
+        >
+          <SelectTrigger className="w-[85px] bg-[#1D1921] border-[#323036] text-white rounded">
+            <SelectValue placeholder="학번" />
+          </SelectTrigger>
+          <SelectContent className="w-[85px] bg-[#1D1921] border-[#323036] text-white rounded">
+            {ADMISSION_YEAR_OPTIONS.map((o) => (
+              <SelectItem
+                key={o.value}
+                value={o.value}
+                className="hover:bg-[#24192F] focus:bg-[#24192F] focus:text-white"
+              >
+                {o.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
 
-      {/* 라인*/}
-      <Select
-        value={value.mainPosition}
-        onValueChange={(v) => set({ mainPosition: v })}
-      >
-        <SelectTrigger className="w-[85px] bg-[#1D1921] border-[#323036]  text-white rounded">
-          <SelectValue placeholder="라인" />
-        </SelectTrigger>
-        <SelectContent className="w-[85px] bg-[#1D1921] border-[#323036] text-white rounded">
-          <SelectItem
-            key={"all"}
-            value={" "}
-            className="hover:bg-[#24192F] focus:bg-[#24192F] text-[#323036] focus:text-white"
-          >
-            {"학번"}
-          </SelectItem>
-          {POSITION_OPTIONS.map((o) => (
-            <SelectItem
-              key={o.value}
-              value={o.value}
-              className=" hover:bg-[#24192F] focus:bg-[#24192F] focus:text-white"
-            >
-              <Image
-                src={`${POSITION_IMG_URL}${o.value.toLocaleLowerCase()}.svg`}
-                alt={o.value.toLocaleLowerCase()}
-                width={16}
-                height={16}
-              />
-              {o.label}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
+      {/* 라인 */}
+      <div className="flex items-center">
+        <Select
+          value={value.mainPosition || undefined}
+          onValueChange={(v) => set({ mainPosition: v })}
+        >
+          <SelectTrigger className="w-[110px] bg-[#1D1921] border-[#323036] text-white rounded">
+            <SelectValue placeholder="라인" />
+          </SelectTrigger>
+          <SelectContent className="w-[110px] bg-[#1D1921] border-[#323036] text-white rounded">
+            {POSITION_OPTIONS.map((o) => (
+              <SelectItem
+                key={o.value}
+                value={o.value}
+                className="hover:bg-[#24192F] focus:bg-[#24192F] focus:text-white gap-2"
+              >
+                <span className="inline-flex items-center gap-2">
+                  <Image
+                    src={`${POSITION_IMG_URL}${o.value.toLowerCase()}.svg`}
+                    alt={o.value.toLowerCase()}
+                    width={16}
+                    height={16}
+                  />
+                  {o.label}
+                </span>
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
     </div>
   );
 }

@@ -1,7 +1,7 @@
 import SubHeaderUnivRanking from "@/components/sub-header-univ-ranking";
-import TableSearchAndFilterUnivUser from "@/components/table-search-and-filter-univ-user";
+import UnivUserRankingSection from "./_components/univUserRankingSection";
 import { serverFetchFromAPI } from "@/utils/fetcher.server";
-import type { position, tier } from "@/types";
+import type { position, tier, paginationData } from "@/types";
 
 const mockOptions = {
   major: [
@@ -26,72 +26,52 @@ export type univUserRanking = {
   major: string;
 };
 
-type Search = {
-  page?: string;
-  major?: string;
-  admissionYear?: string;
-  mainPosition?: string;
+type APIres = {
+  content: univUserRanking[];
+  page: paginationData;
 };
+
+type Params = Promise<{ univName: string }>;
 
 export default async function UnivUserRankingPage({
   params,
-  searchParams,
 }: {
-  params: Promise<{ univName: string }>;
-  searchParams: Promise<Search>;
+  params: Params;
 }) {
   const { univName } = await params;
-  const sp = await searchParams;
+  const requieredQuery = `?univName=${univName}`;
+  const apiUrl = `/rankings/univ/${univName}${requieredQuery}`;
+  const res = (await serverFetchFromAPI(apiUrl)) as APIres;
 
-  const decodedUnivName = decodeURIComponent(univName);
-
-  // 쿼리 파싱
-  const page = Number(sp.page ?? "0") || 0;
-  const major = sp.major ?? "";
-  const admissionYear =
-    sp.admissionYear != null && sp.admissionYear !== ""
-      ? Number(sp.admissionYear)
-      : undefined;
-  const mainPosition = sp.mainPosition ?? "";
-
-  // URLSearchParams 생성
-  const queryParams = new URLSearchParams();
-  queryParams.set("page", String(page));
-  if (major) queryParams.set("major", major);
-  if (admissionYear != null && !Number.isNaN(admissionYear)) {
-    queryParams.set("admissionYear", String(admissionYear));
-  }
-  if (mainPosition) queryParams.set("mainPosition", mainPosition);
-
-  let data: univUserRanking[] = [];
-  try {
-    // ⚠️ API 경로에는 "인코딩된" 세그먼트를 쓰는 게 안전합니다.
-    const res = await serverFetchFromAPI(
-      `/rankings/univ/${univName}?${queryParams.toString()}`
-    );
-    data = (res ?? []) as univUserRanking[];
-  } catch (err) {
-    console.error("데이터를 불러오지 못했습니다:", err);
-    data = [];
-  }
+  const tableData = res.content;
+  const pageData = res.page;
 
   return (
     <>
       {/* 상단 고정 헤더 */}
       <SubHeaderUnivRanking
-        univName={decodedUnivName}
+        univName={decodeURIComponent(univName)}
         univNameEn="SEOUL NATIONAL UNIVERSITY OF SCIENCE AND TECHNOLOGY"
-        logoSrc={`/univ-emblem/${encodeURIComponent(decodedUnivName)}.png`}
+        logoSrc={`/univ-emblem/${decodeURIComponent(univName)}.png`}
         items={[
-          { label: "그룹 랭킹", href: `/rankings/univ/${univName}/groups` },
-          { label: "유저 랭킹", href: `/rankings/univ/${univName}/users` },
+          {
+            label: "그룹 랭킹",
+            href: `/rankings/univ/${univName}/groups`,
+          },
+          {
+            label: "유저 랭킹",
+            href: `/rankings/univ/${univName}/users`,
+          },
         ]}
         headerHeight={260}
       />
 
-      <div className="mx-auto px-6">
-        <TableSearchAndFilterUnivUser data={data} options={mockOptions} />
-      </div>
+      <UnivUserRankingSection
+        tableData={tableData}
+        apiurl={apiUrl}
+        pageData={pageData}
+        univName={univName}
+      />
     </>
   );
 }

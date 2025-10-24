@@ -7,9 +7,6 @@ import { paginationData } from "@/types";
 import mockUnivRanking from "@/mock/univRanking.json";
 const mock: univRanking[] = mockUnivRanking;
 
-/* API URL */
-const apiUrl = "/rankings/univ";
-
 export type univRanking = {
   univName: string;
   totalUserCnt: number;
@@ -29,6 +26,7 @@ type APIres = {
 };
 
 export default async function Home() {
+  const apiUrl = "/rankings/univ";
   const res = (await serverFetchFromAPI(apiUrl)) as APIres;
 
   const tableData = res.content;
