@@ -8,60 +8,76 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
-import { position } from "@/types";
+import { Query } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
+import { POSITION_IMG_URL, SUMMONER_ICON_URL } from "@/lib/api";
+import { serverFetchFromAPI } from "@/utils/fetcher.server";
+import { GroupCompetitionResult } from "@/types";
 
-type memberDTO = {
-  memberId: string | number;
-  position: position;
-  summonerName: string;
-  summonerTag: string;
-  summonerIcon: string;
+/* 테이블에 어떤 내용이 들어갈지 관리, 페이지에서 인자로 넘기는 것 */
+export type CompetitionTableProps = {
+  data: GroupCompetitionResult[];
+  pageSize?: number; // 기본 10
+  initialPage?: number; // 기본 1
+  showCountText?: boolean; // "1–10 / 246건" 같은 표기
+  onPageChange?: (page: number) => void;
+  onData?: (rows: GroupCompetitionResult[], raw: any) => void;
+  onLoadingChange?: (loading: boolean) => void;
+  apiurl: string;
+  query?: Query;
 };
 
-type competition = {
-  competitionId: string | number;
-  otherTeamUnivName: string;
-  status: string;
-  myTeam: {
-    teamId: number;
-    teamName: string;
-    groupName: string;
-    teamMembers: memberDTO[];
-  };
-  otherTeam: {
-    teamId: number;
-    teamName: string;
-    groupName: string;
-    groupIcon: string;
-    teamMembers: memberDTO[];
-  };
-  submittedAt: string;
-  isWin: boolean;
-  setResults: setResults[];
-};
+/* api응답에서 테이블 데이터 추출  */
+function extractRows<T>(res: any): T[] {
+  if (Array.isArray(res)) return res as T[];
+  if (Array.isArray(res?.content)) return res.content as T[];
+  if (Array.isArray(res?.data)) return res.data as T[];
+  return [];
+}
 
-type setResults = {
-  setNumber: number;
-  winnerTeamId: number;
-};
+export default function CompetitionTable({
+  data,
+  apiurl,
+  query,
+  onData,
+  onLoadingChange,
+}: CompetitionTableProps) {
+  // 내부 표시용 데이터 상태 (초기값은 props.data)
+  const [rows, setRows] = React.useState<GroupCompetitionResult[]>(data ?? []);
+  const [loading, setLoading] = React.useState(false);
+  const [error, setError] = React.useState<unknown>(null);
 
-export type ApiResponse = {
-  totalCount: number;
-  competitions: competition[];
-};
+  // query / apiurl 변경 시마다 재요청
+  React.useEffect(() => {
+    let alive = true;
 
-export default function CompetitionTable({ data }: { data: ApiResponse }) {
-  const competitions = data.competitions;
+    const run = async () => {
+      setLoading(true);
+      onLoadingChange?.(true);
+      setError(null);
+      try {
+        const res = await serverFetchFromAPI(apiurl, { query });
+        const nextRows = extractRows(res);
+        if (!alive) return;
+      } catch (e) {
+        if (!alive) return;
+        setError(e);
+        console.error("CompetitionTable fetch failed:", e);
+      } finally {
+        if (!alive) return;
+        setLoading(false);
+        onLoadingChange?.(false);
+      }
+    };
+
+    run();
+    return () => {
+      alive = false;
+    };
+  }, [apiurl, JSON.stringify(query)]);
+
+  /* 클릭 시 상세정보 확인 */
   const [openIds, setOpenIds] = React.useState<Set<string>>(new Set());
   const toggleRow = (id: string) =>
     setOpenIds((prev) => {
@@ -69,17 +85,6 @@ export default function CompetitionTable({ data }: { data: ApiResponse }) {
       next.has(id) ? next.delete(id) : next.add(id);
       return next;
     });
-
-  // ✅ 페이지네이션 상태
-  const pageSize = 15; // 한 페이지에 보여줄 행 수
-  const [page, setPage] = React.useState(1);
-
-  const total = data.competitions.length;
-  const totalPages = Math.max(1, Math.ceil(total / pageSize));
-
-  const start = (page - 1) * pageSize;
-  const end = Math.min(start + pageSize, total);
-  const pageData = data.competitions.slice(start, end);
 
   return (
     <>
@@ -100,7 +105,7 @@ export default function CompetitionTable({ data }: { data: ApiResponse }) {
         </TableHeader>
 
         <TableBody>
-          {pageData.map((row) => {
+          {rows.map((row) => {
             const isOpen = openIds.has(row.competitionId.toString());
             const isWin = row.isWin === true;
             const rowClassName = isWin
@@ -117,19 +122,20 @@ export default function CompetitionTable({ data }: { data: ApiResponse }) {
                     VS
                   </TableCell>
                   <TableCell className=" flex items-center border-none">
-                    <Image
-                      src={`https://ddragon.leagueoflegends.com/cdn/15.17.1/img/champion/${row.otherTeam.groupIcon}.png`}
-                      alt={row.otherTeam.groupIcon}
+                    {/* ⚠️ otherTeam.groupIcon이 타입에 없다면 필드 추가하거나 아래 이미지를 제거하세요 */}
+                    {/* <Image
+                      src={`${CHAMPION_IMG_URL}${row.otherTeam.groupIcon}.png`}
+                      alt={String(row.otherTeam.groupIcon)}
                       width={40}
                       height={40}
-                    />
+                    /> */}
                     <span className="ml-3">{row.otherTeam.groupName}</span>
                   </TableCell>
                   <TableCell className="border-none">
                     {row.otherTeamUnivName}
                   </TableCell>
                   <TableCell className="border-none">
-                    {row.submittedAt.toString()}
+                    {new Date(row.submittedAt).toLocaleString()}
                   </TableCell>
                   <TableCell
                     className={`rounded-r border-none ${
@@ -142,16 +148,15 @@ export default function CompetitionTable({ data }: { data: ApiResponse }) {
 
                 {/* 열었을 때 나오는 아코디언 데이터 */}
                 {isOpen && (
-                  <TableRow className="border-none hover:!bg-transparent transition-none">
+                  <TableRow className="border-none hover:bg-transparent! transition-none">
                     <TableCell
                       colSpan={5}
-                      className="w-full p-0 !bg-transparent "
+                      className="w-full p-0 bg-transparent! "
                     >
                       <div className="rounded bg-[#25242A33] p-4 md:p-6 text-xs h-120 grid grid-rows-[9fr_1fr] overflow-hidden">
-                        <div className="grid  grid-cols-[3fr_4fr_3fr] gap-6 items-start">
+                        <div className="grid  grid-cols-[3fr_4fr_3fr] gap-6 items-stretch min-h-0">
                           {/* 왼쪽: 우리팀 */}
                           <div>
-                            {/* 우리학교 그룹 정보 */}
                             <div className="flex flex-col mb-5">
                               <span className="text-white text-[24px]">
                                 {row.myTeam.teamName}
@@ -168,21 +173,21 @@ export default function CompetitionTable({ data }: { data: ApiResponse }) {
                                   key={member.memberId ?? idx}
                                   className="flex items-center gap-2"
                                 >
-                                  {/* 포지션 아이콘 */}
                                   <Image
-                                    src={`https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-static-assets/global/default/svg/position-${member.position}.svg`}
-                                    alt={member.position}
+                                    src={`${POSITION_IMG_URL}${member.position.toLowerCase()}.svg`}
+                                    alt={String(member.position)}
                                     width={40}
                                     height={40}
+                                    className="mb-3"
                                   />
-                                  {/* 소환사 정보 */}
                                   <Link href={`/user/${member.memberId}`}>
                                     <div className="flex items-center ml-8 mb-3">
                                       <Image
-                                        src={`https://ddragon.leagueoflegends.com/cdn/15.17.1/img/champion/${member.summonerIcon}.png`}
-                                        alt={member.summonerIcon}
+                                        src={`${SUMMONER_ICON_URL}${member.summonerIcon}.png`}
+                                        alt={String(member.summonerIcon)}
                                         width={40}
                                         height={40}
+                                        className="rounded"
                                       />
                                       <span className="ml-2">
                                         {member.summonerName}
@@ -198,9 +203,8 @@ export default function CompetitionTable({ data }: { data: ApiResponse }) {
                           </div>
 
                           {/* 가운데: 승패 정보 */}
-                          <div className="flex flex-col items-center justify-start select-none  px-15">
+                          <div className="flex flex-col h-full self-stretch min-h-0 items-center justify-start select-none px-15">
                             {(() => {
-                              // 안전하게 정렬 + 승수 계산
                               const myId = row.myTeam.teamId;
                               const sets = [...row.setResults].sort(
                                 (a, b) => a.setNumber - b.setNumber
@@ -212,7 +216,6 @@ export default function CompetitionTable({ data }: { data: ApiResponse }) {
 
                               return (
                                 <>
-                                  {/* 총 스코어 */}
                                   <div className="grid grid-cols-[1fr_auto_1fr] items-center w-full mb-6">
                                     <div className="text-[45px] text-[#FF5679] justify-self-start">
                                       {leftWins}
@@ -225,8 +228,7 @@ export default function CompetitionTable({ data }: { data: ApiResponse }) {
                                     </div>
                                   </div>
 
-                                  {/* 게임별 스코어 라인업 */}
-                                  <div className="w-full space-y-4 mt-7">
+                                  <div className="w-full mt-7 flex-1 min-h-0 space-y-4 overflow-y-auto items-center justify-center">
                                     {sets.map((s, i) => {
                                       const leftWin = s.winnerTeamId === myId;
                                       return (
@@ -243,11 +245,9 @@ export default function CompetitionTable({ data }: { data: ApiResponse }) {
                                           >
                                             {leftWin ? "W" : "L"}
                                           </span>
-
                                           <span className="text-[#B1ACC1] justify-self-center">
                                             Game {s.setNumber}
                                           </span>
-
                                           <span
                                             className={`text-2xl tracking-wider justify-self-end ${
                                               leftWin
@@ -268,7 +268,6 @@ export default function CompetitionTable({ data }: { data: ApiResponse }) {
 
                           {/* 오른쪽: 상대팀 */}
                           <div>
-                            {/* 상대 그룹 정보 */}
                             <div className="flex flex-col mb-5">
                               <span className="text-white text-[24px]">
                                 {row.otherTeam.teamName}
@@ -278,7 +277,6 @@ export default function CompetitionTable({ data }: { data: ApiResponse }) {
                               </span>
                             </div>
 
-                            {/* 상대 유저 정보 */}
                             <div className="flex flex-col gap-2">
                               {row.otherTeam.teamMembers.map((member, idx) => (
                                 <div
@@ -286,18 +284,22 @@ export default function CompetitionTable({ data }: { data: ApiResponse }) {
                                   className="flex items-center gap-2"
                                 >
                                   <Image
-                                    src={`https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-static-assets/global/default/svg/position-${member.position}.svg`}
-                                    alt={member.position}
+                                    src={`${POSITION_IMG_URL}${member.position.toLocaleLowerCase()}.svg`}
+                                    alt={String(
+                                      member.position.toLocaleLowerCase()
+                                    )}
                                     width={40}
                                     height={40}
+                                    className="mb-3"
                                   />
                                   <Link href={`/user/${member.memberId}`}>
                                     <div className="flex items-center ml-8 mb-3">
                                       <Image
-                                        src={`https://ddragon.leagueoflegends.com/cdn/15.17.1/img/champion/${member.summonerIcon}.png`}
-                                        alt={member.summonerIcon}
+                                        src={`${SUMMONER_ICON_URL}${member.summonerIcon}.png`}
+                                        alt={String(member.summonerIcon)}
                                         width={40}
                                         height={40}
+                                        className="rounded"
                                       />
                                       <span className="ml-2">
                                         {member.summonerName}
@@ -313,9 +315,8 @@ export default function CompetitionTable({ data }: { data: ApiResponse }) {
                           </div>
                         </div>
 
-                        {/* 아랫부분: 이의신청*/}
                         <Link href="/" passHref>
-                          <div className="flex justify-center items-center text-center border border-[#323036] rounded text-xl bg-[#25242A33] h-13 cursor-pointer">
+                          <div className="flex justify-center items-center text-center border border-[#323036] rounded text-xl bg-[#25242A33] h-11 cursor-pointer">
                             이의신청하기
                           </div>
                         </Link>
@@ -328,59 +329,6 @@ export default function CompetitionTable({ data }: { data: ApiResponse }) {
           })}
         </TableBody>
       </Table>
-
-      {/* 페이지네이션 */}
-      <div className="w-full mt-4">
-        <Pagination className="w-full">
-          <PaginationContent className="flex w-full justify-between items-center">
-            {/* 왼쪽: 이전 버튼 */}
-            <div>
-              <PaginationItem>
-                <PaginationPrevious
-                  onClick={() => setPage((p) => Math.max(1, p - 1))}
-                  className={`rounded-sm w-[28px] h-[28px] px-3 py-1 text-xs font-medium transition-colors
-              border border-[#323036] text-[#B1ACC1]
-              hover:bg-[#FF5679] hover:text-[#110D17] hover:border-none
-              ${page === 1 ? "pointer-events-none opacity-50" : ""}`}
-                />
-              </PaginationItem>
-            </div>
-
-            {/* 가운데: 페이지 숫자 */}
-            <div className="flex gap-2">
-              {Array.from({ length: totalPages }).map((_, i) => (
-                <PaginationItem key={i}>
-                  <PaginationLink
-                    isActive={page === i + 1}
-                    onClick={() => setPage(i + 1)}
-                    className={`w-[28px] h-[28px] rounded-sm px-3 py-1 text-xs font-medium transition-colors
-                ${
-                  page === i + 1
-                    ? "bg-[#FF5679] text-[#110D17] border-none"
-                    : "border border-[#323036] text-[#B1ACC1] hover:bg-[#FF5679] hover:text-[#110D17] hover:border-none"
-                }`}
-                  >
-                    {i + 1}
-                  </PaginationLink>
-                </PaginationItem>
-              ))}
-            </div>
-
-            {/* 오른쪽: 다음 버튼 */}
-            <div>
-              <PaginationItem>
-                <PaginationNext
-                  onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
-                  className={`rounded-sm w-[28px] h-[28px] px-3 py-1 text-xs font-medium transition-colors
-              border border-[#323036] text-[#B1ACC1]
-              hover:bg-[#FF5679] hover:text-[#110D17] hover:border-none
-              ${page === totalPages ? "pointer-events-none opacity-50" : ""}`}
-                />
-              </PaginationItem>
-            </div>
-          </PaginationContent>
-        </Pagination>
-      </div>
     </>
   );
 }

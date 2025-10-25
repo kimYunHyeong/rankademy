@@ -8,12 +8,14 @@ import { SUMMONER_ICON_URL, TIER_IMG_URL } from "@/lib/api";
 import { capitalize } from "@/utils/capitalize";
 import { POSITION_IMG_URL } from "@/lib/api";
 import GroupTableHeader from "./group-table-header";
-import { mockGroupMembers } from "@/mock/groupMember";
 import { GroupMember } from "@/app/groups/[groupId]/page";
 import PaginationComponent from "./pagination";
 import { useState } from "react";
-import { paginationData } from "@/types";
+import { PaginationData } from "@/types";
 import { Query } from "@/types";
+
+/* 목데이터 */
+import { mockGroupMembers } from "@/mock/groupMember";
 
 export default function GroupTable({
   groupId,
@@ -32,10 +34,10 @@ export default function GroupTable({
   capacity: number;
   groupMember: GroupMember[];
   memberApiUrl: string;
-  pageData: paginationData;
+  pageData: PaginationData;
 }) {
   /* 페이지네이션 */
-  const [pageState, setPageData] = useState<paginationData>(pageData);
+  const [pageState, setPageData] = useState<PaginationData>(pageData);
   const [query, setQuery] = useState<Query>({ page: 0, univNameKey: "" });
 
   /* 테이블 데이터 */

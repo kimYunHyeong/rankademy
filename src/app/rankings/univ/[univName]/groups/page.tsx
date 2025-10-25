@@ -1,7 +1,7 @@
 import UnivGroupRankingSection from "./_components/univGroupRankingSection";
 import SubHeaderUnivRanking from "@/components/sub-header-univ-ranking";
 import { serverFetchFromAPI } from "@/utils/fetcher.server";
-import { paginationData, tier } from "@/types";
+import { PaginationData, Tier } from "@/types";
 
 /* 목데이터 */
 import { mockUnivGroupRanking } from "@/mock/univGroupRanking";
@@ -16,7 +16,7 @@ export type univGroupRanking = {
   competitionTotalCnt: number;
   competitionWinCnt: number;
   avgTierInfo: {
-    tier: tier;
+    tier: Tier;
     rank: string;
     lp: number;
     mappedTier: number;
@@ -31,7 +31,7 @@ export type univGroupRanking = {
 
 type APIres = {
   content: univGroupRanking[];
-  page: paginationData;
+  page: PaginationData;
 };
 
 type Params = Promise<{ univName: string }>;

@@ -9,7 +9,7 @@ export default function IDCard({ data }: { data: props }) {
   const pct = calcWinRate(data.record.win, data.record.cnt);
 
   return (
-    <div className="w-[500px] h-[670px] flex justify-center p-6 border-[2px] border-[#323036] rounded-xl bg-[#FF56790D]">
+    <div className="w-[500px] h-[670px] flex justify-center p-6 border-2 border-[#323036] rounded-xl bg-[#FF56790D]">
       <div className="text-white">
         {/* 사진 및 칭호 */}
         <div>
@@ -138,7 +138,7 @@ export default function IDCard({ data }: { data: props }) {
             </div>
 
             <div className="flex items-center gap-2 w-full">
-              <div className="relative flex-1 w-[160px] h-[30px] border-[#323036] rounded-[4px] bg-[#110D17] overflow-hidden">
+              <div className="relative flex-1 w-40 h-[30px] border-[#323036] rounded-lg bg-[#110D17] overflow-hidden">
                 <div
                   className="h-full bg-[#FF567980]"
                   style={{ width: `${pct}%` }}

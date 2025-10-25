@@ -1,8 +1,7 @@
 import UserRankingSection from "./_components/userRankingSection";
 import SubHeaderMain from "@/components/sub-header-main";
 import { serverFetchFromAPI } from "@/utils/fetcher.server";
-import { paginationData } from "@/types";
-import { tier } from "@/types";
+import { Tier, PaginationData } from "@/types";
 
 /* 목데이터 */
 
@@ -21,7 +20,7 @@ export type userRanking = {
   summonerIcon: number;
   univName: string;
   tierInfo: {
-    tier: tier;
+    tier: Tier;
     rank: number;
     lp: number;
     mappedTier: number;
@@ -35,7 +34,7 @@ export type userRanking = {
 
 type APIres = {
   content: userRanking[];
-  page: paginationData;
+  page: PaginationData;
 };
 
 export default async function UserRankingPage() {

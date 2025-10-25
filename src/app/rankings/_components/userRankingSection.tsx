@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import RankingTable from "@/components/ranking-table";
-import type { Column, paginationData, Query } from "@/types";
+import type { Column, PaginationData, Query } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
 import { SUMMONER_ICON_URL } from "@/lib/api";
@@ -19,9 +19,9 @@ export default function UserRankingSection({
 }: {
   tableData: userRanking[];
   apiurl: string;
-  pageData: paginationData;
+  pageData: PaginationData;
 }) {
-  const [pageState, setPageData] = useState<paginationData>(pageData);
+  const [pageState, setPageData] = useState<PaginationData>(pageData);
 
   const [query, setQuery] = useState<Query>({ page: 0, univNameKey: "" });
 
@@ -111,7 +111,7 @@ export default function UserRankingSection({
       cell: (row) => {
         return (
           <div className="flex items-center gap-2 w-full">
-            <div className="relative flex-1 w-[160px] h-[30px] border-[#323036] rounded-[4px] bg-[#110D17] overflow-hidden">
+            <div className="relative flex-1 w-40 h-[30px] border-[#323036] rounded-lg bg-[#110D17] overflow-hidden">
               {/* 채워지는 부분 */}
               <div
                 className="h-full bg-[#FF567980]"

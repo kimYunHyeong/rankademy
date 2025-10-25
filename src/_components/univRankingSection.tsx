@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import RankingTable from "@/components/ranking-table";
-import type { Column, paginationData, Query } from "@/types";
+import type { Column, PaginationData, Query } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
 import { SUMMONER_ICON_URL } from "@/lib/api";
@@ -17,9 +17,9 @@ export default function UnivRankingSection({
 }: {
   tableData: univRanking[];
   apiurl: string;
-  pageData: paginationData;
+  pageData: PaginationData;
 }) {
-  const [pageState, setPageData] = useState<paginationData>(pageData);
+  const [pageState, setPageData] = useState<PaginationData>(pageData);
 
   const [query, setQuery] = useState<Query>({ page: 0, univNameKey: "" });
 

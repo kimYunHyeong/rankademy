@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import RankingTable from "@/components/ranking-table";
-import type { Column, paginationData, Query } from "@/types";
+import type { Column, PaginationData, Query } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
 import { POSITION_IMG_URL, SUMMONER_ICON_URL, TIER_IMG_URL } from "@/lib/api";
@@ -28,7 +28,7 @@ export default function UnivUserRankingSection({
 }: {
   tableData: univUserRanking[];
   apiurl: string;
-  pageData: paginationData;
+  pageData: PaginationData;
   univName: string;
 }) {
   /* 필터 */
@@ -39,7 +39,7 @@ export default function UnivUserRankingSection({
   });
 
   /* 페이지네이션 */
-  const [pageState, setPageData] = useState<paginationData>(pageData);
+  const [pageState, setPageData] = useState<PaginationData>(pageData);
 
   const [query, setQuery] = useState<Query>({
     page: 0,

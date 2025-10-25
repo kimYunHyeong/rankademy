@@ -3,51 +3,13 @@ import { univGroupInfo } from "@/mock/groupInfoData";
 import Link from "next/link";
 import CheckPopup from "@/components/check-popup";
 import { Switch } from "@/components/ui/switch";
-import { CompetitionStatus, position, tier } from "@/types";
+import { Position, GroupDetail, RecentCompetition } from "@/types";
 
 import { serverFetchFromAPI } from "@/utils/fetcher.server";
 import GroupTable from "@/components/group-table";
 
-import { mockGroupDetail } from "@/mock/groupDetail";
-
-/* 그룹 상세 정보 */
-export type GroupDetail = {
-  groupId: number;
-  name: string;
-  about: string;
-  logoImageUrl: string;
-  avgTierInfo: {
-    tier: tier;
-    rank: string;
-    lp: number;
-    mappedTier: number;
-  };
-  competitionInfo: {
-    winCount: number;
-    lossCount: number;
-    winRate: number;
-  };
-  capacity: number;
-  memberCnt: number;
-  leader: {
-    id: number;
-    summonerName: string;
-    summonerTag?: string;
-    summonerIcon: number;
-  };
-  createdAt: string;
-  isJoined: boolean;
-  isLeader: boolean;
-};
-
-/* 최근 대항전 정보 */
-export type RecentCompetition = {
-  competitionId: number;
-  groupId: number;
-  groupName: string;
-  isWin: boolean;
-  status: CompetitionStatus;
-};
+/* 목데이터 */
+import { mockRecentCompetitionData } from "@/mock/recentCompetitionData";
 
 /* 그룹 멤버 정보 */
 export type GroupMember = {
@@ -56,8 +18,8 @@ export type GroupMember = {
   summonerIconId: number;
   major: string;
   admissionYear: number;
-  mainPosition: position;
-  subPosition: position;
+  mainPosition: Position;
+  subPosition: Position;
   tierInfo: {
     tier: string;
     rank: string;
@@ -70,30 +32,6 @@ export type GroupMember = {
     winRate: number;
   };
 };
-
-const mockRecentCompetitionData: RecentCompetition[] = [
-  {
-    competitionId: 1,
-    groupId: 1,
-    groupName: "string",
-    isWin: false,
-    status: "SCHEDULED",
-  },
-  {
-    competitionId: 2,
-    groupId: 3,
-    groupName: "string",
-    isWin: true,
-    status: "SCHEDULED",
-  },
-  {
-    competitionId: 3,
-    groupId: 4,
-    groupName: "string",
-    isWin: true,
-    status: "SCHEDULED",
-  },
-];
 
 export default async function GroupDetailPage({
   params,
@@ -162,7 +100,7 @@ export default async function GroupDetailPage({
         </>
       )}
 
-      <div className="mt-5"></div>
+      <div className="h-4"></div>
 
       {/* 그룹 정보 */}
       <GroupInfo

@@ -1,12 +1,13 @@
 import IDcard from "@/components/id-card";
 import Modal from "@/components/modal";
-import { userInfoData } from "@/mock/userInfoData";
+import { mockMyProfile } from "@/mock/myProfile";
 
 export default function Page(props: any) {
-  const data = userInfoData;
+  const data = mockMyProfile;
   return (
-    <Modal>
-      <IDcard data={userInfoData} />
-    </Modal>
+    <div>안녕</div>
+    /*   <Modal>
+      <IDcard data={mockMyProfile} />
+    </Modal> */
   );
 }

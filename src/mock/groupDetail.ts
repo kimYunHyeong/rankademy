@@ -1,4 +1,4 @@
-import { GroupDetail } from "@/app/groups/[groupId]/page";
+import { GroupDetail } from "@/types";
 export const mockGroupDetail: GroupDetail = {
   groupId: 101,
   name: "서울과기대 로얄로더스",

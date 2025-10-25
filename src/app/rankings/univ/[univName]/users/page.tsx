@@ -1,7 +1,7 @@
 import SubHeaderUnivRanking from "@/components/sub-header-univ-ranking";
 import UnivUserRankingSection from "./_components/univUserRankingSection";
 import { serverFetchFromAPI } from "@/utils/fetcher.server";
-import type { position, tier, paginationData } from "@/types";
+import type { Position, Tier, PaginationData } from "@/types";
 
 const mockOptions = {
   major: [
@@ -16,19 +16,19 @@ export type univUserRanking = {
   summonerName: string;
   summonerTag: string;
   summonerIcon: number;
-  tierInfo: { tier: tier; rank: string; lp: number; mappedTier: number };
+  tierInfo: { tier: Tier; rank: string; lp: number; mappedTier: number };
   winRate: number;
   winCount: number;
   lossCount: number;
-  mainPosition: position;
-  subPosition: position;
+  mainPosition: Position;
+  subPosition: Position;
   admissionYear: number;
   major: string;
 };
 
 type APIres = {
   content: univUserRanking[];
-  page: paginationData;
+  page: PaginationData;
 };
 
 type Params = Promise<{ univName: string }>;

@@ -1,10 +1,8 @@
-/* 이 아래는 다 지우기 */
-
 /* 포지션 */
-export type position = "TOP" | "JUNGLE" | "MIDDLE" | "BOTTOM" | "UTILITY";
+export type Position = "TOP" | "JUNGLE" | "MIDDLE" | "BOTTOM" | "UTILITY";
 
 /* 티어 */
-export type tier =
+export type Tier =
   | "UNRANKED"
   | "IRON"
   | "BRONZE"
@@ -18,7 +16,7 @@ export type tier =
   | "CHALLENGER";
 
 /* 페이지네이션 데이터 */
-export type paginationData = {
+export type PaginationData = {
   size: number;
   number: number; //쿼리로 몇 번째 페이지를 요청했는지
   totalElements: number;
@@ -51,12 +49,96 @@ export type Column<T> = {
 export type QueryValue = string | number | boolean | null | undefined;
 export type Query = Record<string, QueryValue>;
 
+/* 대항전 상태 */
 export type CompetitionStatus =
   | "SCHEDULED"
   | "COMPLETED"
   | "OPPOSED"
   | "EXPIRED";
 
+/* 그룹 상세 정보 */
+export type GroupDetail = {
+  groupId: number;
+  name: string;
+  about: string;
+  logoImageUrl: string;
+  avgTierInfo: {
+    tier: Tier;
+    rank: string;
+    lp: number;
+    mappedTier: number;
+  };
+  competitionInfo: {
+    winCount: number;
+    lossCount: number;
+    winRate: number;
+  };
+  capacity: number;
+  memberCnt: number;
+  leader: {
+    id: number;
+    summonerName: string;
+    summonerTag?: string;
+    summonerIcon: number;
+  };
+  createdAt: string;
+  isJoined: boolean;
+  isLeader: boolean;
+};
+
+/* 최근 대항전 정보 */
+export type RecentCompetition = {
+  competitionId: number;
+  groupId: number;
+  groupName: string;
+  isWin: boolean;
+  status: CompetitionStatus;
+};
+
+/* 팀 멤버 */
+export type TeamMember = {
+  memberId: number;
+  position: Position;
+  summonerName: string;
+  summonerTag: string;
+  summonerIcon: number;
+  univName: string;
+  major: string;
+  admissionYear: number;
+  tierInfo: {
+    tier: string;
+    rank: string;
+    lp: number;
+    mappedTier: number;
+  };
+};
+
+/* 대항전 기록 */
+export type GroupCompetitionResult = {
+  competitionId: number;
+  otherTeamUnivName: string;
+  status: CompetitionStatus;
+  myTeam: {
+    teamId: number;
+    teamName: string;
+    groupName: string;
+    teamMembers: TeamMember[];
+  };
+  otherTeam: {
+    teamId: number;
+    teamName: string;
+    groupName: string;
+    teamMembers: TeamMember[];
+  };
+  submittedAt: string;
+  isWin: boolean;
+  setResults: {
+    setNumber: number;
+    winnerTeamId: number;
+  }[];
+};
+
+/* 이 아래는 다 지우기 */
 /* ---------------------대학 정보------------------------------- */
 export interface UnivData {
   univName: string;
@@ -87,8 +169,8 @@ export interface recordDTO {
 }
 
 export interface positionDTO {
-  main: position;
-  sub: position;
+  main: Position;
+  sub: Position;
 }
 
 export interface userData {

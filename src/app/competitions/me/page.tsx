@@ -1,5 +1,4 @@
 import CompetitionTable from "@/components/competition-table";
-import { ApiResponse } from "@/components/competition-table";
 
 const mock = {
   totalCount: 1,
@@ -233,7 +232,7 @@ const mock = {
       ],
     },
   ],
-} satisfies ApiResponse;
+};
 
 export default function Page() {
   const data = mock;
@@ -244,7 +243,7 @@ export default function Page() {
         <span>내 대항전</span>
       </div>
       <div className="h-10"></div>
-      <CompetitionTable data={data} />
+      {/*   <CompetitionTable data={data} /> */}
     </>
   );
 }

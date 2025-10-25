@@ -1,7 +1,7 @@
 import UnivRankingSection from "@/_components/univRankingSection";
 import SubHeaderMain from "@/components/sub-header-main";
 import { serverFetchFromAPI } from "@/utils/fetcher.server";
-import { paginationData } from "@/types";
+import { PaginationData } from "@/types";
 
 /* 목데이터 */
 import mockUnivRanking from "@/mock/univRanking.json";
@@ -22,7 +22,7 @@ export type univRanking = {
 
 type APIres = {
   content: univRanking[];
-  page: paginationData;
+  page: PaginationData;
 };
 
 export default async function Home() {

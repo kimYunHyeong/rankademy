@@ -1,249 +1,76 @@
 import GroupInfo from "@/components/group-info";
-import { univGroupInfo } from "@/mock/groupInfoData";
-import CompetitionTable from "@/components/competition-table";
-import { ApiResponse } from "@/components/competition-table";
-export default function Page() {
-  const mock = {
-    totalCount: 1,
-    competitions: [
-      {
-        competitionId: 1,
-        otherTeamUnivName: "test group",
-        status: "COMPLETED",
-        myTeam: {
-          teamId: 1,
-          teamName: "myTeam",
-          groupName: "test group",
-          teamMembers: [
-            {
-              memberId: 1,
-              position: "TOP",
-              summonerName: "myTeamLeader",
-              summonerTag: "KR1",
-              summonerIcon: "Kaisa",
-            },
-            {
-              memberId: 4,
-              position: "JUNGLE",
-              summonerName: "myTeammember0",
-              summonerTag: "KR1",
-              summonerIcon: "Kaisa",
-            },
-            {
-              memberId: 5,
-              position: "MIDDLE",
-              summonerName: "myTeammember1",
-              summonerTag: "KR1",
-              summonerIcon: "Kaisa",
-            },
-            {
-              memberId: 6,
-              position: "BOTTOM",
-              summonerName: "myTeammember2",
-              summonerTag: "KR1",
-              summonerIcon: "Kaisa",
-            },
-            {
-              memberId: 7,
-              position: "UTILITY",
-              summonerName: "myTeammember3",
-              summonerTag: "KR1",
-              summonerIcon: "Kaisa",
-            },
-          ],
-        },
-        otherTeam: {
-          teamId: 2,
-          teamName: "otherTeam",
-          groupName: "test group",
-          groupIcon: "Ezreal",
-          teamMembers: [
-            {
-              memberId: 2,
-              position: "TOP",
-              summonerName: "otherTeamLeader",
-              summonerTag: "KR1",
-              summonerIcon: "Kaisa",
-            },
-            {
-              memberId: 8,
-              position: "JUNGLE",
-              summonerName: "otherTeammember0",
-              summonerTag: "KR1",
-              summonerIcon: "Kaisa",
-            },
-            {
-              memberId: 9,
-              position: "MIDDLE",
-              summonerName: "otherTeammember1",
-              summonerTag: "KR1",
-              summonerIcon: "Kaisa",
-            },
-            {
-              memberId: 10,
-              position: "BOTTOM",
-              summonerName: "otherTeammember2",
-              summonerTag: "KR1",
-              summonerIcon: "Kaisa",
-            },
-            {
-              memberId: 11,
-              position: "UTILITY",
-              summonerName: "otherTeammember3",
-              summonerTag: "KR1",
-              summonerIcon: "Kaisa",
-            },
-          ],
-        },
-        submittedAt: "2025.09.21",
-        isWin: true,
-        setResults: [
-          {
-            setNumber: 1,
-            winnerTeamId: 1,
-          },
-          {
-            setNumber: 2,
-            winnerTeamId: 2,
-          },
-          {
-            setNumber: 3,
-            winnerTeamId: 2,
-          },
-          {
-            setNumber: 4,
-            winnerTeamId: 1,
-          },
-          {
-            setNumber: 5,
-            winnerTeamId: 1,
-          },
-        ],
-      },
-      {
-        competitionId: 2,
-        otherTeamUnivName: "서울과기대",
-        status: "COMPLETED",
-        myTeam: {
-          teamId: 1,
-          teamName: "myTeam",
-          groupName: "test group",
-          teamMembers: [
-            {
-              memberId: 1,
-              position: "TOP",
-              summonerName: "myTeamLeader",
-              summonerTag: "KR1",
-              summonerIcon: "Kaisa",
-            },
-            {
-              memberId: 4,
-              position: "JUNGLE",
-              summonerName: "myTeammember0",
-              summonerTag: "KR1",
-              summonerIcon: "Kaisa",
-            },
-            {
-              memberId: 5,
-              position: "MIDDLE",
-              summonerName: "myTeammember1",
-              summonerTag: "KR1",
-              summonerIcon: "Kaisa",
-            },
-            {
-              memberId: 6,
-              position: "BOTTOM",
-              summonerName: "myTeammember2",
-              summonerTag: "KR1",
-              summonerIcon: "Kaisa",
-            },
-            {
-              memberId: 7,
-              position: "UTILITY",
-              summonerName: "myTeammember3",
-              summonerTag: "KR1",
-              summonerIcon: "Kaisa",
-            },
-          ],
-        },
-        otherTeam: {
-          teamId: 2,
-          teamName: "otherTeam",
-          groupName: "test group",
-          groupIcon: "Ezreal",
-          teamMembers: [
-            {
-              memberId: 2,
-              position: "TOP",
-              summonerName: "otherTeamLeader",
-              summonerTag: "KR1",
-              summonerIcon: "Kaisa",
-            },
-            {
-              memberId: 8,
-              position: "JUNGLE",
-              summonerName: "otherTeammember0",
-              summonerTag: "KR1",
-              summonerIcon: "Kaisa",
-            },
-            {
-              memberId: 9,
-              position: "MIDDLE",
-              summonerName: "otherTeammember1",
-              summonerTag: "KR1",
-              summonerIcon: "Kaisa",
-            },
-            {
-              memberId: 10,
-              position: "BOTTOM",
-              summonerName: "otherTeammember2",
-              summonerTag: "KR1",
-              summonerIcon: "Kaisa",
-            },
-            {
-              memberId: 11,
-              position: "UTILITY",
-              summonerName: "otherTeammember3",
-              summonerTag: "KR1",
-              summonerIcon: "Kaisa",
-            },
-          ],
-        },
-        submittedAt: "2025.09.21",
-        isWin: false,
-        setResults: [
-          {
-            setNumber: 1,
-            winnerTeamId: 1,
-          },
-          {
-            setNumber: 2,
-            winnerTeamId: 2,
-          },
-          {
-            setNumber: 3,
-            winnerTeamId: 2,
-          },
-          {
-            setNumber: 4,
-            winnerTeamId: 1,
-          },
-          {
-            setNumber: 5,
-            winnerTeamId: 1,
-          },
-        ],
-      },
-    ],
-  } satisfies ApiResponse;
+import {
+  GroupCompetitionResult,
+  GroupDetail,
+  PaginationData,
+  RecentCompetition,
+} from "@/types";
+import { serverFetchFromAPI } from "@/utils/fetcher.server";
+import GroupCompetitionResultSection from "./_components/groupCompetitionResultSection";
+
+/* 목데이터 */
+import { mockRecentCompetitionData } from "@/mock/recentCompetitionData";
+import { mockGroupCompetitionResult } from "@/mock/groupCompetitionResult";
+
+export default async function GroupCompetitionPage({
+  params,
+}: {
+  params: Promise<{ groupId: string }>;
+}) {
+  const { groupId } = await params;
+
+  /* 그룹 세부 정보 */
+  const groupDetailDataRequieredQuery = `?page=0&groupId=${groupId}`;
+  const groupDetailDataApiUrl = `/groups/${groupId}${groupDetailDataRequieredQuery}`;
+  const groupDetailData = (await serverFetchFromAPI(
+    groupDetailDataApiUrl
+  )) as GroupDetail;
+
+  /* 최근 대항전 정보 */
+  const recentCompetitionDataRequieredQuery = `?page=0&groupId=${groupId}`;
+  const recentCompetitionDataApiUrl = `/groups/${groupId}/recent-competitions${recentCompetitionDataRequieredQuery}`;
+  const recentCompetitionData = (await serverFetchFromAPI(
+    recentCompetitionDataApiUrl
+  )) as RecentCompetition[];
+
+  /* 그룹의 대항전 기록 */
+  type competitionResultAPIres = {
+    content: GroupCompetitionResult[];
+    page: PaginationData;
+  };
+
+  const competitionResultDataRequieredQuery = `?page=0&groupId=${groupId}`;
+  const competitionResultDataApiUrl = `/competitions/groups/${groupId}${competitionResultDataRequieredQuery}`;
+  /*   const competitionResultData = (await serverFetchFromAPI(
+    competitionResultDataApiUrl
+  )) as competitionResultAPIres; */
+
+  const competitionResultData = {
+    content: mockGroupCompetitionResult,
+    page: {
+      size: 10,
+      number: 1,
+      totalElements: 1,
+      totalPages: 1,
+    },
+  };
 
   return (
     <>
       <div className="flex justify-center text-white">대항전 기록</div>
-
-      {/* <GroupInfo group={univGroupInfo} /> */}
       <div className="h-4"></div>
-      <CompetitionTable data={mock} />
+
+      {/* 그룹 정보 */}
+      <GroupInfo
+        groupDetailData={groupDetailData}
+        recentCompetitionData={mockRecentCompetitionData}
+      />
+      <div className="h-4"></div>
+      <GroupCompetitionResultSection
+        tableData={competitionResultData.content}
+        pageData={competitionResultData.page}
+        apiurl={competitionResultDataApiUrl}
+      />
     </>
   );
 }

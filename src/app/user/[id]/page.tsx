@@ -1,10 +1,11 @@
 import IDCard from "@/components/id-card";
-import { userInfoData } from "@/mock/userInfoData";
+import { mockMyProfile } from "@/mock/myProfile";
 
 export default function User() {
   return (
-    <div className="min-h-dvh flex justify-center items-center">
-      <IDCard data={userInfoData} />
-    </div>
+    <div>안녕</div>
+    /*    <div className="min-h-dvh flex justify-center items-center">
+      <IDCard data={mockMyProfile} />
+    </div> */
   );
 }

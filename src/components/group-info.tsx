@@ -5,7 +5,7 @@ import Image from "next/image";
 import React from "react";
 import { capitalize } from "@/utils/capitalize";
 import { usePathname } from "next/navigation";
-import { GroupDetail, RecentCompetition } from "@/app/groups/[groupId]/page";
+import { GroupDetail, RecentCompetition } from "@/types";
 import { CHAMPION_IMG_URL, TIER_IMG_URL } from "@/lib/api";
 import WinRateDonut from "./win-rate-donut";
 import { formatDate } from "@/utils/format-date";

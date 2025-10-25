@@ -2,10 +2,10 @@
 
 import Modal from "@/components/modal";
 import VerifyCard from "@/components/verify-card";
-import { userInfoData } from "@/mock/userInfoData";
+import { mockMyProfile } from "@/mock/myProfile";
 
 export default function Page(props: any) {
-  const data = userInfoData;
+  const data = mockMyProfile;
   return (
     <Modal>
       <VerifyCard
