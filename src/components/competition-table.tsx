@@ -12,7 +12,7 @@ import { Query } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
 import { POSITION_IMG_URL, SUMMONER_ICON_URL } from "@/lib/api";
-import { serverFetchFromAPI } from "@/utils/fetcher.server";
+import { fetchFromAPI } from "@/utils/fetcher";
 import { GroupCompetitionResult } from "@/types";
 
 /* 테이블에 어떤 내용이 들어갈지 관리, 페이지에서 인자로 넘기는 것 */
@@ -57,7 +57,7 @@ export default function CompetitionTable({
       onLoadingChange?.(true);
       setError(null);
       try {
-        const res = await serverFetchFromAPI(apiurl, { query });
+        const res = await fetchFromAPI(apiurl, query);
         const nextRows = extractRows(res);
         if (!alive) return;
       } catch (e) {

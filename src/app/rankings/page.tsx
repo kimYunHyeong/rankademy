@@ -1,6 +1,6 @@
 import UserRankingSection from "./_components/userRankingSection";
 import SubHeaderMain from "@/components/sub-header-main";
-import { serverFetchFromAPI } from "@/utils/fetcher.server";
+import { fetchFromAPI } from "@/utils/fetcher";
 import { Tier, PaginationData } from "@/types";
 
 /* 목데이터 */
@@ -38,7 +38,7 @@ type APIres = {
 };
 
 export default async function UserRankingPage() {
-  const res = (await serverFetchFromAPI(apiUrl)) as APIres;
+  const res = (await fetchFromAPI(apiUrl)) as APIres;
 
   const tableData = res.content;
   const pageData = res.page;

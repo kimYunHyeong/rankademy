@@ -1,5 +1,6 @@
 import { Position, Tier } from "@/types";
 import InfoSection from "./_components/infoSection";
+import { fetchFromAPI } from "@/utils/fetcher";
 
 /* 목데이터 */
 import { mockMyProfile } from "@/mock/myProfile";
@@ -35,9 +36,7 @@ export type MyProfile = {
 
 export default async function MyPage() {
   const apiUrl = "/me";
-  /* const res = await serverFetchFromAPI(apiUrl); */
-
-  const data = mockMyProfile;
+  const data = await fetchFromAPI(apiUrl);
 
   return <InfoSection data={data} />;
 }

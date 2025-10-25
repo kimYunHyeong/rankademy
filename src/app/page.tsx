@@ -1,6 +1,6 @@
 import UnivRankingSection from "@/_components/univRankingSection";
 import SubHeaderMain from "@/components/sub-header-main";
-import { serverFetchFromAPI } from "@/utils/fetcher.server";
+import { fetchFromAPI } from "@/utils/fetcher";
 import { PaginationData } from "@/types";
 
 /* 목데이터 */
@@ -27,7 +27,7 @@ type APIres = {
 
 export default async function Home() {
   const apiUrl = "/rankings/univ";
-  const res = (await serverFetchFromAPI(apiUrl)) as APIres;
+  const res = (await fetchFromAPI(apiUrl)) as APIres;
 
   const tableData = res.content;
   const pageData = res.page;

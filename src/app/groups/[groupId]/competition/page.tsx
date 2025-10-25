@@ -5,7 +5,7 @@ import {
   PaginationData,
   RecentCompetition,
 } from "@/types";
-import { serverFetchFromAPI } from "@/utils/fetcher.server";
+import { fetchFromAPI } from "@/utils/fetcher";
 import GroupCompetitionResultSection from "./_components/groupCompetitionResultSection";
 
 /* 목데이터 */
@@ -22,14 +22,14 @@ export default async function GroupCompetitionPage({
   /* 그룹 세부 정보 */
   const groupDetailDataRequieredQuery = `?page=0&groupId=${groupId}`;
   const groupDetailDataApiUrl = `/groups/${groupId}${groupDetailDataRequieredQuery}`;
-  const groupDetailData = (await serverFetchFromAPI(
+  const groupDetailData = (await fetchFromAPI(
     groupDetailDataApiUrl
   )) as GroupDetail;
 
   /* 최근 대항전 정보 */
   const recentCompetitionDataRequieredQuery = `?page=0&groupId=${groupId}`;
   const recentCompetitionDataApiUrl = `/groups/${groupId}/recent-competitions${recentCompetitionDataRequieredQuery}`;
-  const recentCompetitionData = (await serverFetchFromAPI(
+  const recentCompetitionData = (await fetchFromAPI(
     recentCompetitionDataApiUrl
   )) as RecentCompetition[];
 
@@ -41,7 +41,7 @@ export default async function GroupCompetitionPage({
 
   const competitionResultDataRequieredQuery = `?page=0&groupId=${groupId}`;
   const competitionResultDataApiUrl = `/competitions/groups/${groupId}${competitionResultDataRequieredQuery}`;
-  /*   const competitionResultData = (await serverFetchFromAPI(
+  /*   const competitionResultData = (await fetchFromAPI(
     competitionResultDataApiUrl
   )) as competitionResultAPIres; */
 

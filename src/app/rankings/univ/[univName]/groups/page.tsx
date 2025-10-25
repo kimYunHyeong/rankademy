@@ -1,6 +1,6 @@
 import UnivGroupRankingSection from "./_components/univGroupRankingSection";
 import SubHeaderUnivRanking from "@/components/sub-header-univ-ranking";
-import { serverFetchFromAPI } from "@/utils/fetcher.server";
+import { fetchFromAPI } from "@/utils/fetcher";
 import { PaginationData, Tier } from "@/types";
 
 /* 목데이터 */
@@ -44,7 +44,7 @@ export default async function UnivGroupRankingPage({
   const { univName } = await params;
   const requieredQuery = `?page=0&univName=${univName}`;
   const apiUrl = `/rankings/univ/${univName}/groups${requieredQuery}`;
-  const res = (await serverFetchFromAPI(apiUrl)) as APIres;
+  const res = (await fetchFromAPI(apiUrl)) as APIres;
 
   const tableData = res.content;
   const pageData = res.page;

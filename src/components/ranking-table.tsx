@@ -4,7 +4,7 @@ import React from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { RankingTableProps } from "@/types";
-import { serverFetchFromAPI } from "@/utils/fetcher.server";
+import { fetchFromAPI } from "@/utils/fetcher";
 import { Query } from "@/types";
 
 type Props<T> = RankingTableProps<T> & {
@@ -45,7 +45,7 @@ export default function RankingTable<T>({
 
       setError(null);
       try {
-        const res = await serverFetchFromAPI(apiurl, { query });
+        const res = await fetchFromAPI(apiurl, query);
         const nextRows = extractRows<T>(res);
         if (!alive) return;
         setRows(nextRows);

@@ -5,7 +5,7 @@ import CheckPopup from "@/components/check-popup";
 import { Switch } from "@/components/ui/switch";
 import { Position, GroupDetail, RecentCompetition } from "@/types";
 
-import { serverFetchFromAPI } from "@/utils/fetcher.server";
+import { fetchFromAPI } from "@/utils/fetcher";
 import GroupTable from "@/components/group-table";
 
 /* 목데이터 */
@@ -43,21 +43,21 @@ export default async function GroupDetailPage({
   /* 그룹 세부 정보 */
   const groupDetailDataRequieredQuery = `?page=0&groupId=${groupId}`;
   const groupDetailDataApiUrl = `/groups/${groupId}${groupDetailDataRequieredQuery}`;
-  const groupDetailData = (await serverFetchFromAPI(
+  const groupDetailData = (await fetchFromAPI(
     groupDetailDataApiUrl
   )) as GroupDetail;
 
   /* 최근 대항전 정보 */
   const recentCompetitionDataRequieredQuery = `?page=0&groupId=${groupId}`;
   const recentCompetitionDataApiUrl = `/groups/${groupId}/recent-competitions${recentCompetitionDataRequieredQuery}`;
-  const recentCompetitionData = (await serverFetchFromAPI(
+  const recentCompetitionData = (await fetchFromAPI(
     recentCompetitionDataApiUrl
   )) as RecentCompetition[];
 
   /* 그룹 멤버 정보 */
   const groupMemberDataRequieredQuery = `?page=0&groupId=${groupId}`;
   const groupMemberDataApiUrl = `/groups/${groupId}/members${groupMemberDataRequieredQuery}`;
-  const groupMemberData = (await serverFetchFromAPI(
+  const groupMemberData = (await fetchFromAPI(
     groupMemberDataApiUrl
   )) as GroupMember[];
   /* const pageData = groupMemberData.page; */

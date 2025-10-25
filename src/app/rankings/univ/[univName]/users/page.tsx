@@ -1,6 +1,6 @@
 import SubHeaderUnivRanking from "@/components/sub-header-univ-ranking";
 import UnivUserRankingSection from "./_components/univUserRankingSection";
-import { serverFetchFromAPI } from "@/utils/fetcher.server";
+import { fetchFromAPI } from "@/utils/fetcher";
 import type { Position, Tier, PaginationData } from "@/types";
 
 const mockOptions = {
@@ -41,7 +41,7 @@ export default async function UnivUserRankingPage({
   const { univName } = await params;
   const requieredQuery = `?univName=${univName}`;
   const apiUrl = `/rankings/univ/${univName}${requieredQuery}`;
-  const res = (await serverFetchFromAPI(apiUrl)) as APIres;
+  const res = (await fetchFromAPI(apiUrl)) as APIres;
 
   const tableData = res.content;
   const pageData = res.page;
