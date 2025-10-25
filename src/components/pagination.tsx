@@ -52,7 +52,7 @@ export default function PaginationComponent({ pageData, onPageChange }: Props) {
           <PaginationItem>
             <PaginationPrevious
               onClick={() => handlePageChange(pageIndex - 1)}
-              className={`rounded-sm w-[28px] h-[28px] px-3 py-1 text-sm font-medium transition-colors
+              className={`rounded-sm w-7 h-7 px-3 py-1 text-sm font-medium transition-colors
                 border border-[#323036] text-[#B1ACC1]
                 hover:bg-[#FF5679] hover:text-[#110D17] hover:border-none
                 ${
@@ -76,7 +76,7 @@ export default function PaginationComponent({ pageData, onPageChange }: Props) {
                       e.preventDefault();
                       handlePageChange(i); // 0-based로 전달
                     }}
-                    className={`w-[28px] h-[28px] rounded-sm px-3 py-1 text-sm font-medium transition-colors
+                    className={`w-7 h-7 rounded-sm px-3 py-1 text-sm font-medium transition-colors
                       ${
                         isActive
                           ? "bg-[#FF5679] text-[#110D17] border-none"
@@ -94,7 +94,7 @@ export default function PaginationComponent({ pageData, onPageChange }: Props) {
           <PaginationItem>
             <PaginationNext
               onClick={() => handlePageChange(pageIndex + 1)}
-              className={`rounded-sm w-[28px] h-[28px] px-3 py-1 text-sm font-medium transition-colors
+              className={`rounded-sm w-7 h-7 px-3 py-1 text-sm font-medium transition-colors
                 border border-[#323036] text-[#B1ACC1]
                 hover:bg-[#FF5679] hover:text-[#110D17] hover:border-none
                 ${

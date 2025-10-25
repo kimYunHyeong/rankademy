@@ -51,6 +51,12 @@ export type Column<T> = {
 export type QueryValue = string | number | boolean | null | undefined;
 export type Query = Record<string, QueryValue>;
 
+export type CompetitionStatus =
+  | "SCHEDULED"
+  | "COMPLETED"
+  | "OPPOSED"
+  | "EXPIRED";
+
 /* ---------------------대학 정보------------------------------- */
 export interface UnivData {
   univName: string;
@@ -151,7 +157,6 @@ export interface matchDTO {
 
 export type result = "win" | "lose";
 
-// types.ts (혹은 컴포넌트 파일 상단에 선언해도 OK)
 export type GroupCardData = {
   group: { id?: string | number; name: string; icon: string };
   createdAt: string;

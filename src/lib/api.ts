@@ -1,5 +1,5 @@
 // 백엔드 서버 주소
-export const API_BASE_URL = "http://api.rankademy.kr/api/v1";
+export const API_BASE_URL = "https://api.rankademy.kr/api/v1";
 
 //챔피언 이미지
 export const CHAMPION_IMG_URL =

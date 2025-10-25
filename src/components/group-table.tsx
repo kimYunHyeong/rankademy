@@ -2,21 +2,42 @@
 
 import Image from "next/image";
 import Link from "next/link";
-/* import { RankingTable } from "@/components/ranking-table"; */
+import RankingTable from "@/components/ranking-table";
 import type { Column } from "@/types";
 import { SUMMONER_ICON_URL, TIER_IMG_URL } from "@/lib/api";
 import { capitalize } from "@/utils/capitalize";
-import { GroupMember } from "@/app/groups/[groupId]/page";
 import { POSITION_IMG_URL } from "@/lib/api";
-import { GroupDetail } from "@/app/groups/[groupId]/page";
 import GroupTableHeader from "./group-table-header";
 import { mockGroupMembers } from "@/mock/groupMember";
+import { GroupMember } from "@/app/groups/[groupId]/page";
+import PaginationComponent from "./pagination";
+import { useState } from "react";
+import { paginationData } from "@/types";
+import { Query } from "@/types";
 
 export default function GroupTable({
-  groupDetailData,
+  groupId,
+  isLeader,
+  isJoined,
+  memberCnt,
+  capacity,
+  groupMember,
+  memberApiUrl,
+  pageData,
 }: {
-  groupDetailData: GroupDetail;
+  groupId: number;
+  isLeader: boolean;
+  isJoined: boolean;
+  memberCnt: number;
+  capacity: number;
+  groupMember: GroupMember[];
+  memberApiUrl: string;
+  pageData: paginationData;
 }) {
+  /* 페이지네이션 */
+  const [pageState, setPageData] = useState<paginationData>(pageData);
+  const [query, setQuery] = useState<Query>({ page: 0, univNameKey: "" });
+
   /* 테이블 데이터 */
   const columns: Column<GroupMember>[] = [
     {
@@ -102,7 +123,7 @@ export default function GroupTable({
       headerClassName: "w-[30%]",
       cell: (row) => (
         <div className="flex items-center gap-2 w-full">
-          <div className="relative flex-1 w-[160px] h-[30px] border-[#323036] rounded-[4px] bg-[#110D17] overflow-hidden">
+          <div className="relative flex-1 w-40 h-[30px] border-[#323036] rounded bg-[#110D17] overflow-hidden">
             <div
               className="h-full bg-[#FF567980]"
               style={{ width: `${row.recordInfo.winRate}%` }}
@@ -125,12 +146,29 @@ export default function GroupTable({
   return (
     <div className="table container">
       <GroupTableHeader
-        memberCnt={groupDetailData.memberCnt}
-        groupId={groupDetailData.groupId}
-        isJoined={groupDetailData.isJoined}
-        isLeader={groupDetailData.isLeader}
+        groupId={groupId}
+        memberCnt={memberCnt}
+        capacity={capacity}
+        isJoined={isJoined}
+        isLeader={isLeader}
       />
-      {/*       <RankingTable data={mockGroupMembers} columns={columns} /> */}
+
+      <RankingTable
+        apiurl={memberApiUrl}
+        data={groupMember}
+        columns={columns}
+        pageSize={10}
+      />
+
+      {/* 페이지네이션 */}
+      <PaginationComponent
+        pageData={pageState}
+        onPageChange={(qs) => {
+          const p = Number((qs.split("=").pop() || "1").trim());
+          if (!Number.isFinite(p) || p < 1) return;
+          setQuery((prev) => ({ ...prev, page: p }));
+        }}
+      />
     </div>
   );
 }

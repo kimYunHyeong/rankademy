@@ -148,13 +148,13 @@ export default function Page() {
       <div className="flex text-[14px] mb-5">
         <Link
           href={`${1}/delete`}
-          className="flex items-center justify-center border border-[#323036] w-[120px] h-[44px] text-[#B1ACC1] rounded bg-[#25242A33] text-center mr-2"
+          className="flex items-center justify-center border border-[#323036] w-[120px] h-11 text-[#B1ACC1] rounded bg-[#25242A33] text-center mr-2"
         >
           게시글 삭제
         </Link>
         <Link
           href={`${1}/edit`}
-          className="flex items-center justify-center border border-[#323036] w-[120px] h-[44px] text-[#B1ACC1] rounded bg-[#25242A33] text-center mr-2"
+          className="flex items-center justify-center border border-[#323036] w-[120px] h-11 text-[#B1ACC1] rounded bg-[#25242A33] text-center mr-2"
         >
           게시글 수정
         </Link>
@@ -165,26 +165,26 @@ export default function Page() {
       {/* 팀 정보 */}
       <div className="flex h-[30%]">
         {/* 첫번째 div: 그룹의 정보 표현 */}
-        <div className="p-4 h-[300px] w-[75%] bg-[#25242A33] border-2 border-[#25242A] rounded mr-[10px] text-white overflow-hidden pr-24">
+        <div className="p-4 h-[300px] w-[75%] bg-[#25242A33] border-2 border-[#25242A] rounded mr-2.5 text-white overflow-hidden pr-24">
           {/* 이미지와 정보를 분리하는 div */}
-          <div className="flex pt-[20px] justify-center gap-2 max-md:flex-wrap">
+          <div className="flex pt-5 justify-center gap-2 max-md:flex-wrap">
             <div className="flex-1 min-w-0">
-              <h2 className="flex items-center text-[40px] leading-tight break-words">
+              <h2 className="flex items-center text-[40px] leading-tight wrap-break-word">
                 {data.teamName}
               </h2>
 
               {/* 그룹 | 시간 | 평균티어 */}
               <div className="flex flex-wrap items-center text-[#B1ACC1] text-xs mt-5 mb-8">
                 {/* 그룹 */}
-                <span className="break-words">{data.groupName}</span>
+                <span className="wrap-break-word">{data.groupName}</span>
                 <span className="mx-2 opacity-50">|</span>
 
                 {/* 학교 */}
-                <span className="break-words">{data.univName}</span>
+                <span className="wrap-break-wordword">{data.univName}</span>
                 <span className="mx-2 opacity-50">|</span>
 
                 {/* 시간 */}
-                <span className="break-words">{data.createdAt}</span>
+                <span className="wrap-break-word">{data.createdAt}</span>
                 <span className="mx-2 opacity-50">|</span>
 
                 {/* 티어 */}
@@ -218,7 +218,7 @@ export default function Page() {
                              max-h-20 overflow-y-auto
                              [scrollbar-width:none] [-ms-overflow-style:none]
                              [&::-webkit-scrollbar]:hidden
-                              break-words
+                              wrap-break-word
                           "
               >
                 {data.intro}

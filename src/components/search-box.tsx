@@ -53,7 +53,7 @@ export default function SearchBox({
 
       {/* 입력창 */}
       <Input
-        className="pl-10 pr-8 h-[44px] bg-[#1D1921] border-[#323036] text-white placeholder:text-gray-400"
+        className="pl-10 pr-8 h-11 bg-[#1D1921] border-[#323036] text-white placeholder:text-gray-400"
         placeholder={placeholder}
         value={query}
         onChange={handleChange}

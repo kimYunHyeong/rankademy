@@ -10,18 +10,15 @@ import { Query } from "@/types";
 type Props<T> = RankingTableProps<T> & {
   apiurl: string;
   query?: Query;
-  /** (선택) 새 데이터 도착 시 상위에 전달 */
   onData?: (rows: T[], raw: any) => void;
-  /** (선택) 로딩 상태 전달 */
   onLoadingChange?: (loading: boolean) => void;
 };
 
+/* api주소로부터 테이블 데이터 추출  */
 function extractRows<T>(res: any): T[] {
   if (Array.isArray(res)) return res as T[];
   if (Array.isArray(res?.content)) return res.content as T[];
   if (Array.isArray(res?.data)) return res.data as T[];
-  if (Array.isArray(res?.items)) return res.items as T[];
-  if (Array.isArray(res?.list)) return res.list as T[];
   return [];
 }
 
@@ -34,12 +31,12 @@ export default function RankingTable<T>({
   const pathname = usePathname();
   const isEditPage = /\/groups\/[^/]+\/edit(?:\/.*)?$/.test(pathname ?? "");
 
-  // ✅ 내부 표시용 데이터 상태 (초기값은 props.data)
+  //내부 표시용 데이터 상태 (초기값은 props.data)
   const [rows, setRows] = React.useState<T[]>(() => data ?? []);
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState<unknown>(null);
 
-  // ✅ query / apiurl 변경 시마다 재요청
+  //query / apiurl 변경 시마다 재요청
   React.useEffect(() => {
     let alive = true;
 
@@ -63,7 +60,7 @@ export default function RankingTable<T>({
     return () => {
       alive = false;
     };
-  }, [apiurl, JSON.stringify(query)]); // ⚠️ query 변경 감지
+  }, [apiurl, JSON.stringify(query)]);
 
   return (
     <div className="w-full">
@@ -159,7 +156,7 @@ export default function RankingTable<T>({
                           col.cellClassName ?? ""
                         } ${
                           gradientOn
-                            ? "bg-[linear-gradient(149.06deg,_#FFA1D9_10.49%,_#FF5679_60.64%)] bg-clip-text text-transparent font-bold"
+                            ? "bg-[linear-gradient(149.06deg,#FFA1D9_10.49%,#FF5679_60.64%)] bg-clip-text text-transparent font-bold"
                             : "text-white"
                         }`}
                       >

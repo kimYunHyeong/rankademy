@@ -3,7 +3,7 @@ import { univGroupInfo } from "@/mock/groupInfoData";
 import Link from "next/link";
 import CheckPopup from "@/components/check-popup";
 import { Switch } from "@/components/ui/switch";
-import { tier } from "@/types";
+import { CompetitionStatus, position, tier } from "@/types";
 
 import { serverFetchFromAPI } from "@/utils/fetcher.server";
 import GroupTable from "@/components/group-table";
@@ -42,28 +42,12 @@ export type GroupDetail = {
 
 /* 최근 대항전 정보 */
 export type RecentCompetition = {
+  competitionId: number;
   groupId: number;
   groupName: string;
   isWin: boolean;
+  status: CompetitionStatus;
 };
-
-const mockRecentCompetitionData: RecentCompetition[] = [
-  {
-    groupId: 1,
-    groupName: "string",
-    isWin: true,
-  },
-  {
-    groupId: 2,
-    groupName: "string",
-    isWin: true,
-  },
-  {
-    groupId: 12,
-    groupName: "string",
-    isWin: false,
-  },
-];
 
 /* 그룹 멤버 정보 */
 export type GroupMember = {
@@ -72,8 +56,8 @@ export type GroupMember = {
   summonerIconId: number;
   major: string;
   admissionYear: number;
-  mainPosition: string;
-  subPosition: string;
+  mainPosition: position;
+  subPosition: position;
   tierInfo: {
     tier: string;
     rank: string;
@@ -87,75 +71,82 @@ export type GroupMember = {
   };
 };
 
-export default async function Page({
+const mockRecentCompetitionData: RecentCompetition[] = [
+  {
+    competitionId: 1,
+    groupId: 1,
+    groupName: "string",
+    isWin: false,
+    status: "SCHEDULED",
+  },
+  {
+    competitionId: 2,
+    groupId: 3,
+    groupName: "string",
+    isWin: true,
+    status: "SCHEDULED",
+  },
+  {
+    competitionId: 3,
+    groupId: 4,
+    groupName: "string",
+    isWin: true,
+    status: "SCHEDULED",
+  },
+];
+
+export default async function GroupDetailPage({
   params,
 }: {
   params: Promise<{ groupId: string }>;
 }) {
   const { groupId } = await params;
 
-  /* const groupDetailData = mockGroupDetail; */
-  let groupDetailData: GroupDetail;
+  /* 그룹 세부 정보 */
+  const groupDetailDataRequieredQuery = `?page=0&groupId=${groupId}`;
+  const groupDetailDataApiUrl = `/groups/${groupId}${groupDetailDataRequieredQuery}`;
+  const groupDetailData = (await serverFetchFromAPI(
+    groupDetailDataApiUrl
+  )) as GroupDetail;
 
-  try {
-    const res = await serverFetchFromAPI(`/groups/${groupId}`);
+  /* 최근 대항전 정보 */
+  const recentCompetitionDataRequieredQuery = `?page=0&groupId=${groupId}`;
+  const recentCompetitionDataApiUrl = `/groups/${groupId}/recent-competitions${recentCompetitionDataRequieredQuery}`;
+  const recentCompetitionData = (await serverFetchFromAPI(
+    recentCompetitionDataApiUrl
+  )) as RecentCompetition[];
 
-    groupDetailData = res as GroupDetail;
-  } catch (err) {
-    console.error("데이터를 불러오지 못했습니다:", err);
-    groupDetailData = {
-      groupId: 0,
-      name: "string",
-      about: "string",
-      logoImageUrl: "Ezreal",
-      avgTierInfo: {
-        tier: "UNRANKED" as tier,
-        rank: "1",
-        lp: 0,
-        mappedTier: 0,
-      },
-      competitionInfo: {
-        winCount: 0,
-        lossCount: 0,
-        winRate: 0,
-      },
-      capacity: 0,
-      memberCnt: 0,
-      leader: {
-        id: 0,
-        summonerName: "string",
-        summonerTag: "string",
-        summonerIcon: 0,
-      },
-      createdAt: "string",
-      isJoined: true,
-      isLeader: true,
-    }; //fallback
-  }
+  /* 그룹 멤버 정보 */
+  const groupMemberDataRequieredQuery = `?page=0&groupId=${groupId}`;
+  const groupMemberDataApiUrl = `/groups/${groupId}/members${groupMemberDataRequieredQuery}`;
+  const groupMemberData = (await serverFetchFromAPI(
+    groupMemberDataApiUrl
+  )) as GroupMember[];
+  /* const pageData = groupMemberData.page; */
 
   return (
     <>
-      {/* 🔹 그룹 리더일 때만 버튼들 + 스위치 + 팝업 표시 */}
+      {/* 그룹 리더일 때 표시할 정보 */}
       {groupDetailData.isLeader && (
         <>
-          {/* 상단 버튼들 */}
+          {/* 모집 게시글 | 그룹원 초대 | 그룹원 관리 */}
           <div className="flex justify-between items-center mb-12">
             <div className="flex text-[14px]">
               <Link
                 href={`recruits/${univGroupInfo.group.id}`}
-                className="flex items-center justify-center border border-[#323036] w-[120px] h-[44px] text-[#B1ACC1] rounded bg-[#25242A33] text-center mr-2"
+                className="flex items-center justify-center border border-[#323036] w-30 h-11 text-[#B1ACC1] rounded bg-[#25242A33] text-center mr-2"
               >
                 모집 게시글 보기
               </Link>
               <Link
                 href={`${groupDetailData.groupId}/invite`}
-                className="flex items-center justify-center border border-[#323036] w-[120px] h-[44px] text-[#B1ACC1] rounded bg-[#25242A33] text-center mr-2"
+                className="flex items-center justify-center border border-[#323036] w-30 h-11 text-[#B1ACC1] rounded bg-[#25242A33] text-center mr-2"
               >
                 그룹원 초대
               </Link>
               <Link
                 href={`${groupDetailData.groupId}/edit`}
-                className="flex items-center justify-center border border-[#323036] w-[120px] h-[44px] text-[#B1ACC1] rounded bg-[#25242A33] text-center"
+                className="flex items-center justify-center border border-[#323036] w-30 h-11 text-[#B1ACC1] rounded bg-[#25242A33] text-center"
               >
                 그룹원 관리
               </Link>
@@ -172,14 +163,30 @@ export default async function Page({
       )}
 
       <div className="mt-5"></div>
-      {/* 
+
+      {/* 그룹 정보 */}
       <GroupInfo
         groupDetailData={groupDetailData}
         recentCompetitionData={mockRecentCompetitionData}
-      /> */}
+      />
 
       <div className="h-4"></div>
-      <GroupTable groupDetailData={groupDetailData} />
+      {/* 그룹원 정보 */}
+      <GroupTable
+        groupId={groupDetailData.groupId}
+        memberCnt={groupDetailData.memberCnt}
+        capacity={groupDetailData.capacity}
+        isLeader={groupDetailData.isLeader}
+        isJoined={groupDetailData.isJoined}
+        memberApiUrl={groupMemberDataApiUrl}
+        groupMember={groupMemberData}
+        pageData={{
+          size: 20,
+          number: 0,
+          totalElements: 1,
+          totalPages: 1,
+        }}
+      />
     </>
   );
 }

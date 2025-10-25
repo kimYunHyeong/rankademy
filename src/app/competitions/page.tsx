@@ -138,7 +138,7 @@ export default function Page() {
           href="competitions/me"
           className="flex items-center justify-center 
       border border-[#323036] 
-      w-[120px] h-[44px] 
+      w-[120px] h-11
       text-[#B1ACC1] rounded 
       bg-[#25242A33] text-center mt-10 mr-2"
         >
@@ -149,7 +149,7 @@ export default function Page() {
           href={`competitions/create`}
           className="flex items-center justify-center 
       border border-[#323036] 
-      w-[120px] h-[44px] 
+      w-[120px] h-11
       text-[#B1ACC1] rounded 
       bg-[#25242A33] text-center mt-10"
         >
@@ -193,7 +193,7 @@ export default function Page() {
                   <span className="text-white text-2xl">{data.teamName}</span>
                   {data.isRecommended && (
                     <div className="flex bg-[#110D17] rounded justify-center items-center font-semibold p-2 ml-2">
-                      <span className="bg-gradient-to-r from-[#FFA1D9] to-[#FF5679] bg-clip-text text-transparent">
+                      <span className="bg-linear-to-r from-[#FFA1D9] to-[#FF5679] bg-clip-text text-transparent">
                         AI추천
                       </span>
                     </div>
@@ -204,7 +204,7 @@ export default function Page() {
                   {data.univName} | {data.groupName}
                 </span>
 
-                <p className="my-2 text-sm text-white line-clamp-2 break-words">
+                <p className="my-2 text-sm text-white line-clamp-2 wrap-break-word">
                   {data.intro}
                 </p>
 
@@ -224,7 +224,7 @@ export default function Page() {
               <PaginationItem>
                 <PaginationPrevious
                   onClick={() => setPage((p) => Math.max(1, p - 1))}
-                  className={`rounded-sm w-[28px] h-[28px] px-3 py-1 text-sm font-medium transition-colors
+                  className={`rounded-sm w-7 h-7 px-3 py-1 text-sm font-medium transition-colors
                     border border-[#323036] text-[#B1ACC1]
                     hover:bg-[#FF5679] hover:text-[#110D17] hover:border-none
                     ${page === 1 ? "pointer-events-none opacity-50" : ""}`}
@@ -239,7 +239,7 @@ export default function Page() {
                   <PaginationLink
                     isActive={page === i + 1}
                     onClick={() => setPage(i + 1)}
-                    className={`w-[28px] h-[28px] rounded-sm px-3 py-1 text-sm font-medium transition-colors
+                    className={`w-7 h-7 rounded-sm px-3 py-1 text-sm font-medium transition-colors
                       ${
                         page === i + 1
                           ? "bg-[#FF5679] text-[#110D17] border-none"
@@ -257,7 +257,7 @@ export default function Page() {
               <PaginationItem>
                 <PaginationNext
                   onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
-                  className={`rounded-sm w-[28px] h-[28px] px-3 py-1 text-sm font-medium transition-colors
+                  className={`rounded-sm w-7 h-7 px-3 py-1 text-sm font-medium transition-colors
                     border border-[#323036] text-[#B1ACC1]
                     hover:bg-[#FF5679] hover:text-[#110D17] hover:border-none
                     ${

@@ -4,13 +4,16 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 
 export default function GroupTableHeader({
-  memberCnt,
   groupId,
+  memberCnt,
+  capacity,
+
   isJoined,
   isLeader,
 }: {
-  memberCnt: number;
   groupId: number;
+  memberCnt: number;
+  capacity: number;
   isJoined: boolean;
   isLeader: boolean;
 }) {
@@ -35,21 +38,21 @@ export default function GroupTableHeader({
         <span className="text-[12px] text-[#B1ACC1]">그룹원</span>
         <div className="text-[16px] ml-3">
           <span>{memberCnt}</span>
-          <span className="text-[#B1ACC1]">${memberCnt}</span>
+          <span className="text-[#B1ACC1]">/{capacity}</span>
         </div>
       </div>
 
       {isEditPage && isLeader ? (
         <div
           onClick={handleClick}
-          className="text-white border-[1px] border-[#FF567980] rounded p-2 cursor-pointer hover:bg-[#FF567920] transition-colors"
+          className="text-white border border-[#FF567980] rounded p-2 cursor-pointer hover:bg-[#FF567920] transition-colors"
         >
           <button onClick={() => router.back()}>닫기</button>
         </div>
       ) : !isJoined ? (
         <div
           onClick={handleClick}
-          className="text-white border-[1px] border-[#FF567980] rounded p-2 cursor-pointer hover:bg-[#FF567920] transition-colors"
+          className="text-white border border-[#FF567980] rounded p-2 cursor-pointer hover:bg-[#FF567920] transition-colors"
         >
           <Link href={`${groupId}/request`}>가입 요청하기</Link>
         </div>
