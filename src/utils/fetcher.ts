@@ -1,4 +1,3 @@
-// src/utils/fetcher.ts
 import { API_BASE_URL } from "@/lib/api";
 import type { Query } from "@/types";
 
@@ -28,14 +27,7 @@ export async function fetchFromAPI(endpoint: string, query?: Query) {
     }
   }
 
-  // 3) 로깅
-  console.log("\n==============================");
-  console.log("📡 [fetchFromAPI] Request");
-  console.log("URL:", url.toString());
-  console.log("With Authorization:", Boolean(accessToken));
-  console.log("==============================");
-
-  // 4) 요청
+  // 3) 요청
   const headers: Record<string, string> = {
     "Content-Type": "application/json",
   };
@@ -46,6 +38,22 @@ export async function fetchFromAPI(endpoint: string, query?: Query) {
     headers,
     cache: "no-store",
   });
+
+  // 4) 로깅
+  console.log("\n==============================");
+  console.log("📡 [fetchFromAPI] Request");
+  console.log("URL:", url.toString());
+  console.log("Method:", "GET"); // ← 현재는 기본 GET
+  console.log("With Authorization:", Boolean(accessToken));
+  console.log(
+    "Authorization Header:",
+    accessToken ? `Bearer ${accessToken}` : "(none)"
+  );
+  console.log("Headers:", {
+    "Content-Type": "application/json",
+    ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
+  });
+  console.log("==============================");
 
   const text = await res
     .clone()

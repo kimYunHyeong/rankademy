@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import "@/styles/globals.css";
 import ClientShell from "@/components/client-shell";
 import Image from "next/image";
-import { AuthProvider } from "./context/auth-context";
 
 export const metadata: Metadata = {
   title: {
@@ -42,9 +41,7 @@ export default function RootLayout({
     <html lang="ko">
       <body className="bg-[#110D17]">
         {/* 클라이언트 상호작용/라우터 훅/로그인 드롭다운 등은 ClientShell에서 */}
-        <AuthProvider>
-          <ClientShell>{children}</ClientShell>
-        </AuthProvider>
+        <ClientShell>{children}</ClientShell>
 
         {/* 푸터는 상호작용 없어서 서버에서 바로 렌더링 */}
         <footer className="mt-10 text-[#B1ACC1] w-full bg-[#0A080E] h-50 flex gap-6">
