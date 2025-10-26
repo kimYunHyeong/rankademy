@@ -1,4 +1,3 @@
-// components/ClientShell.tsx (Client Component)
 "use client";
 
 import { ReactNode } from "react";
@@ -7,6 +6,7 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import ProfileMenu from "@/components/profile-menu";
 import useAuthStatus from "@/hooks/use-auth-status";
+import { SUMMONER_ICON_URL } from "@/lib/api";
 
 type NavItem = {
   href: string;
@@ -17,7 +17,7 @@ type NavItem = {
 
 export default function ClientShell({ children }: { children: ReactNode }) {
   const pathname = usePathname() ?? "/";
-  const { isAuthenticated } = useAuthStatus();
+  const { isAuthenticated, accessToken } = useAuthStatus();
 
   const navItems: NavItem[] = [
     {
@@ -34,9 +34,7 @@ export default function ClientShell({ children }: { children: ReactNode }) {
   const defaultMatch = (href: string, path: string) =>
     path === href || path.startsWith(href + "/");
 
-  const avatarSrc =
-    /* user?.avatarUrl ?? */
-    "https://ddragon.leagueoflegends.com/cdn/15.17.1/img/champion/Yasuo.png";
+  const avatarSrc = `${SUMMONER_ICON_URL}/${1}.png`;
 
   return (
     <div className="m-5">
@@ -56,7 +54,7 @@ export default function ClientShell({ children }: { children: ReactNode }) {
             />
           </Link>
 
-          <nav className="flex flex-col text-white [&>*]:text-center [&>*]:p-1 [&>*]:w-[80px] [&>*]:rounded-md">
+          <nav className="flex flex-col text-white *:text-center *:p-1 *:w-20 *:rounded-md">
             {navItems.map((item) => {
               const isActive = item.match
                 ? item.match(pathname)

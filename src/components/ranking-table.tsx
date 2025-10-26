@@ -6,6 +6,7 @@ import Link from "next/link";
 import { RankingTableProps } from "@/types";
 import { fetchFromAPI } from "@/utils/fetcher";
 import { Query } from "@/types";
+import { useEffect } from "react";
 
 type Props<T> = RankingTableProps<T> & {
   apiurl: string;
@@ -36,8 +37,8 @@ export default function RankingTable<T>({
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState<unknown>(null);
 
-  //query / apiurl 변경 시마다 재요청
-  React.useEffect(() => {
+  /*query나 apiurl 변경 시마다 재요청  */
+  useEffect(() => {
     let alive = true;
 
     const run = async () => {

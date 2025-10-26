@@ -73,7 +73,7 @@ export default function SubHeaderMain({
                 z-50 py-3"
     >
       <div
-        className={`relative inline-flex max-w-[360px] select-none rounded-full bg-[#2A2431]/90 p-1 ${className} w-[240px] h-[40px]`}
+        className={`relative inline-flex max-w-[360px] select-none rounded-full bg-[#2A2431]/90 p-1 ${className} w-60 h-10`}
         style={{ height }}
         role="tablist"
         aria-label="랭킹 토글"
