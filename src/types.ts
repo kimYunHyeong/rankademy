@@ -138,6 +138,11 @@ export type GroupCompetitionResult = {
   }[];
 };
 
+export type Session = {
+  isAuthenticated: boolean;
+  summonerIcon?: number | null;
+};
+
 /* 이 아래는 다 지우기 */
 /* ---------------------대학 정보------------------------------- */
 export interface UnivData {

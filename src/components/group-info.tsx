@@ -21,6 +21,7 @@ export default function GroupInfo({
   const competitionPath = `/groups/${groupDetailData.groupId}/competition`;
   const isCompetitionPage = pathname === competitionPath;
 
+  console.log(groupDetailData.leader);
   return (
     /* 컨테이너 */
     <div className="flex justify-center h-[255px]">

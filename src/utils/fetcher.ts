@@ -1,9 +1,15 @@
+"use server";
+
+import "server-only";
 import { API_BASE_URL } from "@/lib/api";
 import type { Query } from "@/types";
+import { cookies } from "next/headers"; // 서버에서 쿠키 접근 가능
 
 export async function fetchFromAPI(endpoint: string, query?: Query) {
-  // 1) URL + 쿼리 직렬화
+  // 1️⃣ URL 직렬화
   const url = new URL(`${API_BASE_URL}${endpoint}`);
+
+  /* 쿼리 파라미터 변경 */
   if (query) {
     const sp = new URLSearchParams();
     for (const [k, v] of Object.entries(query)) {
@@ -17,44 +23,42 @@ export async function fetchFromAPI(endpoint: string, query?: Query) {
     if (qs) url.search = qs;
   }
 
-  // 2) 브라우저에서만 accessToken 읽기
-  let accessToken: string | null = null;
-  if (typeof window !== "undefined") {
-    try {
-      accessToken = window.localStorage.getItem("accessToken");
-    } catch {
-      // storage 접근 실패는 무시
-    }
-  }
+  // 2️⃣ 쿠키에서 accessToken 읽기 (httpOnly 쿠키)
+  const cookieStore = cookies();
+  const accessToken = (await cookieStore).get("accessToken")?.value;
 
-  // 3) 요청
-  const headers: Record<string, string> = {
+  // 3️⃣ 요청 헤더 구성
+  const headers: HeadersInit = {
     "Content-Type": "application/json",
   };
-  if (accessToken) headers.Authorization = `Bearer ${accessToken}`;
 
+  if (accessToken) {
+    headers["Authorization"] = `Bearer ${accessToken}`;
+  }
+
+  // 4️⃣ 요청 로그
+  console.log("\n==============================");
+  console.log("📡 [fetchFromAPI] Request");
+  console.log("URL:", url.toString());
+  console.log("Method: GET");
+  console.log("Headers:", headers);
+  if (accessToken) {
+    console.log(
+      "Access Token (first 20 chars):",
+      accessToken.slice(0, 20) + "..."
+    );
+  } else {
+    console.log("엑세스토큰이 없습니다.");
+  }
+  console.log("==============================");
+
+  // 5️⃣ 실제 요청
   const res = await fetch(url.toString(), {
-    method: "GET",
     headers,
     cache: "no-store",
   });
 
-  // 4) 로깅
-  console.log("\n==============================");
-  console.log("📡 [fetchFromAPI] Request");
-  console.log("URL:", url.toString());
-  console.log("Method:", "GET"); // ← 현재는 기본 GET
-  console.log("With Authorization:", Boolean(accessToken));
-  console.log(
-    "Authorization Header:",
-    accessToken ? `Bearer ${accessToken}` : "(none)"
-  );
-  console.log("Headers:", {
-    "Content-Type": "application/json",
-    ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
-  });
-  console.log("==============================");
-
+  // 6️⃣ 응답 로그
   const text = await res
     .clone()
     .text()
@@ -62,18 +66,18 @@ export async function fetchFromAPI(endpoint: string, query?: Query) {
 
   console.log("📥 [fetchFromAPI] Response");
   console.log("Status:", res.status, res.statusText);
-  console.log("Response Body:", text.slice(0, 500));
+  console.log("Response Body:", text.slice(0, 300));
   console.log("==============================\n");
 
-  // 5) 에러 처리
+  // 7️⃣ 에러 처리
   if (!res.ok) {
-    if (res.status === 401 && typeof window !== "undefined") {
-      window.location.assign("/login");
+    if (res.status === 401) {
+      console.warn("❌ Unauthorized (401) — No or invalid access token.");
     }
-    throw new Error(`API Error: ${res.status} ${text.slice(0, 400)}`);
+    throw new Error(`API Error: ${res.status} ${text.slice(0, 200)}`);
   }
 
-  // 6) JSON 우선 파싱
+  // 8️⃣ JSON 파싱
   try {
     return JSON.parse(text);
   } catch {

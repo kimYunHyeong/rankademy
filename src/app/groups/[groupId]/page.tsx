@@ -105,7 +105,7 @@ export default async function GroupDetailPage({
       {/* 그룹 정보 */}
       <GroupInfo
         groupDetailData={groupDetailData}
-        recentCompetitionData={mockRecentCompetitionData}
+        recentCompetitionData={recentCompetitionData}
       />
 
       <div className="h-4"></div>

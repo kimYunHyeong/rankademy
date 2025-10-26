@@ -1,12 +1,16 @@
-// components/ProfileMenu.tsx (Client Component)
 "use client";
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { SUMMONER_ICON_URL } from "@/lib/api";
 
-export default function ProfileMenu({ avatarSrc }: { avatarSrc: string }) {
+export default function ProfileMenu({
+  summonerIcon,
+}: {
+  summonerIcon: number | null;
+}) {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
@@ -31,32 +35,14 @@ export default function ProfileMenu({ avatarSrc }: { avatarSrc: string }) {
   const handleLogout = async () => {
     try {
       setLoading(true);
+      await fetch("/auth/logout", {
+        method: "POST",
+        credentials: "include",
+        cache: "no-store",
+        headers: { "Content-Type": "application/json" },
+      });
 
-      // 1) 먼저 로컬스토리지 토큰 제거 (가장 중요)
-      if (typeof window !== "undefined") {
-        window.localStorage.removeItem("accessToken");
-        window.localStorage.removeItem("refreshToken");
-
-        // 👉 같은 탭에서도 상태 갱신이 필요하다면 커스텀 이벤트 발행(옵션)
-        window.dispatchEvent(new Event("rankademy:logout"));
-      }
-
-      // 2) (선택) 서버 쿠키도 같이 만료시키고 싶다면 호출 유지
-      //    쿠키를 더 이상 쓰지 않더라도, 과거 잔여 쿠키 정리용으로 유용
-      try {
-        await fetch("/api/auth/logout", {
-          method: "POST",
-          credentials: "include",
-          headers: {
-            "Content-Type": "application/json",
-            "Cache-Control": "no-cache",
-          },
-        });
-      } catch (e) {
-        console.warn("Logout API failed (ignored):", e);
-      }
-
-      // 3) 라우팅: 같은 탭에서는 storage 이벤트가 안 떠서 새로고침/리다이렉트로 보장
+      // 상태/캐시 갱신 보장
       router.replace("/");
       router.refresh();
     } catch (e) {
@@ -77,7 +63,7 @@ export default function ProfileMenu({ avatarSrc }: { avatarSrc: string }) {
         className="focus:outline-none"
       >
         <Image
-          src={avatarSrc}
+          src={`${SUMMONER_ICON_URL}${summonerIcon}.png`}
           alt="프로필"
           width={40}
           height={40}

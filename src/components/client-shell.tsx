@@ -1,40 +1,28 @@
-"use client";
-
-import { ReactNode } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
 import ProfileMenu from "@/components/profile-menu";
-import useAuthStatus from "@/hooks/use-auth-status";
-import { SUMMONER_ICON_URL } from "@/lib/api";
+import { getIsAuthenticated } from "@/lib/auth";
+import NavMenu from "@/components/nav-menu";
 
 type NavItem = {
   href: string;
   label: string;
   key: "ranking" | "groups" | "competitions";
-  match?: (path: string) => boolean;
 };
 
-export default function ClientShell({ children }: { children: ReactNode }) {
-  const pathname = usePathname() ?? "/";
-  const { isAuthenticated, accessToken } = useAuthStatus();
+export default async function ClientShell({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  // 서버에서 바로 인증 정보 조회
+  const { isAuthenticated, summonerIcon } = await getIsAuthenticated();
 
   const navItems: NavItem[] = [
-    {
-      href: "/rankings",
-      label: "랭킹",
-      key: "ranking",
-      match: (path) =>
-        path === "/" || path === "/rankings" || path.startsWith("/rankings/"),
-    },
+    { href: "/rankings", label: "랭킹", key: "ranking" },
     { href: "/groups", label: "그룹", key: "groups" },
     { href: "/competitions", label: "대항전", key: "competitions" },
   ];
-
-  const defaultMatch = (href: string, path: string) =>
-    path === href || path.startsWith(href + "/");
-
-  const avatarSrc = `${SUMMONER_ICON_URL}/${1}.png`;
 
   return (
     <div className="m-5">
@@ -54,32 +42,8 @@ export default function ClientShell({ children }: { children: ReactNode }) {
             />
           </Link>
 
-          <nav className="flex flex-col text-white *:text-center *:p-1 *:w-20 *:rounded-md">
-            {navItems.map((item) => {
-              const isActive = item.match
-                ? item.match(pathname)
-                : defaultMatch(item.href, pathname);
-              return (
-                <Link
-                  key={item.key}
-                  href={item.href}
-                  className="flex flex-col items-center justify-center"
-                  aria-current={isActive ? "page" : undefined}
-                >
-                  <Image
-                    src={`/images/${item.key}${
-                      isActive ? "-full" : "-empty"
-                    }.png`}
-                    alt={`${item.label} 로고`}
-                    width={46}
-                    height={46}
-                    className="object-contain transition-transform duration-200 ease-out hover:scale-110"
-                  />
-                  <span>{item.label}</span>
-                </Link>
-              );
-            })}
-          </nav>
+          {/* 네비게이션: 클라 하위 컴포넌트에서 pathname 계산 */}
+          <NavMenu items={navItems} />
 
           {/* 내 정보 */}
           <div className="flex flex-col items-center text-white space-y-3">
@@ -97,7 +61,7 @@ export default function ClientShell({ children }: { children: ReactNode }) {
             </Link>
 
             {isAuthenticated ? (
-              <ProfileMenu avatarSrc={avatarSrc} />
+              <ProfileMenu summonerIcon={summonerIcon} />
             ) : (
               <Link
                 href="/login"
