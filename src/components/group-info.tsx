@@ -21,7 +21,8 @@ export default function GroupInfo({
   const competitionPath = `/groups/${groupDetailData.groupId}/competition`;
   const isCompetitionPage = pathname === competitionPath;
 
-  console.log(groupDetailData.leader);
+  const { competitionInfo } = groupDetailData;
+
   return (
     /* 컨테이너 */
     <div className="flex justify-center h-[255px]">
@@ -106,13 +107,18 @@ export default function GroupInfo({
         <div className="flex items-center h-[85%]">
           {/* 왼쪽 그래프 */}
           <div className="w-1/2 flex items-center justify-center">
-            <WinRateDonut winCnt={1} lossCnt={2} winRate={3} />
+            <WinRateDonut
+              winCnt={competitionInfo.winCount}
+              lossCnt={competitionInfo.lossCount}
+              winRate={competitionInfo.winRate}
+            />
           </div>
 
           {/* 오른쪽 부분 */}
           <div className="w-1/2 flex flex-col  ">
             <span className="text-[24px]">
-              {1 + 2}전 {2}승
+              {competitionInfo.winCount + competitionInfo.lossCount}전{" "}
+              {competitionInfo.winRate}승
             </span>
             {/* 가장 최근 3개 반복 */}
             <div className="flex flex-col mt-2">
