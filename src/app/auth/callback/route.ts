@@ -6,7 +6,20 @@ export async function GET(req: Request) {
     const { searchParams } = new URL(req.url);
     const accessToken = searchParams.get("accessToken");
     const refreshToken = searchParams.get("refreshToken");
-    const summonerIcon = searchParams.get("summonerIcon"); // 필요시 사용
+    const summonerIcon = searchParams.get("summonerIcon");
+
+    console.log(summonerIcon);
+    console.log(summonerIcon);
+    console.log(summonerIcon);
+    console.log(summonerIcon);
+    console.log(summonerIcon);
+    console.log(summonerIcon);
+    console.log(summonerIcon);
+    console.log(summonerIcon);
+    console.log(summonerIcon);
+    console.log(summonerIcon);
+    console.log(summonerIcon);
+    console.log(summonerIcon);
 
     if (!accessToken || !refreshToken) {
       return NextResponse.redirect(
@@ -24,6 +37,10 @@ export async function GET(req: Request) {
 
     (await cookies()).set("accessToken", accessToken, opts);
     (await cookies()).set("refreshToken", refreshToken, opts);
+
+    if (summonerIcon !== null) {
+      (await cookies()).set("summonerIcon", String(summonerIcon), opts);
+    }
 
     // 원하는 페이지로
     return NextResponse.redirect(new URL("/", req.url));

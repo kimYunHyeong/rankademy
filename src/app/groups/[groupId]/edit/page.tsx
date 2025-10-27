@@ -93,7 +93,7 @@ export default function Page() {
 
         return (
           <div className="flex items-center gap-2 w-full">
-            <div className="relative flex-1 w-[160px] h-[30px] border-[#323036] rounded-[4px] bg-[#110D17] overflow-hidden">
+            <div className="relative flex-1 w-40 h-[30px] border-[#323036] rounded-lg bg-[#110D17] overflow-hidden">
               <div
                 className="h-full bg-[#FF567980]"
                 style={{ width: `${pct}%` }}

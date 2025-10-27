@@ -2,7 +2,7 @@ import { cookies } from "next/headers";
 
 export const ACCESS_COOKIE = "accessToken";
 export const REFRESH_COOKIE = "refreshToken";
-export const SUMMONER_ICON_COOKIE = "refreshToken";
+export const SUMMONER_ICON_COOKIE = "summonerIcon";
 
 // 필요 시: JWT exp 확인용
 export function parseJwt<T = any>(token: string): T | null {
@@ -59,8 +59,14 @@ export async function getRefreshTokenFromCookie() {
   return (await cookies()).get(REFRESH_COOKIE)?.value ?? null;
 }
 
-export async function getSummonerIconFromCookie() {
-  return (await cookies()).get(SUMMONER_ICON_COOKIE)?.value ?? null;
+export async function getSummonerIconFromCookie(): Promise<number | null> {
+  const cookieStore = await cookies();
+  const value = cookieStore.get(SUMMONER_ICON_COOKIE)?.value;
+
+  if (!value) return null; // 쿠키 없음
+
+  const parsed = Number(value);
+  return Number.isNaN(parsed) ? null : parsed; // 숫자로 변환 (NaN 방지)
 }
 
 export async function getIsAuthenticated() {
@@ -71,7 +77,7 @@ export async function getIsAuthenticated() {
   }
 
   const raw = await getSummonerIconFromCookie();
-  const cleaned = !raw || raw === "null" || raw === "undefined" ? null : raw;
+  const cleaned = !raw || raw === null || raw === undefined ? null : raw;
 
   const num = cleaned === null ? null : Number(cleaned);
   const summonerIcon = Number.isNaN(num) ? null : num;

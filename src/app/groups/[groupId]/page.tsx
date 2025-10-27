@@ -3,7 +3,12 @@ import { univGroupInfo } from "@/mock/groupInfoData";
 import Link from "next/link";
 import CheckPopup from "@/components/check-popup";
 import { Switch } from "@/components/ui/switch";
-import { Position, GroupDetail, RecentCompetition } from "@/types";
+import {
+  Position,
+  GroupDetail,
+  RecentCompetition,
+  PaginationData,
+} from "@/types";
 
 import { fetchFromAPI } from "@/utils/fetcher";
 import GroupTable from "@/components/group-table";
@@ -33,6 +38,11 @@ export type GroupMember = {
   };
 };
 
+export type GroupMemberAPIres = {
+  content: GroupMember[];
+  page: PaginationData;
+};
+
 export default async function GroupDetailPage({
   params,
 }: {
@@ -59,8 +69,9 @@ export default async function GroupDetailPage({
   const groupMemberDataApiUrl = `/groups/${groupId}/members${groupMemberDataRequieredQuery}`;
   const groupMemberData = (await fetchFromAPI(
     groupMemberDataApiUrl
-  )) as GroupMember[];
-  /* const pageData = groupMemberData.page; */
+  )) as GroupMemberAPIres;
+  const groupMember = groupMemberData.content;
+  const pageData = groupMemberData.page;
 
   return (
     <>
@@ -117,13 +128,8 @@ export default async function GroupDetailPage({
         isLeader={groupDetailData.isLeader}
         isJoined={groupDetailData.isJoined}
         memberApiUrl={groupMemberDataApiUrl}
-        groupMember={groupMemberData}
-        pageData={{
-          size: 20,
-          number: 0,
-          totalElements: 1,
-          totalPages: 1,
-        }}
+        groupMember={groupMember}
+        pageData={pageData}
       />
     </>
   );

@@ -138,7 +138,7 @@ export default function GroupTable({
             </span>
           </div>
           <span className="ml-3 text-sm text-white">
-            {row.recordInfo.winRate}%
+            {Math.floor(row.recordInfo.winRate)}%
           </span>
         </div>
       ),

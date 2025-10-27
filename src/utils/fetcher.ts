@@ -4,6 +4,7 @@ import "server-only";
 import { API_BASE_URL } from "@/lib/api";
 import type { Query } from "@/types";
 import { cookies } from "next/headers"; // 서버에서 쿠키 접근 가능
+import { redirect } from "next/navigation";
 
 export async function fetchFromAPI(endpoint: string, query?: Query) {
   // 1️⃣ URL 직렬화
@@ -73,6 +74,7 @@ export async function fetchFromAPI(endpoint: string, query?: Query) {
   if (!res.ok) {
     if (res.status === 401) {
       console.warn("❌ Unauthorized (401) — No or invalid access token.");
+      redirect("/login");
     }
     throw new Error(`API Error: ${res.status} ${text.slice(0, 200)}`);
   }

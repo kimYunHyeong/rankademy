@@ -1,4 +1,3 @@
-// app/api/auth/status/route.ts
 import { NextResponse } from "next/server";
 import {
   getAccessTokenFromCookie,
@@ -13,7 +12,6 @@ export async function GET(req: Request) {
 
   const accessToken = await getAccessTokenFromCookie();
   const summonerIcon = await getSummonerIconFromCookie();
-
   const isAuthenticated = !!accessToken;
 
   // 디버깅용 로그
