@@ -57,7 +57,7 @@ export default function UnivUserRankingSection({
       header: "유저명",
       headerClassName: "w-[20%]",
       cell: (row) => (
-        <Link href={`/user/${row.summonerName}`}>
+        <Link href={`/user/${row.userId}`}>
           <div className="flex items-center gap-2">
             <Image
               src={`${SUMMONER_ICON_URL}${row.summonerIcon}.png`}

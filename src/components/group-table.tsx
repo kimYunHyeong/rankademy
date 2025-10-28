@@ -50,7 +50,6 @@ export default function GroupTable({
         <Link href={`/user/${row.summonerName}`}>
           <div className="flex items-center gap-2">
             <Image
-              /*summonerIcon으로 바꿔야할 듯 */
               src={`${SUMMONER_ICON_URL}${row.summonerIconId}.png`}
               alt={row.summonerIconId.toString()}
               width={30}

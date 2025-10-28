@@ -167,7 +167,7 @@ export default function Page() {
             setForm((prev) => ({ ...prev, groupId: v === "none" ? null : v }))
           }
         >
-          <SelectTrigger className="w-[112px] h-[44px] border-[#323036] bg-[#1D1921] text-[#B1ACC1] rounded">
+          <SelectTrigger className="w-28 h-11 border-[#323036] bg-[#1D1921] text-[#B1ACC1] rounded">
             <SelectValue placeholder="그룹 선택" />
           </SelectTrigger>
           <SelectContent className="border-[#323036] bg-[#1D1921] text-[#B1ACC1] rounded">
@@ -295,13 +295,13 @@ export default function Page() {
       <div className="flex justify-end mt-5">
         <Link
           href={`/groups`}
-          className="flex items-center justify-center border border-[#323036] w-[120px] h-[44px] text-[#B1ACC1] rounded bg-[#25242A33] text-center mr-2"
+          className="flex items-center justify-center border border-[#323036] w-[120px] h-11 text-[#B1ACC1] rounded bg-[#25242A33] text-center mr-2"
         >
           취소
         </Link>
         <button
           onClick={onSubmit}
-          className="flex items-center justify-center w-[120px] h-[44px]  text-white rounded bg-[#FF567933] text-center"
+          className="flex items-center justify-center w-[120px] h-11  text-white rounded bg-[#FF567933] text-center"
         >
           게시하기
         </button>

@@ -6,11 +6,11 @@ import { MyProfile } from "@/app/me/page";
 /* 목데이터 */
 import { mockMyProfile } from "@/mock/myProfile";
 
-type Params = Promise<{ userId: number }>;
+type Params = Promise<{ id: number }>;
 
 export default async function UserProFilePage({ params }: { params: Params }) {
-  const { userId } = await params;
-  const apiUrl = `/users/${userId}`;
+  const { id } = await params;
+  const apiUrl = `/users/${id}`;
   const res = (await fetchFromAPI(apiUrl)) as MyProfile;
   return (
     <Modal>
