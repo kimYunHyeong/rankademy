@@ -156,7 +156,7 @@ export default function IDCard({ data }: { data: MyProfile }) {
                 </span>
               </div>
               <span className="ml-3 text-sm text-white">
-                {data.summonerInfo.winRate}%
+                {Math.floor(data.summonerInfo.winRate)}%
               </span>
             </div>
           </div>

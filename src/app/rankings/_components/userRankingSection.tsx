@@ -41,8 +41,9 @@ export default function UserRankingSection({
               height={30}
               className="rounded"
             />
-            <span>{row.summonerName}</span>
-            <span>{row.summonerTag}</span>
+            <span>
+              {row.summonerName}#{row.summonerTag}
+            </span>
           </div>
         </Link>
       ),
