@@ -41,19 +41,9 @@ export default async function GroupCompetitionPage({
 
   const competitionResultDataRequieredQuery = `?page=0&groupId=${groupId}`;
   const competitionResultDataApiUrl = `/competitions/groups/${groupId}${competitionResultDataRequieredQuery}`;
-  /*   const competitionResultData = (await fetchFromAPI(
+  const competitionResultData = (await fetchFromAPI(
     competitionResultDataApiUrl
-  )) as competitionResultAPIres; */
-
-  const competitionResultData = {
-    content: mockGroupCompetitionResult,
-    page: {
-      size: 10,
-      number: 1,
-      totalElements: 1,
-      totalPages: 1,
-    },
-  };
+  )) as competitionResultAPIres;
 
   return (
     <>
@@ -63,7 +53,14 @@ export default async function GroupCompetitionPage({
       {/* 그룹 정보 */}
       <GroupInfo
         groupDetailData={groupDetailData}
-        recentCompetitionData={mockRecentCompetitionData}
+        competitionInfo={
+          groupDetailData?.competitionInfo ?? {
+            winCount: 0,
+            lossCount: 0,
+            winRate: 0,
+          }
+        }
+        recentCompetitionData={recentCompetitionData}
       />
       <div className="h-4"></div>
       <GroupCompetitionResultSection

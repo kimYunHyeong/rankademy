@@ -11,7 +11,7 @@ export type MyProfile = {
   summonerInfo: {
     summonerName: string;
     summonerTag: string;
-    summonerIconNum: number;
+    summonerIcon: number;
     tierInfo: {
       tier: Tier;
       rank: string;

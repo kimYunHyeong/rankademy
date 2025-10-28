@@ -116,6 +116,13 @@ export default async function GroupDetailPage({
       {/* 그룹 정보 */}
       <GroupInfo
         groupDetailData={groupDetailData}
+        competitionInfo={
+          groupDetailData?.competitionInfo ?? {
+            winCount: 0,
+            lossCount: 0,
+            winRate: 0,
+          }
+        }
         recentCompetitionData={recentCompetitionData}
       />
 

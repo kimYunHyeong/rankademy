@@ -109,8 +109,8 @@ export default function FormSection({ data }: { data: MyProfile }) {
                 bg-[#25242A33] text-center mt-2 p-6"
             >
               <Image
-                src={`${SUMMONER_ICON_URL}${data.summonerInfo.summonerIconNum}.png`}
-                alt={data.summonerInfo.summonerIconNum.toString()}
+                src={`${SUMMONER_ICON_URL}${data.summonerInfo.summonerIcon}.png`}
+                alt={data.summonerInfo.summonerIcon.toString()}
                 width={100}
                 height={100}
                 className="rounded-2xl mr-4"

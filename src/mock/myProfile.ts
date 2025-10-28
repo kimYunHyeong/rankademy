@@ -7,7 +7,7 @@ export const mockMyProfile: MyProfile = {
   summonerInfo: {
     summonerName: "랭크히어로",
     summonerTag: "KR1",
-    summonerIconNum: 5883,
+    summonerIcon: 5883,
     tierInfo: {
       tier: "DIAMOND" as Tier,
       rank: "1",

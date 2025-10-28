@@ -12,16 +12,16 @@ import { formatDate } from "@/utils/format-date";
 
 export default function GroupInfo({
   groupDetailData,
+  competitionInfo,
   recentCompetitionData,
 }: {
   groupDetailData: GroupDetail;
+  competitionInfo: { winCount: number; lossCount: number; winRate: number };
   recentCompetitionData: RecentCompetition[];
 }) {
   const pathname = usePathname();
   const competitionPath = `/groups/${groupDetailData.groupId}/competition`;
   const isCompetitionPage = pathname === competitionPath;
-
-  const { competitionInfo } = groupDetailData;
 
   return (
     /* 컨테이너 */
