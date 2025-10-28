@@ -45,7 +45,7 @@ export default function LoginPage() {
   if (loading || isAuthenticated === true) return null;
 
   return (
-    <div className="flex justify-center items-center h-full bg-[#0F0E12]">
+    <div className="flex justify-center items-center h-full">
       <LoginCard />
     </div>
   );

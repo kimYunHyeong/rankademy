@@ -1,28 +1,30 @@
 import Image from "next/image";
 import { capitalize } from "@/utils/capitalize";
-import { calcWinRate } from "@/utils/calc-winrate";
-import { userData } from "@/types";
 
-type props = userData;
+import { MyProfile } from "@/app/me/page";
+import {
+  CHAMPION_IMG_URL,
+  POSITION_IMG_URL,
+  SUMMONER_ICON_URL,
+  TIER_IMG_URL,
+} from "@/lib/api";
 
-export default function IDCard({ data }: { data: props }) {
-  const pct = calcWinRate(data.record.win, data.record.cnt);
-
+export default function IDCard({ data }: { data: MyProfile }) {
   return (
     <div className="w-[500px] h-[670px] flex justify-center p-6 border-2 border-[#323036] rounded-xl bg-[#FF56790D]">
       <div className="text-white">
         {/* 사진 및 칭호 */}
         <div>
           <Image
-            src={`https://ddragon.leagueoflegends.com/cdn/15.17.1/img/champion/${data.user.icon}.png`}
-            alt={data.user.icon}
+            src={`${SUMMONER_ICON_URL}${data.summonerInfo.summonerIcon}.png`}
+            alt={"summonerIcon"}
             width={140}
             height={140}
             className="rounded-2xl"
           />
           <div className="w-[140px] h-[26px] border border-[#323036] rounded bg-[#FF56790D] flex items-center justify-center mt-1">
             <span className="bg-[linear-gradient(149.06deg,#FFA1D9_10.49%,#FF5679_60.64%)] bg-clip-text text-transparent font-semibold ">
-              {data.emblem}
+              {"칭호"}
             </span>
           </div>
         </div>
@@ -33,9 +35,11 @@ export default function IDCard({ data }: { data: props }) {
             닉네임
           </span>
           <div>
-            <span className="text-[32px]">{data.user.userName}</span>
+            <span className="text-[32px]">
+              {data.summonerInfo.summonerName}
+            </span>
             <span className="ml-4 text-[32px] text-[#B1ACC1]">
-              #{data.user.userTag}
+              #{data.summonerInfo.summonerTag}
             </span>
           </div>
         </div>
@@ -47,7 +51,7 @@ export default function IDCard({ data }: { data: props }) {
           </span>
           <span className="text-s mb-1">{"서울과학기술대학교"}</span>
           <span className="text-xs">
-            {data.major} | {data.admissionYear}학번
+            {data.univInfo.major} | {data.univInfo.admissionYear}학번
           </span>
         </div>
 
@@ -71,20 +75,20 @@ export default function IDCard({ data }: { data: props }) {
               </span>
               <div className="flex">
                 <Image
-                  src={`https://ddragon.leagueoflegends.com/cdn/15.17.1/img/champion/${data.most.first}.png`}
-                  alt={data.most.first}
+                  src={`${CHAMPION_IMG_URL}${data.mostChampionIds[0]}.png`}
+                  alt={"Most Champion 1"}
                   width={40}
                   height={40}
                 />
                 <Image
-                  src={`https://ddragon.leagueoflegends.com/cdn/15.17.1/img/champion/${data.most.second}.png`}
-                  alt={data.most.second}
+                  src={`${CHAMPION_IMG_URL}${data.mostChampionIds[1]}.png`}
+                  alt={"Most Champion 2"}
                   width={40}
                   height={40}
                 />
                 <Image
-                  src={`https://ddragon.leagueoflegends.com/cdn/15.17.1/img/champion/${data.most.third}.png`}
-                  alt={data.most.third}
+                  src={`${CHAMPION_IMG_URL}${data.mostChampionIds[2]}.png`}
+                  alt={"Most Champion 3"}
                   width={40}
                   height={40}
                 />
@@ -97,14 +101,14 @@ export default function IDCard({ data }: { data: props }) {
               </span>
               <div className="flex">
                 <Image
-                  src={`https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-static-assets/global/default/svg/position-${data.position.main}.svg`}
-                  alt={data.position.main}
+                  src={`${POSITION_IMG_URL}${data.mainPosition.toLowerCase()}.svg`}
+                  alt={data.mainPosition}
                   width={40}
                   height={40}
                 />
                 <Image
-                  src={`https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-static-assets/global/default/svg/position-${data.position.sub}.svg`}
-                  alt={data.position.sub}
+                  src={`${POSITION_IMG_URL}${data.subPosition.toLowerCase()}.svg`}
+                  alt={data.subPosition}
                   width={40}
                   height={40}
                 />
@@ -117,16 +121,17 @@ export default function IDCard({ data }: { data: props }) {
               </span>
               <div className="flex">
                 <Image
-                  src={`https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-static-assets/global/default/ranked-mini-crests/${data.tier.rank}.svg`}
-                  alt={data.tier.rank}
+                  src={`${TIER_IMG_URL}${data.summonerInfo.tierInfo.tier.toLowerCase()}.svg`}
+                  alt={data.summonerInfo.tierInfo.tier}
                   width={40}
                   height={40}
                 />
                 <div className="flex flex-col ml-1 text-xs justify-center">
                   <span>
-                    {capitalize(data.tier.rank)} {data.tier.tier}
+                    {capitalize(data.summonerInfo.tierInfo.tier.toLowerCase())}{" "}
+                    {data.summonerInfo.tierInfo.rank}
                   </span>
-                  <span>{data.tier.lp}LP</span>
+                  <span>{data.summonerInfo.tierInfo.lp}LP</span>
                 </div>
               </div>
             </div>
@@ -141,16 +146,18 @@ export default function IDCard({ data }: { data: props }) {
               <div className="relative flex-1 w-40 h-[30px] border-[#323036] rounded-lg bg-[#110D17] overflow-hidden">
                 <div
                   className="h-full bg-[#FF567980]"
-                  style={{ width: `${pct}%` }}
+                  style={{ width: `${data.summonerInfo.winRate}%` }}
                 />
                 <span className="absolute left-2 top-1/2 -translate-y-1/2 text-xs text-white font-medium">
-                  {data.record.win}승
+                  {data.summonerInfo.winCount}승
                 </span>
                 <span className="absolute right-2 top-1/2 -translate-y-1/2 text-xs text-white font-medium">
-                  {data.record.cnt - data.record.win}패
+                  {data.summonerInfo.lossCount}패
                 </span>
               </div>
-              <span className="ml-3 text-sm text-white">{pct}%</span>
+              <span className="ml-3 text-sm text-white">
+                {data.summonerInfo.winRate}%
+              </span>
             </div>
           </div>
         </div>

@@ -8,19 +8,6 @@ export async function GET(req: Request) {
     const refreshToken = searchParams.get("refreshToken");
     const summonerIcon = searchParams.get("summonerIcon");
 
-    console.log(summonerIcon);
-    console.log(summonerIcon);
-    console.log(summonerIcon);
-    console.log(summonerIcon);
-    console.log(summonerIcon);
-    console.log(summonerIcon);
-    console.log(summonerIcon);
-    console.log(summonerIcon);
-    console.log(summonerIcon);
-    console.log(summonerIcon);
-    console.log(summonerIcon);
-    console.log(summonerIcon);
-
     if (!accessToken || !refreshToken) {
       return NextResponse.redirect(
         new URL("/login?error=set_cookie_failed", req.url)

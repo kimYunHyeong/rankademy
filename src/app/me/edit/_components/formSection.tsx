@@ -13,8 +13,10 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { capitalize } from "@/utils/capitalize";
-import { useRouter } from "next/navigation";
+
 import PositionPicker from "./position-select";
+import { postToAPI } from "@/utils/patcher";
+import { updateProfile } from "../action";
 
 /* 제출 데이터 타입*/
 type FormState = {
@@ -37,45 +39,6 @@ export default function FormSection({ data }: { data: MyProfile }) {
     subPosition: (data.subPosition ?? "") as Position,
   });
 
-  /* 로딩 및 에러 */
-  const router = useRouter();
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  /* 폼 제출 */
-  const onSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    setError(null);
-
-    try {
-      const res = await fetch(`${API_BASE_URL}/me`, {
-        method: "PATCH", // ✅ PATCH 요청
-        headers: {
-          "Content-Type": "application/json",
-          // 필요 시 토큰 헤더 추가
-          // Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-        body: JSON.stringify(form), // ✅ form 전체 전송
-      });
-
-      if (!res.ok) {
-        const text = await res.text();
-        throw new Error(`서버 오류: ${res.status} ${text}`);
-      }
-
-      const updated = await res.json();
-      console.log("✅ 프로필 수정 완료:", updated);
-
-      router.push("/me"); // ✅ 수정 완료 후 프로필 페이지 이동
-    } catch (err: any) {
-      console.error("❌ 프로필 수정 실패:", err);
-      setError(err.message ?? "프로필 수정 중 오류가 발생했습니다.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
   return (
     <>
       {/* 헤더 */}
@@ -84,7 +47,7 @@ export default function FormSection({ data }: { data: MyProfile }) {
       </div>
 
       {/* 수정 제출 */}
-      <form onSubmit={onSubmit} className="flex flex-col gap-5">
+      <form action={updateProfile} className="flex flex-col gap-5">
         <div className="flex items-center justify-end px-20">
           <button
             type="submit"

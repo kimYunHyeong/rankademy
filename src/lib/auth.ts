@@ -82,11 +82,5 @@ export async function getIsAuthenticated() {
   const num = cleaned === null ? null : Number(cleaned);
   const summonerIcon = Number.isNaN(num) ? null : num;
 
-  console.log("✅ getIsAuthenticated 실행:", {
-    accessToken: !!accessToken,
-    raw,
-    summonerIcon,
-  });
-
   return { isAuthenticated: true, summonerIcon };
 }
