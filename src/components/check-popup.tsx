@@ -88,55 +88,8 @@ const mock: AlarmItem[] = [
 ];
 
 export default function CheckPopup() {
-  /** 드래그 스크롤 refs */
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const isDownRef = useRef(false);
-  const startXRef = useRef(0);
-  const startScrollLeftRef = useRef(0);
-  const draggingRef = useRef(false);
-
-  const [isDragging, setIsDragging] = useState(false);
-  const DRAG_THRESHOLD = 6; // px
-
   /** 렌더링/삭제용 로컬 상태 */
   const [items, setItems] = useState<AlarmItem[]>(mock);
-
-  const onMouseDown = (e: React.MouseEvent) => {
-    const el = scrollRef.current;
-    if (!el) return;
-    isDownRef.current = true;
-    draggingRef.current = false;
-    setIsDragging(false);
-    startXRef.current = e.pageX - el.offsetLeft;
-    startScrollLeftRef.current = el.scrollLeft;
-    e.preventDefault();
-  };
-
-  const onMouseMove = (e: React.MouseEvent) => {
-    const el = scrollRef.current;
-    if (!el || !isDownRef.current) return;
-    const x = e.pageX - el.offsetLeft;
-    const dx = x - startXRef.current;
-    if (!draggingRef.current && Math.abs(dx) > DRAG_THRESHOLD) {
-      draggingRef.current = true;
-      setIsDragging(true);
-    }
-    el.scrollLeft = startScrollLeftRef.current - dx;
-  };
-
-  const endDrag = () => {
-    isDownRef.current = false;
-    setTimeout(() => setIsDragging(false), 0);
-    draggingRef.current = false;
-  };
-
-  /** 드래그 중 클릭 막기 */
-  const onClickCapture = (e: React.MouseEvent) => {
-    if (draggingRef.current) {
-      e.preventDefault();
-      e.stopPropagation();
-    }
-  };
 
   /** 개별 카드 삭제 */
   const removeById = (alarmId: string) =>
@@ -157,82 +110,42 @@ export default function CheckPopup() {
     return null;
   }
 
-  return (
-    <div className="relative">
-      <div
-        ref={scrollRef}
-        onMouseDown={onMouseDown}
-        onMouseMove={onMouseMove}
-        onMouseLeave={endDrag}
-        onMouseUp={endDrag}
-        onClickCapture={onClickCapture}
-        className="
-          w-full flex gap-6
-          overflow-x-auto overflow-y-hidden
-          cursor-grab active:cursor-grabbing
-          select-none
-          [scrollbar-width:none] [-ms-overflow-style:none]
-          [touch-action:pan-y]
-          relative
-          [&::-webkit-scrollbar]:hidden
-        "
-        style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-      >
-        {items.map((item) => (
-          <div
-            key={item.alarmId} // ✅ 고정 key
-            className="flex shrink-0 bg-[#25242A] w-[380px] h-[60px] rounded items-center p-2 justify-between"
-          >
-            {/* 좌측 글 */}
-            <div className="flex flex-col justify-center">
-              <div>
-                <span className="text-[#FF5679]">{item.object}</span>
-                <span className="text-white"> {item.alarm}</span>
-              </div>
-              <span className="text-xs text-[#B1ACC1]">{item.createdAt}</span>
-            </div>
-
-            {/* 버튼 */}
-            <div className="flex">
-              <button
-                className="mr-[2px]"
-                onClick={() => handleAccept(item.alarmId)}
-                disabled={isDragging}
-              >
-                <Image
-                  src="/images/pink-check.png"
-                  alt="확인"
-                  width={32}
-                  height={32}
-                  className="object-contain"
-                />
-              </button>
-
-              <button
-                onClick={() => handleReject(item.alarmId)}
-                disabled={isDragging}
-              >
-                <Image
-                  src="/images/grey-x.png"
-                  alt="거절"
-                  width={32}
-                  height={32}
-                  className="object-contain"
-                />
-              </button>
-            </div>
-          </div>
-        ))}
+  return items.map((item) => (
+    <div
+      key={item.alarmId} // ✅ 고정 key
+      className="flex shrink-0 bg-[#25242A] w-[380px] h-[60px] rounded items-center p-2 justify-between"
+    >
+      {/* 좌측 글 */}
+      <div className="flex flex-col justify-center">
+        <div>
+          <span className="text-[#FF5679]">{item.object}</span>
+          <span className="text-white"> {item.alarm}</span>
+        </div>
+        <span className="text-xs text-[#B1ACC1]">{item.createdAt}</span>
       </div>
 
-      {/* 오른쪽 페이드(그라데이션) 오버레이 */}
-      <div
-        className="
-          pointer-events-none
-          absolute top-0 right-0 h-full w-16
-          bg-[linear-gradient(90deg,rgba(17,13,23,0)_0%,#110D17_100%)]
-        "
-      />
+      {/* 버튼 */}
+      <div className="flex">
+        <button className="mr-0.5" onClick={() => handleAccept(item.alarmId)}>
+          <Image
+            src="/images/pink-check.png"
+            alt="확인"
+            width={32}
+            height={32}
+            className="object-contain"
+          />
+        </button>
+
+        <button onClick={() => handleReject(item.alarmId)}>
+          <Image
+            src="/images/grey-x.png"
+            alt="거절"
+            width={32}
+            height={32}
+            className="object-contain"
+          />
+        </button>
+      </div>
     </div>
-  );
+  ));
 }

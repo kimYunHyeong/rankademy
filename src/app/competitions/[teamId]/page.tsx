@@ -1,5 +1,6 @@
 import Link from "next/link";
 import CheckPopup from "@/components/check-popup";
+import RowScrollContainer from "@/components/row-scroll-container";
 import Image from "next/image";
 import { capitalize } from "@/utils/capitalize";
 type teamDetailResponse = {
@@ -159,7 +160,10 @@ export default function Page() {
           게시글 수정
         </Link>
       </div>
-      <CheckPopup />
+      <RowScrollContainer>
+        <CheckPopup />
+      </RowScrollContainer>
+
       <div className="h-8"></div>
 
       {/* 팀 정보 */}

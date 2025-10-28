@@ -3,22 +3,13 @@
 import { useState } from "react";
 import { Position } from "@/types";
 import { MyProfile } from "../../page";
-import {
-  API_BASE_URL,
-  CHAMPION_IMG_URL,
-  SUMMONER_ICON_URL,
-  TIER_IMG_URL,
-} from "@/lib/api";
-
+import { CHAMPION_IMG_URL, SUMMONER_ICON_URL, TIER_IMG_URL } from "@/lib/api";
 import Image from "next/image";
 import Link from "next/link";
 import { capitalize } from "@/utils/capitalize";
-
 import PositionPicker from "./position-select";
-import { postToAPI } from "@/utils/patcher";
 import { updateProfile } from "../action";
 
-/* 제출 데이터 타입*/
 type FormState = {
   username: string;
   major: string;
@@ -29,7 +20,6 @@ type FormState = {
 };
 
 export default function FormSection({ data }: { data: MyProfile }) {
-  /* 제출 폼 */
   const [form, setForm] = useState<FormState>({
     username: data.username ?? "",
     major: data.univInfo.major ?? "",
@@ -63,14 +53,8 @@ export default function FormSection({ data }: { data: MyProfile }) {
         <div className="flex px-20 gap-5">
           {/* 좌측 카드들 */}
           <div className="w-[80%] flex flex-col mr-1">
-            {/* 소환사 이름  */}
-            <div
-              className="flex items-center
-                border-2 border-[#323036] 
-                w-full h-[148px]
-                text-[#B1ACC1] rounded 
-                bg-[#25242A33] text-center mt-2 p-6"
-            >
+            {/* 소환사 이름 */}
+            <div className="flex items-center border-2 border-[#323036] w-full h-[148px] text-[#B1ACC1] rounded bg-[#25242A33] text-center mt-2 p-6">
               <Image
                 src={`${SUMMONER_ICON_URL}${data.summonerInfo.summonerIcon}.png`}
                 alt={data.summonerInfo.summonerIcon.toString()}
@@ -81,13 +65,11 @@ export default function FormSection({ data }: { data: MyProfile }) {
 
               <div className="flex flex-col items-start">
                 <input
+                  name="username"
                   className="bg-[#323036] border border-[#323036] rounded px-3 py-2 text-white"
                   value={form.username}
                   onChange={(e) =>
-                    setForm((prev) => ({
-                      ...prev,
-                      username: e.target.value,
-                    }))
+                    setForm((prev) => ({ ...prev, username: e.target.value }))
                   }
                   placeholder="유저 이름"
                 />
@@ -114,7 +96,6 @@ export default function FormSection({ data }: { data: MyProfile }) {
                       width={20}
                       height={20}
                     />
-
                     <Link
                       href="/me/verify"
                       className=" text-[#B1ACC1] hover:bg-[#25242A66] transition"
@@ -135,13 +116,11 @@ export default function FormSection({ data }: { data: MyProfile }) {
               {/* 학과 */}
               <span className="font-semibold text-sm">학과</span>
               <input
+                name="major"
                 className="bg-[#323036] border border-[#323036] rounded px-3 py-2 text-white"
                 value={form.major}
                 onChange={(e) =>
-                  setForm((prev) => ({
-                    ...prev,
-                    major: e.target.value,
-                  }))
+                  setForm((prev) => ({ ...prev, major: e.target.value }))
                 }
                 placeholder="전공"
               />
@@ -149,6 +128,7 @@ export default function FormSection({ data }: { data: MyProfile }) {
               {/* 학번 */}
               <span className="font-semibold text-sm">학번</span>
               <input
+                name="admissionYear"
                 className="bg-[#323036] border border-[#323036] rounded px-3 py-2 text-white"
                 value={form.admissionYear}
                 onChange={(e) =>
@@ -166,13 +146,11 @@ export default function FormSection({ data }: { data: MyProfile }) {
                 소개글
               </span>
               <textarea
+                name="description"
                 className="text-sm leading-relaxed text-left wrap-break-word max-h-[140px] overflow-y-auto scrollbar-none bg-[#323036] border border-[#323036] rounded px-3 py-2 text-white resize-none"
                 value={form.description}
                 onChange={(e) =>
-                  setForm((prev) => ({
-                    ...prev,
-                    description: e.target.value,
-                  }))
+                  setForm((prev) => ({ ...prev, description: e.target.value }))
                 }
                 rows={5}
                 placeholder="자기소개를 입력하세요"
@@ -180,25 +158,19 @@ export default function FormSection({ data }: { data: MyProfile }) {
             </div>
 
             {/* 라이엇 연동 */}
-            <div
-              className="flex items-center justify-between
-                            w-full h-[88px]
-                            text-white  rounded 
-                            bg-[#25242A] text-center mt-5 p-6"
-            >
+            <div className="flex items-center justify-between w-full h-[88px] text-white rounded bg-[#25242A] text-center mt-5 p-6">
               <div className="flex items-center">
                 <Image
                   src="/images/riot-logo.png"
-                  alt={"riot-logo"}
+                  alt="riot-logo"
                   width={40}
                   height={40}
                 />
                 <span className="ml-8">라이엇 게임즈</span>
               </div>
-
               <Image
                 src="/images/plus.png"
-                alt={"plus"}
+                alt="plus"
                 width={20}
                 height={20}
                 className="items-end"
@@ -208,33 +180,34 @@ export default function FormSection({ data }: { data: MyProfile }) {
 
           {/* 우측 사이드 */}
           <div className="flex flex-col border-2 border-[#323036] w-[20%] h-[480px] text-white rounded bg-[#25242A33] mt-2 p-6">
-            {/* 포지션 선택*/}
+            {/* 포지션 선택 */}
             <div className="mb-6">
               <span className="font-bold ml-1 ">포지션</span>
-
               <div className="flex mt-2 gap-x-2">
-                {/* 메인 포지션 선택 */}
                 <PositionPicker
                   value={form.mainPosition}
                   onChange={(v) =>
-                    setForm((prev) => ({
-                      ...prev,
-                      mainPosition: v,
-                    }))
+                    setForm((prev) => ({ ...prev, mainPosition: v }))
                   }
                 />
-
-                {/* 서브 포지션 선택 */}
                 <PositionPicker
                   value={form.subPosition}
                   onChange={(v) =>
-                    setForm((prev) => ({
-                      ...prev,
-                      subPosition: v,
-                    }))
+                    setForm((prev) => ({ ...prev, subPosition: v }))
                   }
                 />
               </div>
+              {/* 폼 전송을 위한 hidden input */}
+              <input
+                type="hidden"
+                name="mainPosition"
+                value={form.mainPosition ?? ""}
+              />
+              <input
+                type="hidden"
+                name="subPosition"
+                value={form.subPosition ?? ""}
+              />
             </div>
 
             {/* 모스트 정보 */}
@@ -345,7 +318,7 @@ export default function FormSection({ data }: { data: MyProfile }) {
           </div>
         </div>
 
-        {/* 하단 액션(돌아가기 링크) */}
+        {/* 하단 액션 */}
         <div className="flex items-center justify-center gap-4 mb-8">
           <Link
             href="/me"

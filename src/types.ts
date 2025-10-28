@@ -286,11 +286,3 @@ export type OptionValueOf<T extends readonly { value: any }[]> =
 export type OptionMetaOf<T extends readonly { meta?: any }[]> = NonNullable<
   T[number]["meta"]
 >;
-export type recruit = {
-  title: string;
-  content: string;
-  groupId: string;
-  groupName: string;
-  uploadedAt: string;
-  contentImg?: string;
-};

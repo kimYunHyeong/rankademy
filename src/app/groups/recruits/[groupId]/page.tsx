@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { Switch } from "@/components/ui/switch";
-import { recruit } from "@/types";
 import Image from "next/image";
 import CheckPopup from "@/components/check-popup";
 
@@ -12,7 +11,7 @@ const mock = {
   groupName: "서울과기대 컴공 20학번",
   uploadedAt: "24",
   contentImg: "Ezreal",
-} as recruit;
+};
 
 export default function Page() {
   const data = mock;
@@ -23,19 +22,19 @@ export default function Page() {
           <div className="flex text-[14px]">
             <Link
               href={`${data.groupId}/delete`}
-              className="flex items-center justify-center border border-[#323036] w-[120px] h-[44px] text-[#B1ACC1] rounded bg-[#25242A33] text-center mr-2"
+              className="flex items-center justify-center border border-[#323036] w-[120px] h-11 text-[#B1ACC1] rounded bg-[#25242A33] text-center mr-2"
             >
               게시글 삭제
             </Link>
             <Link
               href={`${data.groupId}/edit`}
-              className="flex items-center justify-center border border-[#323036] w-[120px] h-[44px] text-[#B1ACC1] rounded bg-[#25242A33] text-center mr-2"
+              className="flex items-center justify-center border border-[#323036] w-[120px] h-11 text-[#B1ACC1] rounded bg-[#25242A33] text-center mr-2"
             >
               게시글 수정
             </Link>
             <Link
               href={`${data.groupId}/up`}
-              className="flex items-center justify-center border border-[#323036] w-[120px] h-[44px] text-[#B1ACC1] rounded bg-[#25242A33] text-center"
+              className="flex items-center justify-center border border-[#323036] w-[120px] h-11 text-[#B1ACC1] rounded bg-[#25242A33] text-center"
             >
               게시글 UP
             </Link>
@@ -80,13 +79,13 @@ export default function Page() {
           <div className="flex mt-auto">
             <Link
               href={`/groups/${data.groupId}`}
-              className="flex items-center justify-center border border-[#323036] w-[120px] h-[44px] text-[#B1ACC1] rounded bg-[#25242A33] text-center mr-2"
+              className="flex items-center justify-center border border-[#323036] w-[120px] h-11 text-[#B1ACC1] rounded bg-[#25242A33] text-center mr-2"
             >
               그룹 상세 정보
             </Link>
             <Link
               href="/me/edit"
-              className="flex items-center justify-center border border-[#323036] w-[120px] h-[44px] text-[#B1ACC1] rounded bg-[#25242A33] text-center mr-2"
+              className="flex items-center justify-center border border-[#323036] w-[120px] h-11 text-[#B1ACC1] rounded bg-[#25242A33] text-center mr-2"
             >
               가입 요청하기(요청 로직 작성 필요)
             </Link>

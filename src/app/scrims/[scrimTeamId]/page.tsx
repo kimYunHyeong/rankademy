@@ -1,5 +1,4 @@
 import Link from "next/link";
-import CheckPopup from "@/components/check-popup";
 import Image from "next/image";
 import { capitalize } from "@/utils/capitalize";
 import { SUMMONER_ICON_URL } from "@/lib/api";
@@ -138,14 +137,14 @@ export default function Page() {
       <div className="flex justify-end text-[14px] mb-5">
         <Link
           href={`${1}/edit`}
-          className="flex items-center justify-center border border-[#323036] w-[120px] h-[44px] text-[#B1ACC1] rounded bg-[#25242A33] text-center mr-2"
+          className="flex items-center justify-center border border-[#323036] w-[120px] h-11 text-[#B1ACC1] rounded bg-[#25242A33] text-center mr-2"
         >
           수정하기
         </Link>
 
         <Link
           href={`${1}/delete`}
-          className="flex items-center justify-center border border-[#323036] w-[120px] h-[44px] text-[#B1ACC1] rounded bg-[#25242A33] text-center mr-2"
+          className="flex items-center justify-center border border-[#323036] w-[120px] h-11 text-[#B1ACC1] rounded bg-[#25242A33] text-center mr-2"
         >
           삭제하기
         </Link>
@@ -156,18 +155,18 @@ export default function Page() {
       {/* 팀 정보 */}
       <div className="flex h-[30%]">
         {/* 첫번째 div: 그룹의 정보 표현 */}
-        <div className="p-4 h-[300px] w-[80%] bg-[#25242A33] border-2 border-[#25242A] rounded mr-[10px] text-white overflow-hidden pr-24">
+        <div className="p-4 h-[300px] w-[80%] bg-[#25242A33] border-2 border-[#25242A] rounded mr-2.5 text-white overflow-hidden pr-24">
           {/* 이미지와 정보를 분리하는 div */}
-          <div className="flex pt-[20px] justify-center gap-2 max-md:flex-wrap">
+          <div className="flex pt-5 justify-center gap-2 max-md:flex-wrap">
             <div className="flex-1 min-w-0">
-              <h2 className="flex items-center text-[40px] leading-tight break-words">
+              <h2 className="flex items-center text-[40px] leading-tight wrap-break-words">
                 {data.scrimTeamName}
               </h2>
 
               {/* 시간 */}
               <div className="flex flex-wrap items-center text-[#B1ACC1] text-xs mt-5 mb-8">
                 {/* 시간 */}
-                <span className="break-words">{data.createdAt}</span>
+                <span className="wrap-break-word">{data.createdAt}</span>
               </div>
 
               <div className="h-3" />
@@ -179,7 +178,7 @@ export default function Page() {
                              max-h-20 overflow-y-auto
                              [scrollbar-width:none] [-ms-overflow-style:none]
                              [&::-webkit-scrollbar]:hidden
-                              break-words
+                              wrap-break-word
                           "
               >
                 {data.intro}
@@ -189,7 +188,7 @@ export default function Page() {
         </div>
 
         {/* 티어 */}
-        <div className="p-4 h-[300px] w-[20%] bg-[#25242A33] border-2 border-[#25242A] rounded mr-[10px] text-white overflow-hidden flex flex-col justify-center items-center">
+        <div className="p-4 h-[300px] w-[20%] bg-[#25242A33] border-2 border-[#25242A] rounded mr-2.5 text-white overflow-hidden flex flex-col justify-center items-center">
           <div className="flex flex-col justify-center items-center gap-2">
             <Image
               src={`https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-static-assets/global/default/ranked-mini-crests/${data.avgTierInfo.tier}.svg`}

@@ -2,6 +2,7 @@ import GroupInfo from "@/components/group-info";
 import { univGroupInfo } from "@/mock/groupInfoData";
 import Link from "next/link";
 import CheckPopup from "@/components/check-popup";
+import RowScrollContainer from "@/components/row-scroll-container";
 import { Switch } from "@/components/ui/switch";
 import {
   Position,
@@ -107,7 +108,9 @@ export default async function GroupDetailPage({
               <Switch />
             </div>
           </div>
-          <CheckPopup />
+          <RowScrollContainer>
+            <CheckPopup />
+          </RowScrollContainer>
         </>
       )}
 
