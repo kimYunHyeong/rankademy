@@ -4,8 +4,7 @@ import { fetchFromAPI } from "@/utils/fetcher";
 import { PaginationData } from "@/types";
 
 /* 목데이터 */
-import mockUnivRanking from "@/mock/univRanking.json";
-const mock: univRanking[] = mockUnivRanking;
+import { mockUnivRanking } from "@/mock/univRanking";
 
 export type univRanking = {
   univName: string;

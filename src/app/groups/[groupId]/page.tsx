@@ -1,5 +1,5 @@
 import GroupInfo from "@/components/group-info";
-import { univGroupInfo } from "@/mock/groupInfoData";
+
 import Link from "next/link";
 import CheckPopup from "@/components/check-popup";
 import RowScrollContainer from "@/components/row-scroll-container";
@@ -57,7 +57,7 @@ export default async function GroupDetailPage({
           <div className="flex justify-between items-center mb-12">
             <div className="flex text-[14px]">
               <Link
-                href={`recruits/${univGroupInfo.group.id}`}
+                href={`recruits/${groupDetailData.groupId}`}
                 className="flex items-center justify-center border border-[#323036] w-30 h-11 text-[#B1ACC1] rounded bg-[#25242A33] text-center mr-2"
               >
                 모집 게시글 보기

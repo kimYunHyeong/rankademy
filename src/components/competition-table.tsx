@@ -1,5 +1,6 @@
 "use client";
-import * as React from "react";
+
+import React from "react";
 import {
   Table,
   TableBody,
@@ -8,24 +9,24 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Query } from "@/types";
+import { Query, CompetitionStatus } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
-import { POSITION_IMG_URL, SUMMONER_ICON_URL } from "@/lib/api";
+import {
+  CHAMPION_IMG_URL,
+  POSITION_IMG_URL,
+  SUMMONER_ICON_URL,
+} from "@/lib/api";
 import { fetchFromAPI } from "@/utils/fetcher";
 import { GroupCompetitionResult } from "@/types";
+import { formatDate } from "@/utils/format-date";
 
-/* 테이블에 어떤 내용이 들어갈지 관리, 페이지에서 인자로 넘기는 것 */
-export type CompetitionTableProps = {
+type Props = {
   data: GroupCompetitionResult[];
-  pageSize?: number; // 기본 10
-  initialPage?: number; // 기본 1
-  showCountText?: boolean; // "1–10 / 246건" 같은 표기
-  onPageChange?: (page: number) => void;
-  onData?: (rows: GroupCompetitionResult[], raw: any) => void;
-  onLoadingChange?: (loading: boolean) => void;
   apiurl: string;
   query?: Query;
+  onData?: (rows: GroupCompetitionResult[], raw: any) => void;
+  onLoadingChange?: (loading: boolean) => void;
 };
 
 /* api응답에서 테이블 데이터 추출  */
@@ -36,13 +37,7 @@ function extractRows<T>(res: any): T[] {
   return [];
 }
 
-export default function CompetitionTable({
-  data,
-  apiurl,
-  query,
-  onData,
-  onLoadingChange,
-}: CompetitionTableProps) {
+export default function CompetitionTable({ data, apiurl, query }: Props) {
   // 내부 표시용 데이터 상태 (초기값은 props.data)
   const [rows, setRows] = React.useState<GroupCompetitionResult[]>(data ?? []);
   const [loading, setLoading] = React.useState(false);
@@ -54,7 +49,7 @@ export default function CompetitionTable({
 
     const run = async () => {
       setLoading(true);
-      onLoadingChange?.(true);
+
       setError(null);
       try {
         const res = await fetchFromAPI(apiurl, query);
@@ -67,7 +62,6 @@ export default function CompetitionTable({
       } finally {
         if (!alive) return;
         setLoading(false);
-        onLoadingChange?.(false);
       }
     };
 
@@ -78,8 +72,8 @@ export default function CompetitionTable({
   }, [apiurl, JSON.stringify(query)]);
 
   /* 클릭 시 상세정보 확인 */
-  const [openIds, setOpenIds] = React.useState<Set<string>>(new Set());
-  const toggleRow = (id: string) =>
+  const [openIds, setOpenIds] = React.useState<Set<number>>(new Set());
+  const toggleRow = (id: number) =>
     setOpenIds((prev) => {
       const next = new Set(prev);
       next.has(id) ? next.delete(id) : next.add(id);
@@ -106,44 +100,130 @@ export default function CompetitionTable({
 
         <TableBody>
           {rows.map((row) => {
-            const isOpen = openIds.has(row.competitionId.toString());
+            const isOpen = openIds.has(row.competitionId);
+
+            // 상태와 승패 정보
+            const status = row.status as CompetitionStatus;
             const isWin = row.isWin === true;
-            const rowClassName = isWin
-              ? "bg-[#2E223F] bg-gradient-to-r from-[#FF5679]/20 to-[#2E223F]"
-              : "bg-[#24192F]";
+
+            // 상태별 텍스트
+            const statusTextMap: Record<CompetitionStatus, string> = {
+              SCHEDULED: "진행중",
+              COMPLETED: isWin ? "승리" : "패배",
+              OPPOSED: "대기중",
+              EXPIRED: "만료됨",
+            };
+
+            const statusText = statusTextMap[status] ?? "-";
+
+            // 상태별 텍스트 색상
+            const statusClass =
+              status === "SCHEDULED"
+                ? "text-[#B1ACC1]" // 진행중
+                : status === "COMPLETED" && isWin
+                ? "text-[#FF5679]" // 승리
+                : "text-white"; // 패배 or 기타
+
+            // 상태별 행 배경색
+            let rowClassName = "";
+
+            switch (status) {
+              case "SCHEDULED": // 진행중
+                rowClassName = "bg-[#323036] text-[#B1ACC1]  hover:bg-muted/50";
+                break;
+              case "COMPLETED": // 완료
+                rowClassName = isWin
+                  ? "bg-[#2E223F] bg-gradient-to-r from-[#FF5679]/20 to-[#2E223F]  hover:bg-muted/50" // 승리
+                  : "bg-[#24192F]  hover:bg-muted/50"; // 패배
+                break;
+              default: // 대기중, 만료됨 등
+                rowClassName = "bg-[#323036] text-[#B1ACC1] ";
+                break;
+            }
 
             return (
               <React.Fragment key={row.competitionId}>
                 <TableRow
-                  className={`${rowClassName} [&>td]:py-4 cursor-pointer group border-none hover:bg-gray-700/50 transition-colors`}
-                  onClick={() => toggleRow(row.competitionId.toString())}
+                  className={`${rowClassName} w-full h-18 [&>td]:py-4 cursor-pointer group border-none`}
+                  onClick={
+                    /* 완료상태인 대항전만 전적을 보여주도록 */
+                    row.status === "COMPLETED"
+                      ? () => toggleRow(row.competitionId)
+                      : undefined
+                  }
                 >
-                  <TableCell className="rounded-l text-center border-none">
-                    VS
-                  </TableCell>
-                  <TableCell className=" flex items-center border-none">
-                    {/* ⚠️ otherTeam.groupIcon이 타입에 없다면 필드 추가하거나 아래 이미지를 제거하세요 */}
-                    {/* <Image
-                      src={`${CHAMPION_IMG_URL}${row.otherTeam.groupIcon}.png`}
-                      alt={String(row.otherTeam.groupIcon)}
-                      width={40}
-                      height={40}
-                    /> */}
-                    <span className="ml-3">{row.otherTeam.groupName}</span>
-                  </TableCell>
-                  <TableCell className="border-none">
-                    {row.otherTeamUnivName}
-                  </TableCell>
-                  <TableCell className="border-none">
-                    {new Date(row.submittedAt).toLocaleString()}
-                  </TableCell>
-                  <TableCell
-                    className={`rounded-r border-none ${
-                      isWin ? "text-[#FF5679]" : "text-white"
-                    }`}
-                  >
-                    {isWin ? "승리" : "패배"}
-                  </TableCell>
+                  {row.status === "SCHEDULED" ? (
+                    <Link
+                      href={`/competitions/result/${row.competitionId}`}
+                      className="contents"
+                    >
+                      <TableCell className="rounded-l text-center border-none">
+                        VS
+                      </TableCell>
+                      <TableCell className=" border-none">
+                        <div className="flex items-center">
+                          {/* 그룹 아이콘 | 그룹 이름 */}
+                          {/*  <Image
+                            src={`${CHAMPION_IMG_URL}${row.otherTeam.groupIcon}.png`}
+                            alt={row.otherTeam.groupIcon}
+                            width={40}
+                            height={40}
+                          /> */}
+                          <span className="ml-3 justify-center">
+                            {row.otherTeam.groupName}
+                          </span>
+                        </div>
+                      </TableCell>
+                      <TableCell className="border-none">
+                        {/* 학교 */}
+                        {row.otherTeamUnivName}
+                      </TableCell>
+                      <TableCell className="border-none">
+                        {/* 진행일자 */}
+                        {formatDate(row.submittedAt)}
+                      </TableCell>
+                      <TableCell
+                        /* 결과 */
+                        className={`rounded-r border-none ${statusClass}`}
+                      >
+                        {statusText}
+                      </TableCell>
+                    </Link>
+                  ) : (
+                    <>
+                      <TableCell className="rounded-l text-center border-none">
+                        VS
+                      </TableCell>
+                      <TableCell className=" border-none">
+                        <div className="flex items-center">
+                          {/* 그룹 아이콘 | 그룹 이름 */}
+                          {/*  <Image
+                            src={`${CHAMPION_IMG_URL}${row.otherTeam.groupIcon}.png`}
+                            alt={row.otherTeam.groupIcon}
+                            width={40}
+                            height={40}
+                          /> */}
+                          <span className="ml-3 justify-center">
+                            {row.otherTeam.groupName}
+                          </span>
+                        </div>
+                      </TableCell>
+                      <TableCell className="border-none">
+                        {/* 학교 */}
+                        {row.otherTeamUnivName}
+                      </TableCell>
+                      <TableCell className="border-none">
+                        {/* 진행일자 */}
+                        {formatDate(row.submittedAt)}
+                      </TableCell>
+                      <TableCell
+                        /* 결과 */
+                        className={`rounded-r border-none ${statusClass}`}
+                      >
+                        {statusText}
+                      </TableCell>
+                    </>
+                  )}
                 </TableRow>
 
                 {/* 열었을 때 나오는 아코디언 데이터 */}
@@ -315,7 +395,7 @@ export default function CompetitionTable({
                           </div>
                         </div>
 
-                        <Link href="/" passHref>
+                        <Link href="/">
                           <div className="flex justify-center items-center text-center border border-[#323036] rounded text-xl bg-[#25242A33] h-11 cursor-pointer">
                             이의신청하기
                           </div>

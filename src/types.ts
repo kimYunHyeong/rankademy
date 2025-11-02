@@ -1,5 +1,11 @@
 /* 포지션 */
-export type Position = "TOP" | "JUNGLE" | "MIDDLE" | "BOTTOM" | "UTILITY";
+export type Position =
+  | "TOP"
+  | "JUNGLE"
+  | "MIDDLE"
+  | "BOTTOM"
+  | "UTILITY"
+  | "NONE";
 
 /* 티어 */
 export type Tier =
@@ -133,10 +139,11 @@ export type TeamMember = {
   major: string;
   admissionYear: number;
   tierInfo: {
-    tier: string;
+    tier: Tier;
     rank: string;
     lp: number;
     mappedTier: number;
+    flattenString: string;
   };
 };
 
@@ -169,147 +176,3 @@ export type Session = {
   isAuthenticated: boolean;
   summonerIcon?: number | null;
 };
-
-/* 이 아래는 다 지우기 */
-/* ---------------------대학 정보------------------------------- */
-export interface UnivData {
-  univName: string;
-  studentCnt: number;
-  competitionCnt: number;
-  competitionWinCnt: number;
-  ranker: summonerDTO;
-}
-
-export interface summonerDTO {
-  id: number;
-  userName: string;
-  userTag: string;
-  icon: string;
-}
-
-/* -------------------------유저 정보----------------------------------- */
-
-export interface tierDTO {
-  rank: string;
-  tier: number;
-  lp: number;
-}
-
-export interface recordDTO {
-  cnt: number;
-  win: number;
-}
-
-export interface positionDTO {
-  main: Position;
-  sub: Position;
-}
-
-export interface userData {
-  univName: string;
-  admissionYear: number;
-  major: string;
-  user: summonerDTO;
-  position: positionDTO;
-  tier: tierDTO;
-  record: recordDTO;
-  emblem: string | null;
-  description: string | null;
-  most: {
-    first: string;
-    second: string;
-    third: string;
-  };
-  verified: boolean;
-}
-
-/* ------------------------교내 유저 랭킹 페이지----------------------------------- */
-
-export interface univUserData {
-  puuid: string | number;
-  user: summonerDTO;
-  univName: string;
-  position: positionDTO;
-  tier: tierDTO;
-  record: recordDTO;
-  major: majorDTO;
-}
-
-export interface majorDTO {
-  admissionYear: string; // ex) 20
-  major: string; // ex) 컴퓨터공학과}
-}
-
-/* -----------------------교내 그룹 랭킹 페이지------------------------------------ */
-
-export interface univGroupData {
-  group: groupDTO;
-  memberCnt: number;
-  competition: competitionDTO;
-  tier: tierDTO;
-  groupLeader: summonerDTO;
-  description: string;
-  createdAt: string;
-  latestMatch: matchDTO[];
-}
-
-export interface groupDTO {
-  id: number;
-  name: string;
-  icon: string;
-}
-
-export interface competitionDTO {
-  cnt: number;
-  win: number;
-}
-
-export interface matchDTO {
-  oppose: groupDTO;
-  result: result;
-}
-
-export type result = "win" | "lose";
-
-export type GroupCardData = {
-  group: { id?: string | number; name: string; icon: string };
-  createdAt: string;
-  description: string;
-};
-
-/* ------------------------------------------------------------ */
-
-export type SelectOption<V = string, M = unknown> = {
-  value: V; // string/number/boolean 등 자유
-  label: React.ReactNode; // 텍스트/아이콘 등
-  meta?: M; // { type: "number" } 같은 보조 정보
-};
-
-/** 컴포넌트 Props */
-export type SelectProps<V = string, M = unknown> = {
-  value?: V;
-  defaultValue?: V;
-  onChange?: (value: V, meta?: M) => void;
-
-  /** readonly 배열을 지원해야 `as const` 옵션 배열을 그대로 넘길 수 있음 */
-  options: ReadonlyArray<SelectOption<V, M>>;
-
-  placeholder?: string;
-
-  /** value<->string 변환기 (Shadcn Select는 내부적으로 string 사용) */
-  valueToString?: (v: V) => string;
-  stringToValue?: (s: string, opt?: SelectOption<V, M>) => V;
-
-  /** 스타일 훅 */
-  triggerClassName?: string;
-  contentClassName?: string;
-  itemClassName?: string;
-};
-
-/* -----------------------테이블 정렬------------------------------------- */
-
-export type OptionValueOf<T extends readonly { value: any }[]> =
-  T[number]["value"];
-export type OptionMetaOf<T extends readonly { meta?: any }[]> = NonNullable<
-  T[number]["meta"]
->;

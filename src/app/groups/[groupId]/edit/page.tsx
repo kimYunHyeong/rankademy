@@ -1,8 +1,3 @@
-import Image from "next/image";
-import { univUserData, Column } from "@/types";
-import { capitalize } from "@/utils/capitalize";
-import Link from "next/link";
-import { SUMMONER_ICON_URL } from "@/lib/api";
 import { GroupMemberAPIres, GroupDetail } from "@/types";
 import { fetchFromAPI } from "@/utils/fetcher";
 import GroupTable from "@/components/group-table";

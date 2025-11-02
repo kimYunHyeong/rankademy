@@ -27,7 +27,8 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "src/app/@modal/(.)user/asdffasd"
+    "src/app/@modal/(.)user/asdffasd",
+    "src/app/page.tsxdd"
   ],
   "exclude": ["node_modules"]
 }

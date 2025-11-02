@@ -153,7 +153,7 @@ export default function Page() {
 
   return (
     <>
-      {/* 헤더 */}{" "}
+      {/* 헤더 */}
       <div className="flex items-center justify-center text-white my-3">
         <span>모집글 작성</span>
       </div>

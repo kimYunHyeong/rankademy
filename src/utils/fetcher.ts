@@ -73,8 +73,13 @@ export async function fetchFromAPI(endpoint: string, query?: Query) {
   // 7️⃣ 에러 처리
   if (!res.ok) {
     if (res.status === 401 || res.status === 400) {
-      console.warn("❌ Unauthorized (401) — No or invalid access token.");
+      console.warn(
+        "❌ Unauthorized (401) or Bad Request (400) — No or invalid access token."
+      );
       redirect("/login");
+    } else if (res.status === 404) {
+      console.warn("❌ Not Found (404) — Page Does NOT Exists.");
+      redirect("/404");
     }
     throw new Error(`API Error: ${res.status} ${text.slice(0, 200)}`);
   }

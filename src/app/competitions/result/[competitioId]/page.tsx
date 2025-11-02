@@ -1,8 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
 import { capitalize } from "@/utils/capitalize";
+import { CompetitionStatus, TeamMember, Tier } from "@/types";
+import { mockCompetitionDetail } from "@/mock/competitionDeatil";
+import { POSITION_IMG_URL, SUMMONER_ICON_URL, TIER_IMG_URL } from "@/lib/api";
+import { fetchFromAPI } from "@/utils/fetcher";
 
-type teamDetailResponse = {
+type TeamDetail = {
   teamId: number;
   teamName: string;
   univName: string;
@@ -12,109 +16,33 @@ type teamDetailResponse = {
   createdAt: string;
   isActive: boolean;
   avgTierInfo: {
-    tier: string;
-    rank: number;
+    tier: Tier;
+    rank: string;
     lp: number;
     mappedTier: number;
+    flattenString: string;
   };
-  teamMembers: [
-    {
-      memberId: number;
-      position: string;
-      summonerName: string;
-      summonerTag: string;
-      summonerIcon: string;
-      univName: string;
-      admissionYear: string;
-      tierInfo: {
-        tier: string;
-        rank: number;
-        lp: number;
-        mappedTier: number;
-      };
-    }
-  ];
+  teamMembers: TeamMember[];
   isTeamLeader: boolean;
   isMyTeam: boolean;
 };
 
-const mock = {
-  competitionId: 1,
-  status: "SCHEDULED",
-  team1: {
-    teamId: 1,
-    teamName: "Rankademy",
-    univName: "서울과학기술대학교",
-    groupName: "Rankademy 그룹",
-    groupLogo: "string",
-    intro: "랭크 전문 팀",
-    createdAt: "2025-01-01T12:00:00",
-    isActive: true,
-    avgTierInfo: {
-      tier: "unranked",
-      rank: 1,
-      lp: 0,
-      mappedTier: 0,
-    },
-    teamMembers: [
-      {
-        memberId: 10,
-        position: "top",
-        summonerName: "Ranker",
-        summonerTag: "KR1",
-        summonerIcon: "Ezreal",
-        univName: "서울과학기술대학교",
-        admissionYear: 2021,
-        tierInfo: {
-          tier: "unranked",
-          rank: 1,
-          lp: 0,
-          mappedTier: 0,
-        },
-      },
-    ],
-    isTeamLeader: true,
-    isMyTeam: true,
-  },
-  team2: {
-    teamId: 1,
-    teamName: "Rankademy",
-    univName: "서울과학기술대학교",
-    groupName: "Rankademy 그룹",
-    groupLogo: "string",
-    intro: "랭크 전문 팀",
-    createdAt: "2025-01-01T12:00:00",
-    isActive: true,
-    avgTierInfo: {
-      tier: "UNRANKED",
-      rank: "I",
-      lp: 0,
-      mappedTier: 0,
-    },
-    teamMembers: [
-      {
-        memberId: 10,
-        position: "top",
-        summonerName: "Ranker",
-        summonerTag: "KR1",
-        summonerIcon: "Ezreal",
-        univName: "서울과학기술대학교",
-        admissionYear: 2021,
-        tierInfo: {
-          tier: "UNRANKED",
-          rank: "I",
-          lp: 0,
-          mappedTier: 0,
-        },
-      },
-    ],
-    isTeamLeader: true,
-    isMyTeam: true,
-  },
+export type APIres = {
+  competitionId: number;
+  status: CompetitionStatus;
+  team1: TeamDetail;
+  team2: TeamDetail;
 };
 
-export default function Page() {
-  const data = mock;
+export default async function CompetitionDetailPage({
+  params,
+}: {
+  params: Promise<{ competitionId: number }>;
+}) {
+  const { competitionId } = await params;
+  /*  const res = (await fetchFromAPI(`competitions/${competitionId}`)) as APIres; */
+
+  const data = mockCompetitionDetail;
   return (
     <>
       {/* 헤더 */}
@@ -126,7 +54,7 @@ export default function Page() {
       <div className="flex flex-col w-full justify-center items-center">
         {/* 주의문구 | 결과등록 */}
         <div className="flex w-full my-6 items-center gap-5">
-          <div className="flex justify-center items-center rounded w-[90%] h-[44px] bg-[#25242A] text-white">
+          <div className="flex justify-center items-center rounded w-[90%] h-11 bg-[#25242A] text-white">
             <Image
               src="/images/caution-triangle.png"
               alt="경고"
@@ -139,7 +67,7 @@ export default function Page() {
 
           <Link
             href={`${data.competitionId}/register`}
-            className="flex items-center justify-center w-[10%] h-[44px] text-white rounded bg-[#FF567933] text-center"
+            className="flex items-center justify-center w-[10%] h-11 text-white rounded bg-[#FF567933] text-center"
           >
             결과등록
           </Link>
@@ -148,7 +76,7 @@ export default function Page() {
         {/* 1팀 정보 */}
         <div className="flex gap-5">
           {/* 빨간 깃발 */}
-          <div className="w-[30%] relative flex ">
+          <div className="w-[30%] relative flex justify-center items-center">
             {/* 깃발 배경 */}
             <Image
               src="/images/competition-flag-red.png"
@@ -162,13 +90,13 @@ export default function Page() {
             <div className="absolute inset-0 grid place-items-center pointer-events-none">
               <div className="flex flex-col items-center text-center -translate-y-6">
                 {/* 로고 + 테두리 (완전 겹치기) */}
-                <div className="relative w-[240px] h-[240px] mb-6">
+                <div className="relative w-60 h-60 mb-6">
                   {/* 학교 로고 */}
                   <Image
                     src={`/univ-emblem/${data.team1.univName}.png`}
                     alt={data.team1.univName}
                     fill
-                    className="object-contain rounded-full z-10 -translate-y-[10px]"
+                    className="object-contain rounded-full z-10 -translate-y-2.5"
                   />
                   {/* 로고 테두리 오버레이 */}
                   <Image
@@ -222,7 +150,7 @@ export default function Page() {
                       {/* 라인 */}
                       <td className="rounded-l px-6 py-4 w-[20%] text-left">
                         <Image
-                          src={`https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-static-assets/global/default/svg/position-${m.position}.svg`}
+                          src={`${POSITION_IMG_URL}${m.position.toLowerCase()}.svg`}
                           alt={m.position}
                           width={32}
                           height={32}
@@ -234,14 +162,14 @@ export default function Page() {
                         <Link href={`/user/${m.memberId}`}>
                           <div className="flex items-center gap-2 min-w-0">
                             <Image
-                              src={`https://ddragon.leagueoflegends.com/cdn/15.17.1/img/champion/${m.summonerIcon}.png`}
+                              src={`${SUMMONER_ICON_URL}${m.summonerIcon}.png`}
                               alt={m.summonerIcon.toString()}
                               width={30}
                               height={30}
                               className="shrink-0"
                             />
-                            <span className="truncate">{m.summonerName}</span>
-                            <span className="shrink-0">#{m.summonerTag}</span>
+                            <span>{m.summonerName}</span>
+                            <span>#{m.summonerTag}</span>
                           </div>
                         </Link>
                       </td>
@@ -249,7 +177,7 @@ export default function Page() {
                       {/* 전공/학번 */}
                       <td className="px-6 py-4 w-[35%] text-left">
                         <div className="flex flex-col">
-                          <span>{m.admissionYear ?? "학과"}</span>
+                          <span>{m.major}</span>
                           <span>{m.admissionYear}학번</span>
                         </div>
                       </td>
@@ -258,14 +186,16 @@ export default function Page() {
                       <td className="rounded-r px-6 py-4 w-[15%] text-left">
                         <div className="flex items-center gap-2">
                           <Image
-                            src={`https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-static-assets/global/default/ranked-mini-crests/${m.tierInfo.tier}.svg`}
-                            alt={m.tierInfo.tier}
+                            src={`${TIER_IMG_URL}${m.tierInfo.tier.toLowerCase()}.svg`}
+                            alt={m.tierInfo.tier.toLowerCase()}
                             width={30}
                             height={30}
                           />
                           <div>
                             <div className="flex">
-                              <span>{capitalize(m.tierInfo.tier)}</span>
+                              <span>
+                                {capitalize(m.tierInfo.tier.toLowerCase())}
+                              </span>
                               <span className="w-1" />
                               <span>{m.tierInfo.rank}</span>
                             </div>
@@ -321,7 +251,7 @@ export default function Page() {
                       {/* 라인 */}
                       <td className="rounded-l px-6 py-4 w-[20%] text-left">
                         <Image
-                          src={`https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-static-assets/global/default/svg/position-${m.position}.svg`}
+                          src={`${POSITION_IMG_URL}${m.position.toLowerCase()}.svg`}
                           alt={m.position}
                           width={32}
                           height={32}
@@ -333,14 +263,14 @@ export default function Page() {
                         <Link href={`/user/${m.memberId}`}>
                           <div className="flex items-center gap-2 min-w-0">
                             <Image
-                              src={`https://ddragon.leagueoflegends.com/cdn/15.17.1/img/champion/${m.summonerIcon}.png`}
+                              src={`${SUMMONER_ICON_URL}${m.summonerIcon}.png`}
                               alt={m.summonerIcon.toString()}
                               width={30}
                               height={30}
                               className="shrink-0"
                             />
-                            <span className="truncate">{m.summonerName}</span>
-                            <span className="shrink-0">#{m.summonerTag}</span>
+                            <span>{m.summonerName}</span>
+                            <span>#{m.summonerTag}</span>
                           </div>
                         </Link>
                       </td>
@@ -348,7 +278,7 @@ export default function Page() {
                       {/* 전공/학번 */}
                       <td className="px-6 py-4 w-[35%] text-left">
                         <div className="flex flex-col">
-                          <span>{m.admissionYear ?? "학과"}</span>
+                          <span>{m.major}</span>
                           <span>{m.admissionYear}학번</span>
                         </div>
                       </td>
@@ -357,14 +287,16 @@ export default function Page() {
                       <td className="rounded-r px-6 py-4 w-[15%] text-left">
                         <div className="flex items-center gap-2">
                           <Image
-                            src={`https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-static-assets/global/default/ranked-mini-crests/${m.tierInfo.tier}.svg`}
-                            alt={m.tierInfo.tier}
+                            src={`${TIER_IMG_URL}${m.tierInfo.tier.toLowerCase()}.svg`}
+                            alt={m.tierInfo.tier.toLowerCase()}
                             width={30}
                             height={30}
                           />
                           <div>
                             <div className="flex">
-                              <span>{capitalize(m.tierInfo.tier)}</span>
+                              <span>
+                                {capitalize(m.tierInfo.tier.toLowerCase())}
+                              </span>
                               <span className="w-1" />
                               <span>{m.tierInfo.rank}</span>
                             </div>
@@ -395,13 +327,13 @@ export default function Page() {
             <div className="absolute inset-0 grid place-items-center pointer-events-none">
               <div className="flex flex-col items-center text-center -translate-y-6">
                 {/* 로고 + 테두리 (완전 겹치기) */}
-                <div className="relative w-[240px] h-[240px] mb-6">
+                <div className="relative w-60 h-60 mb-6">
                   {/* 학교 로고 */}
                   <Image
                     src={`/univ-emblem/${data.team2.univName}.png`}
                     alt={data.team2.univName}
                     fill
-                    className="object-contain rounded-full z-10 -translate-y-[10px]"
+                    className="object-contain rounded-full z-10 -translate-y-2.5"
                   />
                   {/* 로고 테두리 오버레이 */}
                   <Image

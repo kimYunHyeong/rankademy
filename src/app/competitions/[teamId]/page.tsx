@@ -3,7 +3,42 @@ import CheckPopup from "@/components/check-popup";
 import RowScrollContainer from "@/components/row-scroll-container";
 import Image from "next/image";
 import { capitalize } from "@/utils/capitalize";
-type teamDetailResponse = {
+import { Position, Tier } from "@/types";
+import {
+  CHAMPION_IMG_URL,
+  POSITION_IMG_URL,
+  SUMMONER_ICON_URL,
+  TIER_IMG_URL,
+} from "@/lib/api";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+import "dayjs/locale/ko";
+
+dayjs.extend(relativeTime);
+dayjs.locale("ko");
+
+import { mockTeamDetail } from "@/mock/teamDeatil";
+import { fetchFromAPI } from "@/utils/fetcher";
+
+export type TeamMember = {
+  memberId: number;
+  position: Position;
+  summonerName: string;
+  summonerTag: string;
+  summonerIcon: number;
+  univName: string;
+  major: string;
+  admissionYear: number;
+  tierInfo: {
+    tier: Tier;
+    rank: string;
+    lp: number;
+    mappedTier: number;
+    flattenString: string;
+  };
+};
+
+export type TeamDetail = {
   teamId: number;
   teamName: string;
   univName: string;
@@ -13,131 +48,26 @@ type teamDetailResponse = {
   createdAt: string;
   isActive: boolean;
   avgTierInfo: {
-    tier: string;
-    rank: number;
+    tier: Tier;
+    rank: string;
     lp: number;
     mappedTier: number;
+    flattenString: string;
   };
-  teamMembers: [
-    {
-      memberId: number;
-      position: string;
-      summonerName: string;
-      summonerTag: string;
-      summonerIcon: string;
-      univName: string;
-      admissionYear: string;
-      tierInfo: {
-        tier: string;
-        rank: number;
-        lp: number;
-        mappedTier: number;
-      };
-    }
-  ];
+  teamMembers: TeamMember[];
   isTeamLeader: boolean;
   isMyTeam: boolean;
 };
 
-const mock = {
-  teamId: 1,
-  teamName: "Rankademy",
-  univName: "서울과학기술대학교",
-  groupName: "Rankademy 그룹",
-  groupLogo: "Zac",
-  intro:
-    "랭크 전문 팀 랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀",
-  createdAt: "2025-01-01T12:00:00",
-  isActive: true,
-  avgTierInfo: {
-    tier: "emerald",
-    rank: 1,
-    lp: 0,
-    mappedTier: 0,
-  },
-  teamMembers: [
-    {
-      memberId: 10,
-      position: "top",
-      summonerName: "Ranker",
-      summonerTag: "KR1",
-      summonerIcon: "Ezreal",
-      univName: "서울과학기술대학교",
-      admissionYear: 2021,
-      tierInfo: {
-        tier: "emerald",
-        rank: 1,
-        lp: 0,
-        mappedTier: 0,
-      },
-    },
-    {
-      memberId: 11,
-      position: "jungle",
-      summonerName: "Ranker",
-      summonerTag: "KR1",
-      summonerIcon: "Ezreal",
-      univName: "서울과학기술대학교",
-      admissionYear: 2021,
-      tierInfo: {
-        tier: "emerald",
-        rank: 1,
-        lp: 0,
-        mappedTier: 0,
-      },
-    },
-    {
-      memberId: 12,
-      position: "middle",
-      summonerName: "Ranker",
-      summonerTag: "KR1",
-      summonerIcon: "Ezreal",
-      univName: "서울과학기술대학교",
-      admissionYear: 2021,
-      tierInfo: {
-        tier: "emerald",
-        rank: 1,
-        lp: 0,
-        mappedTier: 0,
-      },
-    },
-    {
-      memberId: 13,
-      position: "bottom",
-      summonerName: "Ranker",
-      summonerTag: "KR1",
-      summonerIcon: "Ezreal",
-      univName: "서울과학기술대학교",
-      admissionYear: 2021,
-      tierInfo: {
-        tier: "emerald",
-        rank: 1,
-        lp: 0,
-        mappedTier: 0,
-      },
-    },
-    {
-      memberId: 14,
-      position: "utility",
-      summonerName: "Ranker",
-      summonerTag: "KR1",
-      summonerIcon: "Ezreal",
-      univName: "서울과학기술대학교",
-      admissionYear: 2021,
-      tierInfo: {
-        tier: "emerald",
-        rank: 1,
-        lp: 0,
-        mappedTier: 0,
-      },
-    },
-  ],
-  isTeamLeader: true,
-  isMyTeam: true,
-};
+export default async function TeamDetailPage({
+  params,
+}: {
+  params: Promise<{ teamId: string }>;
+}) {
+  const { teamId } = await params;
 
-export default function Page() {
-  const data = mock;
+  /* const res = (await fetchFromAPI(`/teams/${teamId}`)) as TeamDetail; */
+  const data = mockTeamDetail;
   return (
     <>
       {/* 헤더 */}
@@ -146,25 +76,40 @@ export default function Page() {
       </div>
       <div className="h-10"></div>
 
-      <div className="flex text-[14px] mb-5">
-        <Link
-          href={`${1}/delete`}
-          className="flex items-center justify-center border border-[#323036] w-[120px] h-11 text-[#B1ACC1] rounded bg-[#25242A33] text-center mr-2"
-        >
-          게시글 삭제
-        </Link>
-        <Link
-          href={`${1}/edit`}
-          className="flex items-center justify-center border border-[#323036] w-[120px] h-11 text-[#B1ACC1] rounded bg-[#25242A33] text-center mr-2"
-        >
-          게시글 수정
-        </Link>
-      </div>
-      <RowScrollContainer>
-        <CheckPopup />
-      </RowScrollContainer>
+      {/* 팀장 렌더링 | 팀원 렌더링 */}
+      {data.isMyTeam && data.isTeamLeader ? (
+        <>
+          <div className="flex text-[14px] mb-5">
+            <Link
+              href={`${teamId}/delete`}
+              className="flex items-center justify-center border border-[#323036] w-[120px] h-11 text-[#B1ACC1] rounded bg-[#25242A33] text-center mr-2"
+            >
+              게시글 삭제
+            </Link>
+            <Link
+              href={`${teamId}/edit`}
+              className="flex items-center justify-center border border-[#323036] w-[120px] h-11 text-[#B1ACC1] rounded bg-[#25242A33] text-center mr-2"
+            >
+              게시글 수정
+            </Link>
+          </div>
 
-      <div className="h-8"></div>
+          {/* 대항전 관련 알람 */}
+          <RowScrollContainer>
+            <CheckPopup />
+          </RowScrollContainer>
+          <div className="mb-8"></div>
+        </>
+      ) : data.isMyTeam && !data.isTeamLeader ? (
+        <div className="flex justify-end mb-8">
+          <Link
+            href={`${teamId}/request`}
+            className=" text-[#B1ACC1] border border-[#323036] rounded p-2 cursor-pointer hover:bg-[#FF567920] transition-colors "
+          >
+            팀 탈퇴하기
+          </Link>
+        </div>
+      ) : null}
 
       {/* 팀 정보 */}
       <div className="flex h-[30%]">
@@ -188,14 +133,16 @@ export default function Page() {
                 <span className="mx-2 opacity-50">|</span>
 
                 {/* 시간 */}
-                <span className="wrap-break-word">{data.createdAt}</span>
+                <span className="wrap-break-word">
+                  {dayjs(data.createdAt).fromNow()}
+                </span>
                 <span className="mx-2 opacity-50">|</span>
 
                 {/* 티어 */}
                 <div className="flex items-center">
                   <div className="flex items-center gap-2">
                     <Image
-                      src={`https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-static-assets/global/default/ranked-mini-crests/${data.avgTierInfo.tier}.svg`}
+                      src={`${TIER_IMG_URL}${data.avgTierInfo.tier.toLowerCase()}.svg`}
                       alt={data.avgTierInfo.tier}
                       width={30}
                       height={30}
@@ -203,7 +150,9 @@ export default function Page() {
                     />
                     <div className="min-w-0">
                       <div className="flex">
-                        <span>{capitalize(data.avgTierInfo.tier)}</span>
+                        <span>
+                          {capitalize(data.avgTierInfo.tier.toLowerCase())}
+                        </span>
                         <span className="w-1" />
                         <span>{data.avgTierInfo.rank}</span>
                       </div>
@@ -231,7 +180,7 @@ export default function Page() {
           </div>
         </div>
         <Image
-          src={`https://ddragon.leagueoflegends.com/cdn/15.17.1/img/champion/${data.groupLogo}.png`}
+          src={`${CHAMPION_IMG_URL}${data.groupLogo}.png`}
           alt={data.groupLogo}
           width={300}
           height={300}
@@ -265,7 +214,7 @@ export default function Page() {
                   {/* 라인 */}
                   <td className="rounded-l px-6 py-4 w-[8%] text-left">
                     <Image
-                      src={`https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-static-assets/global/default/svg/position-${m.position}.svg`}
+                      src={`${POSITION_IMG_URL}${m.position.toLowerCase()}.svg`}
                       alt={m.position}
                       width={32}
                       height={32}
@@ -277,8 +226,8 @@ export default function Page() {
                     <Link href={`/user/${m.memberId}`}>
                       <div className="flex items-center gap-2 min-w-0">
                         <Image
-                          src={`https://ddragon.leagueoflegends.com/cdn/15.17.1/img/champion/${m.summonerIcon}.png`}
-                          alt={m.summonerIcon}
+                          src={`${SUMMONER_ICON_URL}${m.summonerIcon}.png`}
+                          alt={m.summonerIcon.toString()}
                           width={30}
                           height={30}
                           className="shrink-0"
@@ -292,7 +241,7 @@ export default function Page() {
                   {/* 전공/학번 */}
                   <td className="px-6 py-4 w-[20%] text-left">
                     <div className="flex flex-col">
-                      <span>{m.admissionYear ?? "학과"}</span>
+                      <span>{m.major}</span>
                       <span>{m.admissionYear}학번</span>
                     </div>
                   </td>
@@ -301,7 +250,7 @@ export default function Page() {
                   <td className="rounded-r px-6 py-4 w-[12%] text-left">
                     <div className="flex items-center gap-2">
                       <Image
-                        src={`https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-static-assets/global/default/ranked-mini-crests/${m.tierInfo.tier}.svg`}
+                        src={`${TIER_IMG_URL}${m.tierInfo.tier.toLowerCase()}.svg`}
                         alt={m.tierInfo.tier}
                         width={30}
                         height={30}
@@ -322,6 +271,18 @@ export default function Page() {
           </tbody>
         </table>
       </div>
+
+      {/* 팀원이 아닐 시 결투 신청하기 렌더링 */}
+      {!data.isMyTeam ? (
+        <div className="flex justify-end mt-5">
+          <Link
+            href={`${teamId}/request`}
+            className=" text-[#B1ACC1] border border-[#323036] rounded p-2 cursor-pointer hover:bg-[#FF567920] transition-colors "
+          >
+            결투 신청하기
+          </Link>
+        </div>
+      ) : null}
     </>
   );
 }

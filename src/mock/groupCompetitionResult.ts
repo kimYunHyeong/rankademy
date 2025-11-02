@@ -11,7 +11,13 @@ const mockMembers: TeamMember[] = [
     univName: "서울과학기술대학교",
     major: "컴퓨터공학과",
     admissionYear: 21,
-    tierInfo: { tier: "Gold", rank: "1", lp: 74, mappedTier: 9 },
+    tierInfo: {
+      tier: "GOLD",
+      rank: "1",
+      lp: 74,
+      mappedTier: 9,
+      flattenString: "string",
+    },
   },
   {
     memberId: 2,
@@ -22,7 +28,13 @@ const mockMembers: TeamMember[] = [
     univName: "서울과학기술대학교",
     major: "전자공학과",
     admissionYear: 20,
-    tierInfo: { tier: "PLATINUM", rank: "2", lp: 20, mappedTier: 10 },
+    tierInfo: {
+      tier: "PLATINUM",
+      rank: "2",
+      lp: 20,
+      mappedTier: 10,
+      flattenString: "string",
+    },
   },
   {
     memberId: 3,
@@ -33,7 +45,13 @@ const mockMembers: TeamMember[] = [
     univName: "서울과학기술대학교",
     major: "전자공학과",
     admissionYear: 20,
-    tierInfo: { tier: "PLATINUM", rank: "2", lp: 20, mappedTier: 10 },
+    tierInfo: {
+      tier: "PLATINUM",
+      rank: "2",
+      lp: 20,
+      mappedTier: 10,
+      flattenString: "string",
+    },
   },
   {
     memberId: 4,
@@ -44,7 +62,13 @@ const mockMembers: TeamMember[] = [
     univName: "서울과학기술대학교",
     major: "전자공학과",
     admissionYear: 20,
-    tierInfo: { tier: "PLATINUM", rank: "2", lp: 20, mappedTier: 10 },
+    tierInfo: {
+      tier: "PLATINUM",
+      rank: "2",
+      lp: 20,
+      mappedTier: 10,
+      flattenString: "string",
+    },
   },
   {
     memberId: 5,
@@ -55,7 +79,13 @@ const mockMembers: TeamMember[] = [
     univName: "서울과학기술대학교",
     major: "전자공학과",
     admissionYear: 20,
-    tierInfo: { tier: "PLATINUM", rank: "2", lp: 20, mappedTier: 10 },
+    tierInfo: {
+      tier: "PLATINUM",
+      rank: "2",
+      lp: 20,
+      mappedTier: 10,
+      flattenString: "string",
+    },
   },
 ];
 
@@ -89,6 +119,52 @@ export const mockGroupCompetitionResult: GroupCompetitionResult[] = [
     competitionId: 2,
     otherTeamUnivName: "연세대학교",
     status: "COMPLETED",
+    myTeam: {
+      teamId: 101,
+      teamName: "서울과기대 Alpha",
+      groupName: "과기대 e스포츠단",
+      teamMembers: mockMembers,
+    },
+    otherTeam: {
+      teamId: 301,
+      teamName: "연세대 Titans",
+      groupName: "연세대 e스포츠연합",
+      teamMembers: mockMembers,
+    },
+    submittedAt: "2025-10-23T12:00:00Z",
+    isWin: false,
+    setResults: [
+      { setNumber: 1, winnerTeamId: 301 },
+      { setNumber: 2, winnerTeamId: 301 },
+    ],
+  },
+  {
+    competitionId: 3,
+    otherTeamUnivName: "연세대학교",
+    status: "EXPIRED",
+    myTeam: {
+      teamId: 101,
+      teamName: "서울과기대 Alpha",
+      groupName: "과기대 e스포츠단",
+      teamMembers: mockMembers,
+    },
+    otherTeam: {
+      teamId: 301,
+      teamName: "연세대 Titans",
+      groupName: "연세대 e스포츠연합",
+      teamMembers: mockMembers,
+    },
+    submittedAt: "2025-10-23T12:00:00Z",
+    isWin: false,
+    setResults: [
+      { setNumber: 1, winnerTeamId: 301 },
+      { setNumber: 2, winnerTeamId: 301 },
+    ],
+  },
+  {
+    competitionId: 4,
+    otherTeamUnivName: "연세대학교",
+    status: "SCHEDULED",
     myTeam: {
       teamId: 101,
       teamName: "서울과기대 Alpha",

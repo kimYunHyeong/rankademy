@@ -5,32 +5,33 @@ import Image from "next/image";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 /* import { Filter } from "@/components/search-box"; */
-import { summonerDTO } from "@/types";
 
-const mockSummoners: summonerDTO[] = [
+import { SUMMONER_ICON_URL } from "@/lib/api";
+
+const mockSummoners = [
   {
     id: 1,
     userName: "소환사",
     userTag: "1234",
-    icon: "Kaisa",
+    icon: 4,
   },
   {
     id: 2,
     userName: "소환사",
     userTag: "5678",
-    icon: "Kaisa",
+    icon: 4,
   },
   {
     id: 3,
     userName: "닉네임",
     userTag: "0000",
-    icon: "Kaisa",
+    icon: 4,
   },
   {
     id: 4,
     userName: "닉네임2",
     userTag: "0001",
-    icon: "Kaisa",
+    icon: 4,
   },
 ];
 
@@ -59,7 +60,7 @@ type Props = {
 
 function TeamRegisterInput({ positionIcon, placeholder }: Props) {
   const [input, setInput] = useState("");
-  const [selected, setSelected] = useState<summonerDTO | null>(null);
+  const [selected, setSelected] = useState<null>(null);
 
   // 입력 시 자동완성 필터링
   const filtered = mockSummoners.filter((s) =>
@@ -77,7 +78,7 @@ function TeamRegisterInput({ positionIcon, placeholder }: Props) {
       />
 
       {/* 입력창 */}
-      <div className="relative w-[360px] h-[48px]">
+      <div className="relative w-[360px] h-12">
         <input
           value={input}
           onChange={(e) => {
@@ -95,14 +96,13 @@ function TeamRegisterInput({ positionIcon, placeholder }: Props) {
               <button
                 key={s.id}
                 onClick={() => {
-                  setSelected(s);
                   setInput(`${s.userName}#${s.userTag}`);
                 }}
                 className="flex items-center gap-2 px-3 py-2 hover:bg-[#2E223F] w-full text-left"
               >
                 <Image
-                  src={`https://ddragon.leagueoflegends.com/cdn/15.17.1/img/champion/${s.icon}.png`}
-                  alt={s.icon}
+                  src={`${SUMMONER_ICON_URL}${s.icon}.png`}
+                  alt={s.icon.toString()}
                   width={20}
                   height={20}
                   className="rounded"
@@ -167,7 +167,7 @@ export default function Page() {
           {/* 팀 소개 */}
           <div className="flex flex-col my-10">
             <div className=" flex">
-              <span className="text-white text-sm self-start mt-[2px]">
+              <span className="text-white text-sm self-start mt-0.5">
                 팀 소개
               </span>
               <Image
@@ -183,7 +183,7 @@ export default function Page() {
             </div>
 
             <textarea
-              className="my-4 text-sm h-[200px] leading-relaxed text-left break-words max-h-[250px] overflow-y-auto scrollbar-none bg-[#323036] border border-[#323036] rounded px-3 py-2 text-white resize-none"
+              className="my-4 text-sm h-[200px] leading-relaxed text-left wrap-break-word max-h-[250px] overflow-y-auto scrollbar-none bg-[#323036] border border-[#323036] rounded px-3 py-2 text-white resize-none"
               rows={5}
               placeholder="팀 소개"
             />
@@ -192,13 +192,13 @@ export default function Page() {
           <div className="flex justify-end mt-5">
             <button
               onClick={() => router.back()}
-              className="flex items-center justify-center border border-[#323036] w-[120px] h-[44px] text-[#B1ACC1] rounded bg-[#25242A33] text-center mr-2"
+              className="flex items-center justify-center border border-[#323036] w-[120px] h-11 text-[#B1ACC1] rounded bg-[#25242A33] text-center mr-2"
             >
               취소
             </button>
             <Link
               href={`/recruits/edit`}
-              className="flex items-center justify-center w-[120px] h-[44px] text-white rounded bg-[#FF567933] text-center"
+              className="flex items-center justify-center w-[120px] h-11 text-white rounded bg-[#FF567933] text-center"
             >
               게시하시(요청 로직 작성 필요)
             </Link>
