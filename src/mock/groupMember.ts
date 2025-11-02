@@ -1,4 +1,4 @@
-import { GroupMember } from "@/app/groups/[groupId]/page";
+import { GroupMember } from "@/types";
 
 export const mockGroupMembers: GroupMember[] = [
   {

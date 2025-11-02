@@ -1,116 +1,34 @@
-"use client";
-
 import Image from "next/image";
 import { univUserData, Column } from "@/types";
 import { capitalize } from "@/utils/capitalize";
-
 import Link from "next/link";
+import { SUMMONER_ICON_URL } from "@/lib/api";
+import { GroupMemberAPIres, GroupDetail } from "@/types";
+import { fetchFromAPI } from "@/utils/fetcher";
+import GroupTable from "@/components/group-table";
 
-export default function Page() {
-  const columns: Column<univUserData>[] = [
-    {
-      id: "user",
-      header: "유저명",
-      headerClassName: "w-[20%]",
-      cell: (row) => (
-        <Link href={`/user/${row.puuid}`}>
-          <div className="flex items-center gap-2">
-            <Image
-              src={`https://ddragon.leagueoflegends.com/cdn/15.17.1/img/champion/${row.user.icon}.png`}
-              alt={row.user.icon}
-              width={30}
-              height={30}
-            />
-            <span>{row.user.userName}</span>
-            <span>{row.user.userTag}</span>
-          </div>
-        </Link>
-      ),
-    },
-    {
-      id: "major",
-      header: "전공",
-      headerClassName: "w-[18%]",
-      cell: (row) => (
-        <div className="flex flex-col">
-          <span>{row.major.major}</span>
-          <span>{row.major.admissionYear}학번</span>
-        </div>
-      ),
-    },
-    {
-      id: "position",
-      header: "라인",
-      headerClassName: "w-[10%]",
-      cell: (row) => (
-        <div className="flex items-center gap-2">
-          <Image
-            src={`https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-static-assets/global/default/svg/position-${row.position.main}.svg`}
-            alt={row.position.main}
-            width={24}
-            height={24}
-          />
-          <Image
-            src={`https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-static-assets/global/default/svg/position-${row.position.sub}.svg`}
-            alt={row.position.sub}
-            width={24}
-            height={24}
-          />
-        </div>
-      ),
-    },
-    {
-      id: "tier",
-      header: "티어",
-      headerClassName: "w-[14%]",
-      cell: (row) => (
-        <div className="flex items-center gap-2">
-          <Image
-            src={`https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-static-assets/global/default/ranked-mini-crests/${row.tier.rank}.svg`}
-            alt={row.tier.rank}
-            width={30}
-            height={30}
-          />
-          <div>
-            <div className="flex">
-              <span>{capitalize(row.tier.rank)}</span>
-              <span className="w-1" />
-              <span>{row.tier.tier}</span>
-            </div>
-            <span>{row.tier.lp}</span>
-          </div>
-        </div>
-      ),
-    },
-    {
-      id: "winRate",
-      header: "승률",
-      headerClassName: "w-[30%]",
-      cell: (row) => {
-        const win = row.record.win;
-        const cnt = row.record.cnt;
-        const pct = 0;
+export default async function GroupMemberEditPage({
+  params,
+}: {
+  params: Promise<{ groupId: string }>;
+}) {
+  const { groupId } = await params;
 
-        return (
-          <div className="flex items-center gap-2 w-full">
-            <div className="relative flex-1 w-40 h-[30px] border-[#323036] rounded-lg bg-[#110D17] overflow-hidden">
-              <div
-                className="h-full bg-[#FF567980]"
-                style={{ width: `${pct}%` }}
-              />
-              <span className="absolute left-2 top-1/2 -translate-y-1/2 text-xs text-white font-medium">
-                {win}승
-              </span>
-              <span className="absolute right-2 top-1/2 -translate-y-1/2 text-xs text-white font-medium">
-                {cnt - win}패
-              </span>
-            </div>
-            <span className="ml-3 text-sm text-white">{pct}%</span>
-          </div>
-        );
-      },
-    },
-  ];
+  /* 그룹 세부 정보 */
+  const groupDetailDataRequieredQuery = `?page=0&groupId=${groupId}`;
+  const groupDetailDataApiUrl = `/groups/${groupId}${groupDetailDataRequieredQuery}`;
+  const groupDetailData = (await fetchFromAPI(
+    groupDetailDataApiUrl
+  )) as GroupDetail;
+
+  /* 그룹 멤버 정보 */
+  const groupMemberDataRequieredQuery = `?page=0&groupId=${groupId}`;
+  const groupMemberDataApiUrl = `/groups/${groupId}/members${groupMemberDataRequieredQuery}`;
+  const groupMemberData = (await fetchFromAPI(
+    groupMemberDataApiUrl
+  )) as GroupMemberAPIres;
+  const groupMember = groupMemberData.content;
+  const pageData = groupMemberData.page;
 
   return (
     <>
@@ -121,8 +39,17 @@ export default function Page() {
       <div className="h-20"></div>
 
       <div className="table container">
-        {/*  <GroupTableHeader memberCnt={univUserRanking.length} groupId="1" />
-        <RankingTable data={sortedData} columns={columns} /> */}
+        {/* 그룹원 정보 */}
+        <GroupTable
+          groupId={groupDetailData.groupId}
+          memberCnt={groupDetailData.memberCnt}
+          capacity={groupDetailData.capacity}
+          isLeader={groupDetailData.isLeader}
+          isJoined={groupDetailData.isJoined}
+          memberApiUrl={groupMemberDataApiUrl}
+          groupMember={groupMember}
+          pageData={pageData}
+        />
       </div>
     </>
   );

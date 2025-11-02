@@ -2,53 +2,91 @@ import Link from "next/link";
 import { Switch } from "@/components/ui/switch";
 import Image from "next/image";
 import CheckPopup from "@/components/check-popup";
+import RowScrollContainer from "@/components/row-scroll-container";
+import { fetchFromAPI } from "@/utils/fetcher";
+import { CHAMPION_IMG_URL } from "@/lib/api";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+import "dayjs/locale/ko";
 
-const mock = {
-  title: "컴퓨터공학과 20학번 모집합니다",
-  content:
-    "본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문",
-  groupId: "10",
-  groupName: "서울과기대 컴공 20학번",
-  uploadedAt: "24",
-  contentImg: "Ezreal",
+dayjs.extend(relativeTime);
+dayjs.locale("ko");
+
+type RecruitDetail = {
+  postId: number;
+  groupId: number;
+  groupName: string;
+  title: string;
+  content: string;
+  requirements: string;
+  createdAt: string;
+  isJoined: boolean;
 };
 
-export default function Page() {
-  const data = mock;
+const mock: RecruitDetail = {
+  postId: 1,
+  groupId: 1,
+  groupName: "string",
+  title: "string",
+  content: "string",
+  requirements: "string",
+  createdAt: "2025-11-02T06:59:25.531Z",
+  isJoined: true,
+};
+
+export default async function RecruitDetailPage({
+  params,
+}: {
+  params: Promise<{ groupId: string }>;
+}) {
+  const { groupId } = await params;
+
+  const res = (await fetchFromAPI(`/groups/${groupId}/post`)) as RecruitDetail;
+  const data = res;
   return (
     <>
-      <div>
-        <div className="flex justify-between items-center mb-12">
-          <div className="flex text-[14px]">
-            <Link
-              href={`${data.groupId}/delete`}
-              className="flex items-center justify-center border border-[#323036] w-[120px] h-11 text-[#B1ACC1] rounded bg-[#25242A33] text-center mr-2"
-            >
-              게시글 삭제
-            </Link>
-            <Link
-              href={`${data.groupId}/edit`}
-              className="flex items-center justify-center border border-[#323036] w-[120px] h-11 text-[#B1ACC1] rounded bg-[#25242A33] text-center mr-2"
-            >
-              게시글 수정
-            </Link>
-            <Link
-              href={`${data.groupId}/up`}
-              className="flex items-center justify-center border border-[#323036] w-[120px] h-11 text-[#B1ACC1] rounded bg-[#25242A33] text-center"
-            >
-              게시글 UP
-            </Link>
-          </div>
+      {/* 그룹 리더일 때 표시할 정보 */}
+      {
+        /* groupDetailData.isLeader */ false && (
+          <>
+            <div>
+              <div className="flex justify-between items-center mb-12">
+                <div className="flex text-[14px]">
+                  <Link
+                    href={`${data.groupId}/delete`}
+                    className="flex items-center justify-center border border-[#323036] w-[120px] h-11 text-[#B1ACC1] rounded bg-[#25242A33] text-center mr-2"
+                  >
+                    게시글 삭제
+                  </Link>
+                  <Link
+                    href={`${data.groupId}/edit`}
+                    className="flex items-center justify-center border border-[#323036] w-[120px] h-11 text-[#B1ACC1] rounded bg-[#25242A33] text-center mr-2"
+                  >
+                    게시글 수정
+                  </Link>
+                  <Link
+                    href={`${data.groupId}/up`}
+                    className="flex items-center justify-center border border-[#323036] w-[120px] h-11 text-[#B1ACC1] rounded bg-[#25242A33] text-center"
+                  >
+                    게시글 UP
+                  </Link>
+                </div>
 
-          <div className="flex">
-            <span className="text-white text-xs mr-2">그룹원 모집</span>
-            <Switch />
-          </div>
-        </div>
+                <div className="flex">
+                  <span className="text-white text-xs mr-2">그룹원 모집</span>
+                  <Switch />
+                </div>
+              </div>
+            </div>
+          </>
+        )
+      }
+
+      {/* 그룹 가입 요청 */}
+      <RowScrollContainer>
         <CheckPopup />
-
-        <div className="mt-5"></div>
-      </div>
+      </RowScrollContainer>
+      <div className="mt-5"></div>
 
       {/* 본문 */}
       <div className="flex flex-col border-[#25242A] border-2 rounded bg-[#25242A33] min-h-[480px] w-full h-[90%]">
@@ -58,16 +96,16 @@ export default function Page() {
             <span className="text-white text-2xl">{data.title}</span>
             <span className="my-3 text-s ">{data.content}</span>
             <span className="text-xs mt-5">
-              {data.groupName} | {data.uploadedAt}분 전
+              {data.groupName} | {dayjs(data.createdAt).fromNow()}
             </span>
           </div>
 
           {/* 이미지 */}
-          {data.contentImg && (
+          {data.content && (
             <div className="relative w-full h-120 mx-auto my-10 flex items-center justify-center">
               <Image
-                src={`https://ddragon.leagueoflegends.com/cdn/15.17.1/img/champion/${data.contentImg}.png`}
-                alt={data.contentImg}
+                src={`${CHAMPION_IMG_URL}${data.content}.png`}
+                alt={data.content}
                 fill
                 className="rounded-xl object-contain"
                 draggable={false}
@@ -83,12 +121,14 @@ export default function Page() {
             >
               그룹 상세 정보
             </Link>
-            <Link
-              href="/me/edit"
-              className="flex items-center justify-center border border-[#323036] w-[120px] h-11 text-[#B1ACC1] rounded bg-[#25242A33] text-center mr-2"
-            >
-              가입 요청하기(요청 로직 작성 필요)
-            </Link>
+            {!data.isJoined && (
+              <Link
+                href="/me/edit"
+                className="flex items-center justify-center border border-[#323036] w-[120px] h-11 text-[#B1ACC1] rounded bg-[#25242A33] text-center mr-2"
+              >
+                가입 요청하기(요청 로직 작성 필요)
+              </Link>
+            )}
           </div>
         </div>
       </div>

@@ -72,7 +72,7 @@ export async function fetchFromAPI(endpoint: string, query?: Query) {
 
   // 7️⃣ 에러 처리
   if (!res.ok) {
-    if (res.status === 401) {
+    if (res.status === 401 || res.status === 400) {
       console.warn("❌ Unauthorized (401) — No or invalid access token.");
       redirect("/login");
     }

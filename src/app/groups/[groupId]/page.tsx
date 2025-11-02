@@ -10,39 +10,13 @@ import {
   RecentCompetition,
   PaginationData,
 } from "@/types";
+import { GroupMemberAPIres } from "@/types";
 
 import { fetchFromAPI } from "@/utils/fetcher";
 import GroupTable from "@/components/group-table";
 
 /* 목데이터 */
 import { mockRecentCompetitionData } from "@/mock/recentCompetitionData";
-
-/* 그룹 멤버 정보 */
-export type GroupMember = {
-  summonerName: string;
-  summonerTag: string;
-  summonerIconId: number;
-  major: string;
-  admissionYear: number;
-  mainPosition: Position;
-  subPosition: Position;
-  tierInfo: {
-    tier: string;
-    rank: string;
-    lp: number;
-    mappedTier: number;
-  };
-  recordInfo: {
-    winCount: number;
-    lossCount: number;
-    winRate: number;
-  };
-};
-
-export type GroupMemberAPIres = {
-  content: GroupMember[];
-  page: PaginationData;
-};
 
 export default async function GroupDetailPage({
   params,

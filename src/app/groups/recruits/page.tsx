@@ -1,7 +1,6 @@
 import { PaginationData } from "@/types";
 import { fetchFromAPI } from "@/utils/fetcher";
 import RecruitListSection from "./_components/recruit-list-section";
-import "dayjs/locale/ko";
 
 export type recruit = {
   postId: number;
@@ -42,10 +41,5 @@ export default async function RecruitListPage() {
   const resRequestedUrl = "?page=0";
   const res = (await fetchFromAPI(`/groups/posts${resRequestedUrl}`)) as APIres;
 
-  return (
-    <RecruitListSection
-      data={mockRecruits.content}
-      pageData={mockRecruits.page}
-    />
-  );
+  return <RecruitListSection data={res.content} pageData={res.page} />;
 }

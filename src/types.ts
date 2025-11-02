@@ -86,6 +86,33 @@ export type GroupDetail = {
   isLeader: boolean;
 };
 
+/* 그룹 멤버 정보 */
+export type GroupMember = {
+  summonerName: string;
+  summonerTag: string;
+  summonerIconId: number;
+  major: string;
+  admissionYear: number;
+  mainPosition: Position;
+  subPosition: Position;
+  tierInfo: {
+    tier: string;
+    rank: string;
+    lp: number;
+    mappedTier: number;
+  };
+  recordInfo: {
+    winCount: number;
+    lossCount: number;
+    winRate: number;
+  };
+};
+
+export type GroupMemberAPIres = {
+  content: GroupMember[];
+  page: PaginationData;
+};
+
 /* 최근 대항전 정보 */
 export type RecentCompetition = {
   competitionId: number;

@@ -8,7 +8,7 @@ import { SUMMONER_ICON_URL, TIER_IMG_URL } from "@/lib/api";
 import { capitalize } from "@/utils/capitalize";
 import { POSITION_IMG_URL } from "@/lib/api";
 import GroupTableHeader from "./group-table-header";
-import { GroupMember } from "@/app/groups/[groupId]/page";
+import { GroupMember } from "@/types";
 import PaginationComponent from "./pagination";
 import { useState } from "react";
 import { PaginationData } from "@/types";
