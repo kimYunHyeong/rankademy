@@ -1,36 +1,31 @@
+// components/GroupTableHeader.tsx (Client Component)
 "use client";
 
-import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import { useFormStatus } from "react-dom";
 
-export default function GroupTableHeader({
-  groupId,
-  memberCnt,
-  capacity,
-
-  isJoined,
-  isLeader,
-}: {
+type Props = {
   groupId: number;
   memberCnt: number;
   capacity: number;
   isJoined: boolean;
   isLeader: boolean;
-}) {
+  // ✅ 서버 액션을 prop으로 주입받음
+  joinAction?: (formData: FormData) => Promise<void>;
+};
+
+export default function GroupTableHeader({
+  groupId,
+  memberCnt,
+  capacity,
+  isJoined,
+  isLeader,
+  joinAction,
+}: Props) {
   const pathname = usePathname();
   const router = useRouter();
 
   const isEditPage = pathname === `/groups/${groupId}/edit`;
-
-  const handleClick = () => {
-    if (isEditPage) {
-      // ✅ 종료하기 → 그룹 상세 페이지로 이동
-      router.push(`/groups/${groupId}`);
-    } else {
-      // ✅ 가입 요청하기 → 콘솔 로그 출력
-      console.log("가입신청이 완료됐습니다.");
-    }
-  };
 
   return (
     <div className="flex justify-between items-center p-5 bg-[#24192F] text-white rounded h-14">
@@ -43,20 +38,31 @@ export default function GroupTableHeader({
       </div>
 
       {isEditPage && isLeader ? (
-        <div
-          onClick={handleClick}
+        <button
           className="text-white border border-[#FF567980] rounded p-2 cursor-pointer hover:bg-[#FF567920] transition-colors"
+          onClick={() => router.back()}
         >
-          <button onClick={() => router.back()}>닫기</button>
-        </div>
-      ) : !isJoined ? (
-        <div
-          onClick={handleClick}
-          className="text-white border border-[#FF567980] rounded p-2 cursor-pointer hover:bg-[#FF567920] transition-colors"
-        >
-          <Link href={`${groupId}/request`}>가입 요청하기</Link>
-        </div>
+          종료하기
+        </button>
+      ) : !isJoined && joinAction ? (
+        <form action={joinAction}>
+          <input type="hidden" name="groupId" value={groupId} />
+          <JoinSubmit />
+        </form>
       ) : null}
     </div>
+  );
+}
+
+function JoinSubmit() {
+  const { pending } = useFormStatus();
+  return (
+    <button
+      type="submit"
+      disabled={pending}
+      className="text-white border border-[#FF567980] rounded p-2 cursor-pointer hover:bg-[#FF567920] transition-colors disabled:opacity-60"
+    >
+      {pending ? "요청 중..." : "가입 요청하기"}
+    </button>
   );
 }

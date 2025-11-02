@@ -4,16 +4,12 @@ import Link from "next/link";
 import CheckPopup from "@/components/check-popup";
 import RowScrollContainer from "@/components/row-scroll-container";
 import { Switch } from "@/components/ui/switch";
-import {
-  Position,
-  GroupDetail,
-  RecentCompetition,
-  PaginationData,
-} from "@/types";
+import { GroupDetail, RecentCompetition } from "@/types";
 import { GroupMemberAPIres } from "@/types";
-
 import { fetchFromAPI } from "@/utils/fetcher";
 import GroupTable from "@/components/group-table";
+import { postToAPI } from "@/utils/patcher";
+import { redirect } from "next/navigation";
 
 /* 목데이터 */
 import { mockRecentCompetitionData } from "@/mock/recentCompetitionData";
@@ -47,6 +43,13 @@ export default async function GroupDetailPage({
   )) as GroupMemberAPIres;
   const groupMember = groupMemberData.content;
   const pageData = groupMemberData.page;
+
+  /* 그룹 가입 요청 */
+  async function joinAction(formData: FormData) {
+    "use server";
+    await postToAPI(`/groups/${groupId}/join-requests`);
+    redirect(`/groups/${groupId}/request`);
+  }
 
   return (
     <>
@@ -114,6 +117,7 @@ export default async function GroupDetailPage({
         memberApiUrl={groupMemberDataApiUrl}
         groupMember={groupMember}
         pageData={pageData}
+        joinAction={joinAction}
       />
     </>
   );
