@@ -1,8 +1,9 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import Image from "next/image";
+import FallBackImage from "@/components/fallback-img";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 /** 이미지 업로드 컴포넌트 */
 function GroupImageUpload({
@@ -134,7 +135,7 @@ function GroupImageUpload({
           </>
         ) : (
           // 비어 있을 때: 안내 높이 유지
-          <div className="flex flex-col justify-center items-center gap-2 pointer-events-none h-[140px] md:h-[160px]">
+          <div className="flex flex-col justify-center items-center gap-2 pointer-events-none h-[140px] md:h-40">
             <Image
               src="/images/image.png"
               alt="image"
@@ -268,14 +269,19 @@ export default function Page() {
             : "hover:bg-[#2b2830]",
         ].join(" ")}
       >
-        <Image src="/images/plus.png" alt={"plus"} width={20} height={20} />
+        <FallBackImage
+          src="/images/plus.png"
+          alt={"plus"}
+          width={20}
+          height={20}
+        />
         <span className="ml-5">세트 추가 {sets.length}/5</span>
       </button>
 
       {/* 메모 */}
       <div className="flex flex-col my-10">
         <textarea
-          className="my-4 text-sm leading-relaxed text-left break-words max-h-[140px] overflow-y-auto scrollbar-none bg-[#323036] border border-[#323036] rounded px-3 py-2 text-white resize-none"
+          className="my-4 text-sm leading-relaxed text-left wrap-break-word max-h-[140px] overflow-y-auto scrollbar-none bg-[#323036] border border-[#323036] rounded px-3 py-2 text-white resize-none"
           onChange={handle("description")}
           rows={5}
           placeholder="메모"
@@ -286,13 +292,13 @@ export default function Page() {
       <div className="flex justify-end mt-5">
         <button
           onClick={() => router.back()}
-          className="flex items-center justify-center border border-[#323036] w-[195px] h-[44px] text-[#B1ACC1] rounded bg-[#25242A33] text-center mr-3"
+          className="flex items-center justify-center border border-[#323036] w-[195px] h-11 text-[#B1ACC1] rounded bg-[#25242A33] text-center mr-3"
         >
           취소
         </button>
         <Link
           href={`/recruits/edit`}
-          className="flex items-center justify-center w-[120px] h-[44px] text-white rounded bg-[#FF567933] text-center"
+          className="flex items-center justify-center w-[120px] h-11 text-white rounded bg-[#FF567933] text-center"
         >
           제출하기(요청 로직 작성 필요)
         </Link>

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "@/styles/globals.css";
 import ClientShell from "@/components/client-shell";
-import Image from "next/image";
+import FallBackImage from "@/components/fallback-img";
 
 export const metadata: Metadata = {
   title: {
@@ -49,7 +49,7 @@ export default function RootLayout({
           <div className="w-[80%] flex flex-col space-y-2">
             <div className="h-4"></div>
             <div className="flex space-x-2">
-              <Image
+              <FallBackImage
                 src="/images/logo.png"
                 alt="Rankademy 로고"
                 width={150.58}

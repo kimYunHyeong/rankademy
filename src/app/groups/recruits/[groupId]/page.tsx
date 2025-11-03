@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Switch } from "@/components/ui/switch";
+import FallBackImage from "@/components/fallback-img";
 import Image from "next/image";
 import CheckPopup from "@/components/check-popup";
 import RowScrollContainer from "@/components/row-scroll-container";

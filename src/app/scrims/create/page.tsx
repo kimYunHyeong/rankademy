@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
+import FallBackImage from "@/components/fallback-img";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 /* import { Filter } from "@/components/search-box"; */
@@ -70,7 +70,7 @@ function TeamRegisterInput({ positionIcon, placeholder }: Props) {
   return (
     <div className="relative flex items-center gap-2 w-full">
       {/* 포지션 아이콘 */}
-      <Image
+      <FallBackImage
         src={`https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-static-assets/global/default/svg/position-${positionIcon}.svg`}
         alt="role"
         width={32}
@@ -100,7 +100,7 @@ function TeamRegisterInput({ positionIcon, placeholder }: Props) {
                 }}
                 className="flex items-center gap-2 px-3 py-2 hover:bg-[#2E223F] w-full text-left"
               >
-                <Image
+                <FallBackImage
                   src={`${SUMMONER_ICON_URL}${s.icon}.png`}
                   alt={s.icon.toString()}
                   width={20}
@@ -170,7 +170,7 @@ export default function Page() {
               <span className="text-white text-sm self-start mt-0.5">
                 팀 소개
               </span>
-              <Image
+              <FallBackImage
                 src="/images/caution-triangle.png"
                 alt="경고"
                 width={24}

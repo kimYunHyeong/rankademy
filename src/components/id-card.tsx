@@ -1,4 +1,4 @@
-import Image from "next/image";
+import FallBackImage from "@/components/fallback-img";
 import { capitalize } from "@/utils/capitalize";
 
 import { MyProfile } from "@/app/me/page";
@@ -15,7 +15,7 @@ export default function IDCard({ data }: { data: MyProfile }) {
       <div className="text-white">
         {/* 사진 및 칭호 */}
         <div>
-          <Image
+          <FallBackImage
             src={`${SUMMONER_ICON_URL}${data.summonerInfo.summonerIcon}.png`}
             alt={"summonerIcon"}
             width={140}
@@ -74,19 +74,19 @@ export default function IDCard({ data }: { data: MyProfile }) {
                 모스트 챔피언
               </span>
               <div className="flex">
-                <Image
+                <FallBackImage
                   src={`${CHAMPION_IMG_URL}${data.mostChampionIds[0]}.png`}
                   alt={"Most Champion 1"}
                   width={40}
                   height={40}
                 />
-                <Image
+                <FallBackImage
                   src={`${CHAMPION_IMG_URL}${data.mostChampionIds[1]}.png`}
                   alt={"Most Champion 2"}
                   width={40}
                   height={40}
                 />
-                <Image
+                <FallBackImage
                   src={`${CHAMPION_IMG_URL}${data.mostChampionIds[2]}.png`}
                   alt={"Most Champion 3"}
                   width={40}
@@ -100,13 +100,13 @@ export default function IDCard({ data }: { data: MyProfile }) {
                 포지션
               </span>
               <div className="flex">
-                <Image
+                <FallBackImage
                   src={`${POSITION_IMG_URL}${data.mainPosition.toLowerCase()}.svg`}
                   alt={data.mainPosition}
                   width={40}
                   height={40}
                 />
-                <Image
+                <FallBackImage
                   src={`${POSITION_IMG_URL}${data.subPosition.toLowerCase()}.svg`}
                   alt={data.subPosition}
                   width={40}
@@ -120,7 +120,7 @@ export default function IDCard({ data }: { data: MyProfile }) {
                 티어
               </span>
               <div className="flex">
-                <Image
+                <FallBackImage
                   src={`${TIER_IMG_URL}${data.summonerInfo.tierInfo.tier.toLowerCase()}.svg`}
                   alt={data.summonerInfo.tierInfo.tier}
                   width={40}
@@ -164,7 +164,7 @@ export default function IDCard({ data }: { data: MyProfile }) {
       </div>
       {/* 왼쪽 로고 */}
       <div>
-        <Image
+        <FallBackImage
           src={`/images/logo-greyfont.png`}
           alt={"logo-greyfont"}
           width={80}

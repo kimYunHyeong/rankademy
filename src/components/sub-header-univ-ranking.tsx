@@ -74,7 +74,7 @@ export default function SubHeaderUnivRanking({
         style={{ height: headerHeight }} // 예: 360~420 추천
       >
         {/* 배경 그라데이션 */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#24192F] to-[#110D17]" />
+        <div className="absolute inset-0 bg-linear-to-b from-[#24192F] to-[#110D17]" />
 
         {/* 배경 로고: 오른쪽, 세로 2/3 지점, 큰 사이즈. 헤더보다 크면 아래/옆이 잘림 */}
         <div
@@ -90,7 +90,7 @@ export default function SubHeaderUnivRanking({
         </div>
 
         {/* 하단 페이드 아웃(배경과 본문 연결을 부드럽게) */}
-        <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#110D17] to-transparent" />
+        <div className="absolute inset-x-0 bottom-0 h-24 bg-linear-to-t from-[#110D17] to-transparent" />
 
         <div className="relative h-full max-w-6xl mx-auto px-8 flex flex-col justify-end gap-6">
           {/* 타이틀 */}
@@ -112,7 +112,7 @@ export default function SubHeaderUnivRanking({
             className="w-full flex justify-center pb-4"
           >
             <div
-              className={`relative inline-flex max-w-[360px] select-none rounded-full bg-[#2A2431]/90 p-1 ${className} w-[240px] h-[40px]`}
+              className={`relative inline-flex max-w-[360px] select-none rounded-full bg-[#2A2431]/90 p-1 ${className} w-60 h-10`}
               role="tablist"
               aria-label="랭킹 토글"
             >

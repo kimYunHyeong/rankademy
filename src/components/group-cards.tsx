@@ -1,5 +1,6 @@
 "use client";
 
+import FallBackImage from "@/components/fallback-img";
 import Image from "next/image";
 import Link from "next/link";
 import { MyGroup } from "@/app/groups/page";

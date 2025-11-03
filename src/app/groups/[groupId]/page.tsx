@@ -45,10 +45,11 @@ export default async function GroupDetailPage({
   const pageData = groupMemberData.page;
 
   /* 그룹 가입 요청 */
-  async function joinAction(formData: FormData) {
+  async function joinAction(prev: any, formData: FormData) {
     "use server";
+
     await postToAPI(`/groups/${groupId}/join-requests`);
-    redirect(`/groups/${groupId}/request`);
+    return { ok: true as const, error: null };
   }
 
   return (

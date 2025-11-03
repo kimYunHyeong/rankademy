@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import FallBackImage from "@/components/fallback-img";
 import Link from "next/link";
 import RankingTable from "@/components/ranking-table";
 import type { Column } from "@/types";
@@ -36,7 +36,10 @@ export default function GroupTable({
   groupMember: GroupMember[];
   memberApiUrl: string;
   pageData: PaginationData;
-  joinAction?: (formData: FormData) => Promise<void>;
+  joinAction?: (
+    prev: any,
+    formData: FormData
+  ) => Promise<{ ok: boolean; error: string | null }>;
 }) {
   /* 페이지네이션 */
   const [pageState, setPageData] = useState<PaginationData>(pageData);
@@ -51,7 +54,7 @@ export default function GroupTable({
       cell: (row) => (
         <Link href={`/user/${row.summonerName}`}>
           <div className="flex items-center gap-2">
-            <Image
+            <FallBackImage
               src={`${SUMMONER_ICON_URL}${row.summonerIconId}.png`}
               alt={row.summonerIconId.toString()}
               width={30}
@@ -82,13 +85,13 @@ export default function GroupTable({
       headerClassName: "w-[10%]",
       cell: (row) => (
         <div className="flex items-center gap-2">
-          <Image
+          <FallBackImage
             src={`${POSITION_IMG_URL}${row.mainPosition.toLowerCase()}.svg`}
             alt={row.mainPosition}
             width={24}
             height={24}
           />
-          <Image
+          <FallBackImage
             src={`${POSITION_IMG_URL}${row.subPosition.toLowerCase()}.svg`}
             alt={row.subPosition}
             width={24}
@@ -103,7 +106,7 @@ export default function GroupTable({
       headerClassName: "w-[14%]",
       cell: (row) => (
         <div className="flex items-center gap-2">
-          <Image
+          <FallBackImage
             src={`${TIER_IMG_URL}${row.tierInfo.tier.toLowerCase()}.svg`}
             alt={row.tierInfo.tier}
             width={30}

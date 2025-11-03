@@ -1,9 +1,10 @@
-import Image from "next/image";
+import FallBackImage from "@/components/fallback-img";
 import Link from "next/link";
 import { capitalize } from "@/utils/capitalize";
 import { CompetitionStatus, TeamMember, Tier } from "@/types";
 import { mockCompetitionDetail } from "@/mock/competitionDeatil";
 import { POSITION_IMG_URL, SUMMONER_ICON_URL, TIER_IMG_URL } from "@/lib/api";
+import Image from "next/image";
 import { fetchFromAPI } from "@/utils/fetcher";
 
 type TeamDetail = {
@@ -55,7 +56,7 @@ export default async function CompetitionDetailPage({
         {/* 주의문구 | 결과등록 */}
         <div className="flex w-full my-6 items-center gap-5">
           <div className="flex justify-center items-center rounded w-[90%] h-11 bg-[#25242A] text-white">
-            <Image
+            <FallBackImage
               src="/images/caution-triangle.png"
               alt="경고"
               width={24}
@@ -149,7 +150,7 @@ export default async function CompetitionDetailPage({
                     >
                       {/* 라인 */}
                       <td className="rounded-l px-6 py-4 w-[20%] text-left">
-                        <Image
+                        <FallBackImage
                           src={`${POSITION_IMG_URL}${m.position.toLowerCase()}.svg`}
                           alt={m.position}
                           width={32}
@@ -161,7 +162,7 @@ export default async function CompetitionDetailPage({
                       <td className="px-6 py-4 w-[35%] text-left">
                         <Link href={`/user/${m.memberId}`}>
                           <div className="flex items-center gap-2 min-w-0">
-                            <Image
+                            <FallBackImage
                               src={`${SUMMONER_ICON_URL}${m.summonerIcon}.png`}
                               alt={m.summonerIcon.toString()}
                               width={30}
@@ -185,7 +186,7 @@ export default async function CompetitionDetailPage({
                       {/* 티어 */}
                       <td className="rounded-r px-6 py-4 w-[15%] text-left">
                         <div className="flex items-center gap-2">
-                          <Image
+                          <FallBackImage
                             src={`${TIER_IMG_URL}${m.tierInfo.tier.toLowerCase()}.svg`}
                             alt={m.tierInfo.tier.toLowerCase()}
                             width={30}
@@ -211,7 +212,7 @@ export default async function CompetitionDetailPage({
           </div>
         </div>
         <div className="flex items-center justify-center h-30">
-          <Image
+          <FallBackImage
             src="/images/competition-versus.png"
             alt="versus-icon"
             width={58}
@@ -250,7 +251,7 @@ export default async function CompetitionDetailPage({
                     >
                       {/* 라인 */}
                       <td className="rounded-l px-6 py-4 w-[20%] text-left">
-                        <Image
+                        <FallBackImage
                           src={`${POSITION_IMG_URL}${m.position.toLowerCase()}.svg`}
                           alt={m.position}
                           width={32}
@@ -262,7 +263,7 @@ export default async function CompetitionDetailPage({
                       <td className="px-6 py-4 w-[35%] text-left">
                         <Link href={`/user/${m.memberId}`}>
                           <div className="flex items-center gap-2 min-w-0">
-                            <Image
+                            <FallBackImage
                               src={`${SUMMONER_ICON_URL}${m.summonerIcon}.png`}
                               alt={m.summonerIcon.toString()}
                               width={30}
@@ -286,7 +287,7 @@ export default async function CompetitionDetailPage({
                       {/* 티어 */}
                       <td className="rounded-r px-6 py-4 w-[15%] text-left">
                         <div className="flex items-center gap-2">
-                          <Image
+                          <FallBackImage
                             src={`${TIER_IMG_URL}${m.tierInfo.tier.toLowerCase()}.svg`}
                             alt={m.tierInfo.tier.toLowerCase()}
                             width={30}

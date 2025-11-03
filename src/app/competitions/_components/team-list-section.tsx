@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import SubHeaderMain from "@/components/sub-header-main";
-import Image from "next/image";
+import FallBackImage from "@/components/fallback-img";
 import { useState } from "react";
 import React from "react";
 import { PaginationData } from "@/types";
@@ -47,7 +47,7 @@ export default function TeamListSection({
             >
               {/* 티어 사진 */}
               <div className="flex flex-col relative items-center justify-center m-3 p-3 pr-0 shrink-0">
-                <Image
+                <FallBackImage
                   src={`${TIER_IMG_URL}${data.avgTierInfo.tier}.svg`}
                   alt={data.avgTierInfo.tier}
                   width={80}

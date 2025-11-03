@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Image from "next/image";
+import FallBackImage from "@/components/fallback-img";
 import { capitalize } from "@/utils/capitalize";
 import { POSITION_IMG_URL, SUMMONER_ICON_URL, TIER_IMG_URL } from "@/lib/api";
 import { TeamMember, Tier } from "@/types";
@@ -113,7 +113,7 @@ export default async function Page({
         {/* 티어 */}
         <div className="p-4 h-[300px] w-[15%] bg-[#25242A33] border-2 border-[#25242A] rounded  text-white overflow-hidden flex flex-col justify-center items-center">
           <div className="flex flex-col justify-center items-center gap-2">
-            <Image
+            <FallBackImage
               src={`${TIER_IMG_URL}${data.avgTierInfo.tier.toLowerCase()}.svg`}
               alt={data.avgTierInfo.tier.toLowerCase()}
               width={95}
@@ -163,7 +163,7 @@ export default async function Page({
                 >
                   {/* 라인 */}
                   <td className="rounded-l px-6 py-4 w-[8%] text-left">
-                    <Image
+                    <FallBackImage
                       src={`${POSITION_IMG_URL}${m.position.toLowerCase()}.svg`}
                       alt={m.position}
                       width={32}
@@ -175,7 +175,7 @@ export default async function Page({
                   <td className="px-6 py-4 w-[20%] text-left">
                     <Link href={`/user/${m.memberId}`}>
                       <div className="flex items-center gap-2 min-w-0">
-                        <Image
+                        <FallBackImage
                           src={`${SUMMONER_ICON_URL}${m.summonerIcon}.png`}
                           alt={m.summonerIcon.toString()}
                           width={30}
@@ -196,7 +196,7 @@ export default async function Page({
                   {/* 티어 */}
                   <td className="rounded-r px-6 py-4 w-[12%] text-left">
                     <div className="flex items-center gap-2">
-                      <Image
+                      <FallBackImage
                         src={`${TIER_IMG_URL}${m.tierInfo.tier.toLowerCase()}.svg`}
                         alt={m.tierInfo.tier.toLowerCase()}
                         width={30}

@@ -7,7 +7,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Toggle } from "@/components/ui/toggle";
-import Image from "next/image";
+import FallBackImage from "@/components/fallback-img";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -209,7 +209,7 @@ export default function Page() {
               className="rounded data-[state=on]:bg-[#323036] hover:bg-[#323036] border border-transparent hover:border-[#323036] px-2 py-1"
               title="이미지 업로드"
             >
-              <Image
+              <FallBackImage
                 src="/images/image.png"
                 alt="image"
                 width={18}
@@ -233,7 +233,7 @@ export default function Page() {
               className="rounded data-[state=on]:bg-[#323036] hover:bg-[#323036] border border-transparent hover:border-[#323036] px-2 py-1"
               title="Bold"
             >
-              <Image
+              <FallBackImage
                 src="/images/bold.png"
                 alt="bold"
                 width={22}
@@ -249,7 +249,7 @@ export default function Page() {
               className="rounded data-[state=on]:bg-[#323036] hover:bg-[#323036] border border-transparent hover:border-[#323036] px-2 py-1"
               title="Underline"
             >
-              <Image
+              <FallBackImage
                 src="/images/underline.png"
                 alt="underline"
                 width={22}
@@ -265,7 +265,7 @@ export default function Page() {
               className="rounded data-[state=on]:bg-[#323036] hover:bg-[#323036] border border-transparent hover:border-[#323036] px-2 py-1"
               title="Italic"
             >
-              <Image
+              <FallBackImage
                 src="/images/italic.png"
                 alt="italic"
                 width={22}

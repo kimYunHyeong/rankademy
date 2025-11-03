@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Image from "next/image";
+import FallBackImage from "@/components/fallback-img";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { SUMMONER_ICON_URL } from "@/lib/api";
@@ -62,7 +62,7 @@ export default function ProfileMenu({
         aria-label="내 프로필"
         className="focus:outline-none"
       >
-        <Image
+        <FallBackImage
           src={`${SUMMONER_ICON_URL}${summonerIcon}.png`}
           alt="프로필"
           width={40}

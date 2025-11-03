@@ -3,7 +3,7 @@
 import { useState } from "react";
 import RankingTable from "@/components/ranking-table";
 import type { Column, PaginationData, Query } from "@/types";
-import Image from "next/image";
+import FallBackImage from "@/components/fallback-img";
 import Link from "next/link";
 import { CHAMPION_IMG_URL, SUMMONER_ICON_URL, TIER_IMG_URL } from "@/lib/api";
 import SearchBox from "@/components/search-box";
@@ -45,12 +45,13 @@ export default function UnivGroupRankingSection({
             href={`/groups/${row.groupId}`}
             className="flex items-center gap-2 transition"
           >
-            <Image
+            <FallBackImage
               src={`${CHAMPION_IMG_URL}${row.logoImageUrl}.png`}
               alt={row.logoImageUrl}
               width={30}
               height={30}
               className="rounded"
+              fallbackClassName="border-[#323036] rounded bg-[#25242A]"
             />
             <span>{row.name}</span>
           </Link>
@@ -81,7 +82,7 @@ export default function UnivGroupRankingSection({
       headerClassName: "w-[20%]",
       cell: (row) => (
         <div className="flex items-center gap-2">
-          <Image
+          <FallBackImage
             src={`${TIER_IMG_URL}${row.avgTierInfo.tier.toLowerCase()}.svg`}
             alt={row.avgTierInfo.tier}
             width={30}
@@ -105,7 +106,7 @@ export default function UnivGroupRankingSection({
       cell: (row) => (
         <Link href={`/user/${row.leader.id}`}>
           <div className="flex items-center gap-2">
-            <Image
+            <FallBackImage
               src={`${SUMMONER_ICON_URL}${row.leader.summonerIcon}.png`}
               alt={row.leader.summonerIcon.toString()}
               width={30}

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import RankingTable from "@/components/ranking-table";
 import type { Column, PaginationData, Query } from "@/types";
-import Image from "next/image";
+import FallBackImage from "@/components/fallback-img";
 import Link from "next/link";
 import { SUMMONER_ICON_URL } from "@/lib/api";
 import SearchBox from "@/components/search-box";
@@ -33,7 +33,7 @@ export default function UnivRankingSection({
           href={`/rankings/univ/${encodeURIComponent(row.univName)}/groups`}
           className="flex items-center gap-2"
         >
-          <Image
+          <FallBackImage
             src={`/univ-emblem/${row.univName}.png`}
             alt={row.univName}
             width={30}
@@ -69,7 +69,7 @@ export default function UnivRankingSection({
       cell: (row) => (
         <Link href={`/user/${row.rankerDto.id}`}>
           <div className="flex items-center gap-2">
-            <Image
+            <FallBackImage
               src={`${SUMMONER_ICON_URL}${row.rankerDto.summonerIcon}.png`}
               alt={row.rankerDto.summonerIcon.toString()}
               width={30}

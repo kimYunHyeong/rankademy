@@ -10,7 +10,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Query, CompetitionStatus } from "@/types";
-import Image from "next/image";
+import FallBackImage from "@/components/fallback-img";
 import Link from "next/link";
 import {
   CHAMPION_IMG_URL,
@@ -163,7 +163,7 @@ export default function CompetitionTable({ data, apiurl, query }: Props) {
                       <TableCell className=" border-none">
                         <div className="flex items-center">
                           {/* 그룹 아이콘 | 그룹 이름 */}
-                          {/*  <Image
+                          {/*  <FallBackImage
                             src={`${CHAMPION_IMG_URL}${row.otherTeam.groupIcon}.png`}
                             alt={row.otherTeam.groupIcon}
                             width={40}
@@ -197,7 +197,7 @@ export default function CompetitionTable({ data, apiurl, query }: Props) {
                       <TableCell className=" border-none">
                         <div className="flex items-center">
                           {/* 그룹 아이콘 | 그룹 이름 */}
-                          {/*  <Image
+                          {/*  <FallBackImage
                             src={`${CHAMPION_IMG_URL}${row.otherTeam.groupIcon}.png`}
                             alt={row.otherTeam.groupIcon}
                             width={40}
@@ -253,7 +253,7 @@ export default function CompetitionTable({ data, apiurl, query }: Props) {
                                   key={member.memberId ?? idx}
                                   className="flex items-center gap-2"
                                 >
-                                  <Image
+                                  <FallBackImage
                                     src={`${POSITION_IMG_URL}${member.position.toLowerCase()}.svg`}
                                     alt={String(member.position)}
                                     width={40}
@@ -262,7 +262,7 @@ export default function CompetitionTable({ data, apiurl, query }: Props) {
                                   />
                                   <Link href={`/user/${member.memberId}`}>
                                     <div className="flex items-center ml-8 mb-3">
-                                      <Image
+                                      <FallBackImage
                                         src={`${SUMMONER_ICON_URL}${member.summonerIcon}.png`}
                                         alt={String(member.summonerIcon)}
                                         width={40}
@@ -363,7 +363,7 @@ export default function CompetitionTable({ data, apiurl, query }: Props) {
                                   key={member.memberId ?? idx}
                                   className="flex items-center gap-2"
                                 >
-                                  <Image
+                                  <FallBackImage
                                     src={`${POSITION_IMG_URL}${member.position.toLocaleLowerCase()}.svg`}
                                     alt={String(
                                       member.position.toLocaleLowerCase()
@@ -374,7 +374,7 @@ export default function CompetitionTable({ data, apiurl, query }: Props) {
                                   />
                                   <Link href={`/user/${member.memberId}`}>
                                     <div className="flex items-center ml-8 mb-3">
-                                      <Image
+                                      <FallBackImage
                                         src={`${SUMMONER_ICON_URL}${member.summonerIcon}.png`}
                                         alt={String(member.summonerIcon)}
                                         width={40}

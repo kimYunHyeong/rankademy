@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/popover";
 import { Position } from "@/types";
 import { POSITION_IMG_URL } from "@/lib/api";
-import Image from "next/image";
+import FallBackImage from "@/components/fallback-img";
 
 const positionIcon = (p?: Position) =>
   `${POSITION_IMG_URL}${p?.toLowerCase()}-light.svg`;
@@ -21,6 +21,7 @@ const POSITIONS = [
   "MIDDLE",
   "BOTTOM",
   "UTILITY",
+  "ANY",
 ] as Position[];
 
 /* 포지션 선택 팝업 */
@@ -37,11 +38,12 @@ function PositionSquare({ value }: { value?: Position }) {
       }
     >
       {active ? (
-        <Image
+        <FallBackImage
           src={positionIconSelected(value)}
           alt={value!}
           width={50}
           height={50}
+          fallbackSrc="/images/position-any-fill.png"
         />
       ) : null}
       {active && (
@@ -92,7 +94,13 @@ export default function PositionPicker({
                   }
                   title={p}
                 >
-                  <Image src={positionIcon(p)} alt={p} width={42} height={42} />
+                  <FallBackImage
+                    src={positionIcon(p)}
+                    alt={p}
+                    width={42}
+                    height={42}
+                    fallbackSrc="/images/position-any-empty.png"
+                  />
                   {active && (
                     <span className="pointer-events-none absolute inset-0 rounded ring-2 ring-[#FF5679]/60" />
                   )}

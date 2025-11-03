@@ -1,7 +1,7 @@
 import Link from "next/link";
 import CheckPopup from "@/components/check-popup";
 import RowScrollContainer from "@/components/row-scroll-container";
-import Image from "next/image";
+import FallBackImage from "@/components/fallback-img";
 import { capitalize } from "@/utils/capitalize";
 import { Position, Tier } from "@/types";
 import {
@@ -141,7 +141,7 @@ export default async function TeamDetailPage({
                 {/* 티어 */}
                 <div className="flex items-center">
                   <div className="flex items-center gap-2">
-                    <Image
+                    <FallBackImage
                       src={`${TIER_IMG_URL}${data.avgTierInfo.tier.toLowerCase()}.svg`}
                       alt={data.avgTierInfo.tier}
                       width={30}
@@ -179,7 +179,7 @@ export default async function TeamDetailPage({
             </div>
           </div>
         </div>
-        <Image
+        <FallBackImage
           src={`${CHAMPION_IMG_URL}${data.groupLogo}.png`}
           alt={data.groupLogo}
           width={300}
@@ -213,7 +213,7 @@ export default async function TeamDetailPage({
                 >
                   {/* 라인 */}
                   <td className="rounded-l px-6 py-4 w-[8%] text-left">
-                    <Image
+                    <FallBackImage
                       src={`${POSITION_IMG_URL}${m.position.toLowerCase()}.svg`}
                       alt={m.position}
                       width={32}
@@ -225,7 +225,7 @@ export default async function TeamDetailPage({
                   <td className="px-6 py-4 w-[20%] text-left">
                     <Link href={`/user/${m.memberId}`}>
                       <div className="flex items-center gap-2 min-w-0">
-                        <Image
+                        <FallBackImage
                           src={`${SUMMONER_ICON_URL}${m.summonerIcon}.png`}
                           alt={m.summonerIcon.toString()}
                           width={30}
@@ -249,7 +249,7 @@ export default async function TeamDetailPage({
                   {/* 티어 */}
                   <td className="rounded-r px-6 py-4 w-[12%] text-left">
                     <div className="flex items-center gap-2">
-                      <Image
+                      <FallBackImage
                         src={`${TIER_IMG_URL}${m.tierInfo.tier.toLowerCase()}.svg`}
                         alt={m.tierInfo.tier}
                         width={30}

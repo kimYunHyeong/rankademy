@@ -1,5 +1,5 @@
 import { MyProfile } from "../page";
-import Image from "next/image";
+import FallBackImage from "@/components/fallback-img";
 import { capitalize } from "@/utils/capitalize";
 import Link from "next/link";
 import {
@@ -44,7 +44,7 @@ export default function InfoSection({ data }: { data: MyProfile }) {
                 text-[#B1ACC1] rounded 
                 bg-[#25242A33] text-center mt-10 p-6"
           >
-            <Image
+            <FallBackImage
               src={`${SUMMONER_ICON_URL}${data.summonerInfo.summonerIcon}.png`}
               alt={data.summonerInfo.summonerIcon.toString()}
               width={100}
@@ -75,7 +75,7 @@ export default function InfoSection({ data }: { data: MyProfile }) {
               {data.univInfo.univVerified ? (
                 <>
                   <span>{data.univInfo.univName}</span>
-                  <Image
+                  <FallBackImage
                     src="/images/verified.png"
                     alt="verified"
                     width={20}
@@ -116,7 +116,7 @@ export default function InfoSection({ data }: { data: MyProfile }) {
                 bg-[#25242A] text-center mt-5 p-6"
           >
             <div className="flex items-center">
-              <Image
+              <FallBackImage
                 src="/images/riot-logo.png"
                 alt={"riot-logo"}
                 width={40}
@@ -125,7 +125,7 @@ export default function InfoSection({ data }: { data: MyProfile }) {
               <span className="ml-8">라이엇 게임즈</span>
             </div>
 
-            <Image
+            <FallBackImage
               src="/images/plus.png"
               alt={"plus"}
               width={20}
@@ -156,12 +156,13 @@ export default function InfoSection({ data }: { data: MyProfile }) {
                                mr-2"
                 />
               ) : (
-                <Image
+                <FallBackImage
                   src={`${POSITION_IMG_URL}${data.mainPosition.toLowerCase()}.svg`}
                   alt={data.mainPosition.toLowerCase()}
                   width={50}
                   height={50}
                   className="mr-1"
+                  fallbackSrc="/images/position-any-fill.png"
                 />
               )}
 
@@ -174,12 +175,13 @@ export default function InfoSection({ data }: { data: MyProfile }) {
                               mr-2"
                 />
               ) : (
-                <Image
+                <FallBackImage
                   src={`${POSITION_IMG_URL}${data.subPosition.toLowerCase()}.svg`}
                   alt={data.subPosition.toLowerCase()}
                   width={50}
                   height={50}
                   className="mr-1"
+                  fallbackSrc="/images/position-any-fill.png"
                 />
               )}
             </div>
@@ -198,7 +200,7 @@ export default function InfoSection({ data }: { data: MyProfile }) {
                                mr-2"
                 />
               ) : (
-                <Image
+                <FallBackImage
                   src={`${CHAMPION_IMG_URL}${data.mostChampionIds[0]}.png`}
                   alt={data.mostChampionIds[0]}
                   width={50}
@@ -216,7 +218,7 @@ export default function InfoSection({ data }: { data: MyProfile }) {
                               mr-2"
                 />
               ) : (
-                <Image
+                <FallBackImage
                   src={`${CHAMPION_IMG_URL}${data.mostChampionIds[1]}.png`}
                   alt={data.mostChampionIds[1]}
                   width={50}
@@ -234,7 +236,7 @@ export default function InfoSection({ data }: { data: MyProfile }) {
                               mr-2"
                 />
               ) : (
-                <Image
+                <FallBackImage
                   src={`${CHAMPION_IMG_URL}${data.mostChampionIds[2]}.png`}
                   alt={data.mostChampionIds[2]}
                   width={50}
@@ -249,7 +251,7 @@ export default function InfoSection({ data }: { data: MyProfile }) {
             <span className="font-bold">티어</span>
 
             <div className="flex">
-              <Image
+              <FallBackImage
                 src={`${TIER_IMG_URL}${data.summonerInfo.tierInfo.tier.toLowerCase()}.svg`}
                 alt={data.summonerInfo.tierInfo.tier}
                 width={60}

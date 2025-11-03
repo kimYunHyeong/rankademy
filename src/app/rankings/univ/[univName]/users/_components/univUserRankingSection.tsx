@@ -3,7 +3,7 @@
 import { useState } from "react";
 import RankingTable from "@/components/ranking-table";
 import type { Column, PaginationData, Query } from "@/types";
-import Image from "next/image";
+import FallBackImage from "@/components/fallback-img";
 import Link from "next/link";
 import { POSITION_IMG_URL, SUMMONER_ICON_URL, TIER_IMG_URL } from "@/lib/api";
 import SearchBox from "@/components/search-box";
@@ -59,7 +59,7 @@ export default function UnivUserRankingSection({
       cell: (row) => (
         <Link href={`/user/${row.userId}`}>
           <div className="flex items-center gap-2">
-            <Image
+            <FallBackImage
               src={`${SUMMONER_ICON_URL}${row.summonerIcon}.png`}
               alt={row.summonerIcon.toString()}
               width={30}
@@ -90,13 +90,13 @@ export default function UnivUserRankingSection({
       headerClassName: "w-[10%]",
       cell: (row) => (
         <div className="flex items-center gap-2">
-          <Image
+          <FallBackImage
             src={`${POSITION_IMG_URL}${row.mainPosition.toLowerCase()}.svg`}
             alt={row.mainPosition}
             width={24}
             height={24}
           />
-          <Image
+          <FallBackImage
             src={`${POSITION_IMG_URL}${row.subPosition.toLowerCase()}.svg`}
             alt={row.subPosition}
             width={24}
@@ -111,7 +111,7 @@ export default function UnivUserRankingSection({
       headerClassName: "w-[14%]",
       cell: (row) => (
         <div className="flex items-center gap-2">
-          <Image
+          <FallBackImage
             src={`${TIER_IMG_URL}${row.tierInfo.tier.toLowerCase()}.svg`}
             alt={row.tierInfo.tier}
             width={30}

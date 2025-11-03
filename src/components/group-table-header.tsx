@@ -1,8 +1,11 @@
-// components/GroupTableHeader.tsx (Client Component)
 "use client";
 
-import { usePathname, useRouter } from "next/navigation";
+import { useEffect } from "react";
+import { useActionState } from "react";
 import { useFormStatus } from "react-dom";
+import { usePathname, useRouter } from "next/navigation";
+
+type JoinState = { ok: boolean; error: string | null };
 
 type Props = {
   groupId: number;
@@ -10,8 +13,7 @@ type Props = {
   capacity: number;
   isJoined: boolean;
   isLeader: boolean;
-  // ✅ 서버 액션을 prop으로 주입받음
-  joinAction?: (formData: FormData) => Promise<void>;
+  joinAction?: (prev: JoinState, formData: FormData) => Promise<JoinState>;
 };
 
 export default function GroupTableHeader({
@@ -24,8 +26,19 @@ export default function GroupTableHeader({
 }: Props) {
   const pathname = usePathname();
   const router = useRouter();
-
   const isEditPage = pathname === `/groups/${groupId}/edit`;
+
+  // useActionState로 교체
+  const [state, formAction] = useActionState<JoinState, FormData>(
+    joinAction ?? (async () => ({ ok: false, error: "액션 미정의" })),
+    { ok: false, error: null }
+  );
+
+  useEffect(() => {
+    if (state?.ok) {
+      router.push(`/groups/${groupId}/request`); // 모달 URL로 이동
+    }
+  }, [state?.ok, groupId, router]);
 
   return (
     <div className="flex justify-between items-center p-5 bg-[#24192F] text-white rounded h-14">
@@ -45,9 +58,12 @@ export default function GroupTableHeader({
           종료하기
         </button>
       ) : !isJoined && joinAction ? (
-        <form action={joinAction}>
+        <form action={formAction}>
           <input type="hidden" name="groupId" value={groupId} />
           <JoinSubmit />
+          {!state.ok && state.error ? (
+            <p className="mt-2 text-xs text-red-400">{state.error}</p>
+          ) : null}
         </form>
       ) : null}
     </div>

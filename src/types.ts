@@ -5,7 +5,7 @@ export type Position =
   | "MIDDLE"
   | "BOTTOM"
   | "UTILITY"
-  | "NONE";
+  | "ANY";
 
 /* 티어 */
 export type Tier =

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Image from "next/image";
+import FallBackImage from "@/components/fallback-img";
 import ProfileMenu from "@/components/profile-menu";
 import { getIsAuthenticated } from "@/lib/auth";
 import NavMenu from "@/components/nav-menu";
@@ -33,8 +33,8 @@ export default async function ClientShell({
             className="flex flex-col items-center font-helveticaInserat text-white"
             href="/"
           >
-            <Image
-              src="/images/logo_underside.png"
+            <FallBackImage
+              src="/images/logo-underside.png"
               alt="Rankademy 로고"
               width={61}
               height={45.75}
@@ -51,7 +51,7 @@ export default async function ClientShell({
               PRO
             </Link>
             <Link href="/alarm">
-              <Image
+              <FallBackImage
                 src="/images/alram.png"
                 alt="알람"
                 width={18}

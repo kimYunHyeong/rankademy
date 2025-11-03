@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import React from "react";
 import { capitalize } from "@/utils/capitalize";
 import { usePathname } from "next/navigation";
@@ -9,6 +8,7 @@ import { GroupDetail, RecentCompetition } from "@/types";
 import { CHAMPION_IMG_URL, TIER_IMG_URL } from "@/lib/api";
 import WinRateDonut from "./win-rate-donut";
 import { formatDate } from "@/utils/format-date";
+import FallBackImage from "@/components/fallback-img";
 
 export default function GroupInfo({
   groupDetailData,
@@ -30,12 +30,13 @@ export default function GroupInfo({
       <div className="pl-3 w-[70%] bg-[#24192F] rounded mr-2.5 text-white overflow-hidden pr-24">
         {/* 이미지와 정보를 분리하는 div */}
         <div className="flex pt-5 justify-center gap-2 max-md:flex-wrap">
-          <Image
+          <FallBackImage
             src={`${CHAMPION_IMG_URL}${groupDetailData.logoImageUrl}.png`}
             alt={groupDetailData.logoImageUrl}
             width={156}
             height={156}
-            className="rounded-2xl mr-5 shrink-0"
+            className="rounded mr-5 shrink-0"
+            fallbackClassName="border-[#323036] rounded bg-[#25242A]"
           />
 
           <div className="flex-1 min-w-0">
@@ -56,7 +57,7 @@ export default function GroupInfo({
               <div className="flex items-center">
                 <span className="mr-4">평균티어 | </span>
                 <div className="flex items-center gap-2">
-                  <Image
+                  <FallBackImage
                     src={`${TIER_IMG_URL}${groupDetailData.avgTierInfo.tier.toLowerCase()}.svg`}
                     alt={groupDetailData.avgTierInfo.tier}
                     width={30}

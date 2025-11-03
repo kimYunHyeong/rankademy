@@ -4,29 +4,37 @@ import { useState } from "react";
 import { Position } from "@/types";
 import { MyProfile } from "../../page";
 import { CHAMPION_IMG_URL, SUMMONER_ICON_URL, TIER_IMG_URL } from "@/lib/api";
-import Image from "next/image";
+import FallBackImage from "@/components/fallback-img";
 import Link from "next/link";
 import { capitalize } from "@/utils/capitalize";
+import { useRouter } from "next/navigation";
 import PositionPicker from "./position-select";
-import { updateProfile } from "../action";
 
 type FormState = {
   username: string;
   major: string;
-  admissionYear: string;
+  admissionYear: number;
   description: string;
   mainPosition: Position;
   subPosition: Position;
 };
 
-export default function FormSection({ data }: { data: MyProfile }) {
+export default function FormSection({
+  data,
+  updateProfile,
+}: {
+  data: MyProfile;
+  updateProfile: (formData: FormData) => Promise<void>;
+}) {
+  const router = useRouter();
+
   const [form, setForm] = useState<FormState>({
     username: data.username ?? "",
     major: data.univInfo.major ?? "",
-    admissionYear: String(data.univInfo.admissionYear ?? ""),
+    admissionYear: data.univInfo.admissionYear ?? 25,
     description: data.description ?? "",
-    mainPosition: (data.mainPosition ?? "") as Position,
-    subPosition: (data.subPosition ?? "") as Position,
+    mainPosition: (data.mainPosition ?? "ANY") as Position,
+    subPosition: (data.subPosition ?? "ANY") as Position,
   });
 
   return (
@@ -37,7 +45,21 @@ export default function FormSection({ data }: { data: MyProfile }) {
       </div>
 
       {/* 수정 제출 */}
-      <form action={updateProfile} className="flex flex-col gap-5">
+      <form
+        action={async (formData: FormData) => {
+          try {
+            await updateProfile(formData);
+            router.push("/me");
+          } catch (err: any) {
+            alert(
+              err?.message ?? "에러가 발생하여 내용이 반영되지 않았습니다."
+            );
+            // 이전 페이지로
+            router.back();
+          }
+        }}
+        className="flex flex-col gap-5"
+      >
         <div className="flex items-center justify-end px-20">
           <button
             type="submit"
@@ -55,7 +77,7 @@ export default function FormSection({ data }: { data: MyProfile }) {
           <div className="w-[80%] flex flex-col mr-1">
             {/* 소환사 이름 */}
             <div className="flex items-center border-2 border-[#323036] w-full h-[148px] text-[#B1ACC1] rounded bg-[#25242A33] text-center mt-2 p-6">
-              <Image
+              <FallBackImage
                 src={`${SUMMONER_ICON_URL}${data.summonerInfo.summonerIcon}.png`}
                 alt={data.summonerInfo.summonerIcon.toString()}
                 width={100}
@@ -65,12 +87,17 @@ export default function FormSection({ data }: { data: MyProfile }) {
 
               <div className="flex flex-col items-start">
                 <input
-                  name="username"
+                  name={
+                    data.username === form.username ? undefined : "username"
+                  }
                   className="bg-[#323036] border border-[#323036] rounded px-3 py-2 text-white"
                   value={form.username}
-                  onChange={(e) =>
-                    setForm((prev) => ({ ...prev, username: e.target.value }))
-                  }
+                  onChange={(e) => {
+                    const newValue = e.target.value;
+                    if (newValue === data.username) return null;
+
+                    setForm((prev) => ({ ...prev, username: newValue }));
+                  }}
                   placeholder="유저 이름"
                 />
                 <div className="text-[40px] ">
@@ -90,7 +117,7 @@ export default function FormSection({ data }: { data: MyProfile }) {
                 {data.univInfo.univVerified ? (
                   <>
                     <span>{data.univInfo.univName}</span>
-                    <Image
+                    <FallBackImage
                       src="/images/verified.png"
                       alt="verified"
                       width={20}
@@ -128,17 +155,21 @@ export default function FormSection({ data }: { data: MyProfile }) {
               {/* 학번 */}
               <span className="font-semibold text-sm">학번</span>
               <input
+                type="text"
                 name="admissionYear"
                 className="bg-[#323036] border border-[#323036] rounded px-3 py-2 text-white"
                 value={form.admissionYear}
-                onChange={(e) =>
+                onChange={(e) => {
+                  // 입력값에서 숫자만 남김
+                  const onlyNums = e.target.value.replace(/[^0-9]/g, "");
                   setForm((prev) => ({
                     ...prev,
-                    admissionYear: e.target.value,
-                  }))
-                }
+                    admissionYear: Number(onlyNums),
+                  }));
+                }}
                 placeholder="22"
-                inputMode="numeric"
+                inputMode="numeric" // 모바일 키보드 숫자모드
+                maxLength={2} // 두 자리까지만
               />
 
               {/* 소개글 */}
@@ -160,7 +191,7 @@ export default function FormSection({ data }: { data: MyProfile }) {
             {/* 라이엇 연동 */}
             <div className="flex items-center justify-between w-full h-[88px] text-white rounded bg-[#25242A] text-center mt-5 p-6">
               <div className="flex items-center">
-                <Image
+                <FallBackImage
                   src="/images/riot-logo.png"
                   alt="riot-logo"
                   width={40}
@@ -168,7 +199,7 @@ export default function FormSection({ data }: { data: MyProfile }) {
                 />
                 <span className="ml-8">라이엇 게임즈</span>
               </div>
-              <Image
+              <FallBackImage
                 src="/images/plus.png"
                 alt="plus"
                 width={20}
@@ -223,7 +254,7 @@ export default function FormSection({ data }: { data: MyProfile }) {
                                mr-2"
                   />
                 ) : (
-                  <Image
+                  <FallBackImage
                     src={`${CHAMPION_IMG_URL}${data.mostChampionIds[0]}.png`}
                     alt={data.mostChampionIds[0]}
                     width={50}
@@ -241,7 +272,7 @@ export default function FormSection({ data }: { data: MyProfile }) {
                               mr-2"
                   />
                 ) : (
-                  <Image
+                  <FallBackImage
                     src={`${CHAMPION_IMG_URL}${data.mostChampionIds[1]}.png`}
                     alt={data.mostChampionIds[1]}
                     width={50}
@@ -259,7 +290,7 @@ export default function FormSection({ data }: { data: MyProfile }) {
                               mr-2"
                   />
                 ) : (
-                  <Image
+                  <FallBackImage
                     src={`${CHAMPION_IMG_URL}${data.mostChampionIds[2]}.png`}
                     alt={data.mostChampionIds[2]}
                     width={50}
@@ -275,7 +306,7 @@ export default function FormSection({ data }: { data: MyProfile }) {
               <span className="font-bold">티어</span>
 
               <div className="flex">
-                <Image
+                <FallBackImage
                   src={`${TIER_IMG_URL}${data.summonerInfo.tierInfo.tier.toLowerCase()}.svg`}
                   alt={data.summonerInfo.tierInfo.tier}
                   width={60}

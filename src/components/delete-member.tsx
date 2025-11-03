@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import FallBackImage from "@/components/fallback-img";
 import { useRouter } from "next/navigation";
 
 export default function DeleteMember() {
@@ -9,7 +9,7 @@ export default function DeleteMember() {
     <>
       <div className="flex flex-col w-[450px] h-[240px] border border-[#323036] rounded bg-[#25242A] text-white justify-center items-center">
         <div className=" flex flex-col justify-center items-center mb-5">
-          <Image
+          <FallBackImage
             src={`/images/pink-caution.png`}
             alt={"pink-caution"}
             width={48}

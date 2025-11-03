@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import FallBackImage from "@/components/fallback-img";
 import { useRef, useState } from "react";
 
 type AlarmType =
@@ -127,7 +127,7 @@ export default function CheckPopup() {
       {/* 버튼 */}
       <div className="flex">
         <button className="mr-0.5" onClick={() => handleAccept(item.alarmId)}>
-          <Image
+          <FallBackImage
             src="/images/pink-check.png"
             alt="확인"
             width={32}
@@ -137,7 +137,7 @@ export default function CheckPopup() {
         </button>
 
         <button onClick={() => handleReject(item.alarmId)}>
-          <Image
+          <FallBackImage
             src="/images/grey-x.png"
             alt="거절"
             width={32}

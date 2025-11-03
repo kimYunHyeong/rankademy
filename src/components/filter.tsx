@@ -8,7 +8,7 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/select";
-import Image from "next/image";
+import FallBackImage from "@/components/fallback-img";
 import { X } from "lucide-react";
 import { POSITION_IMG_URL } from "@/lib/api";
 
@@ -113,7 +113,7 @@ export default function Filter({
                 className="hover:bg-[#24192F] focus:bg-[#24192F] focus:text-white gap-2"
               >
                 <span className="inline-flex items-center gap-2">
-                  <Image
+                  <FallBackImage
                     src={`${POSITION_IMG_URL}${o.value.toLowerCase()}.svg`}
                     alt={o.value.toLowerCase()}
                     width={16}

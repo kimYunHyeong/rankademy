@@ -16,3 +16,11 @@ export const POSITION_IMG_URL =
 //티어 이미지
 export const TIER_IMG_URL =
   "https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-static-assets/global/default/ranked-mini-crests/";
+
+//포지션 "ANY"
+export const POSITION_ANY_URL_FILL =
+  "https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-fill.png";
+
+//포지션 "ANY"
+export const POSITION_ANY_URL_EMPTY =
+  "https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-fill-hover.png";

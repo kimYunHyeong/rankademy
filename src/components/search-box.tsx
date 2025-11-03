@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
-import Image from "next/image";
+import FallBackImage from "@/components/fallback-img";
 import { X } from "lucide-react";
 
 type SearchBoxProps = {
@@ -43,7 +43,7 @@ export default function SearchBox({
       style={{ width: typeof width === "number" ? `${width}px` : width }}
     >
       {/* 검색 아이콘 */}
-      <Image
+      <FallBackImage
         src="/images/search.png"
         alt="search"
         width={18}

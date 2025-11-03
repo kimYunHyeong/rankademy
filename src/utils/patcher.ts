@@ -10,6 +10,42 @@ interface MutateOptions {
   headers?: HeadersInit; // 들어오는 건 HeadersInit
 }
 
+/* ========= 커스텀 에러 & detail 파서 ========= */
+export class ApiError extends Error {
+  status: number;
+  title?: string;
+  detail?: string;
+  body?: unknown;
+
+  constructor(
+    message: string,
+    opts: { status: number; title?: string; detail?: string; body?: unknown }
+  ) {
+    super(message);
+    this.name = "ApiError";
+    this.status = opts.status;
+    this.title = opts.title;
+    this.detail = opts.detail;
+    this.body = opts.body;
+  }
+}
+
+function extractDetail(parsed: any, raw: string) {
+  // JSON 객체라면 우선 detail/message/error 키를 탐색
+  if (parsed && typeof parsed === "object") {
+    return parsed.detail ?? parsed.message ?? parsed.error ?? null;
+  }
+  // raw가 JSON 문자열일 수 있으니 한 번 더 시도
+  try {
+    const j = JSON.parse(raw);
+    return j.detail ?? j.message ?? j.error ?? null;
+  } catch {
+    // 마지막 수단: 정규식으로 "detail":"..." 추출
+    const m = /"detail"\s*:\s*"([^"]*)"/.exec(raw);
+    return m?.[1] ?? null;
+  }
+}
+
 /* 응답 본문 파싱 */
 async function safeParse(res: Response) {
   const text = await res
@@ -70,7 +106,6 @@ export async function mutateAPI(
   console.log("URL:", url.toString());
   console.log("Method:", method);
   console.log("Headers:", Object.fromEntries(headers.entries()));
-
   if (!isFormData && payload) {
     console.log("Body (preview):", String(payload).slice(0, 300));
   } else if (isFormData) {
@@ -97,9 +132,21 @@ export async function mutateAPI(
   if (!res.ok) {
     if (res.status === 401) {
       console.warn("❌ Unauthorized (401) — No or invalid access token.");
+      // 서버에서 즉시 /login 으로 이동 (throw)
       redirect("/login");
     }
-    throw new Error(`API Error: ${res.status} ${String(raw).slice(0, 500)}`);
+
+    const title = (parsed as any)?.title || res.statusText || "API Error";
+    const detail = extractDetail(parsed, raw);
+    const message = detail ? detail : `${title} (${res.status})`;
+
+    // 클라이언트에서 catch 후 alert(e.message)로 그대로 사용 가능
+    throw new ApiError(message, {
+      status: res.status,
+      title,
+      detail,
+      body: parsed,
+    });
   }
 
   return parsed;

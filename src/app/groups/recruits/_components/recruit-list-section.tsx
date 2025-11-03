@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import SubHeaderMain from "@/components/sub-header-main";
+import FallBackImage from "@/components/fallback-img";
 import Image from "next/image";
 import { useState } from "react";
 import React from "react";

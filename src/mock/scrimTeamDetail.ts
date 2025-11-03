@@ -85,7 +85,7 @@ export const mockScrimTeamDetail: ScrimTeamDetail = {
     },
     {
       memberId: 14,
-      position: "NONE",
+      position: "ANY",
       summonerName: "Ranker",
       summonerTag: "KR1",
       summonerIcon: 0,
