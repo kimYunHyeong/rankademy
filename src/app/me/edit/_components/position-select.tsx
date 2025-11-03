@@ -9,6 +9,7 @@ import {
 import { Position } from "@/types";
 import { POSITION_IMG_URL } from "@/lib/api";
 import FallBackImage from "@/components/fallback-img";
+import Image from "next/image";
 
 const positionIcon = (p?: Position) =>
   `${POSITION_IMG_URL}${p?.toLowerCase()}-light.svg`;
@@ -27,6 +28,13 @@ const POSITIONS = [
 /* 포지션 선택 팝업 */
 function PositionSquare({ value }: { value?: Position }) {
   const active = Boolean(value);
+  const realPosition = [
+    "TOP",
+    "JUNGLE",
+    "MIDDLE",
+    "BOTTOM",
+    "UTILITY",
+  ].includes(value as Position);
 
   return (
     <div
@@ -37,15 +45,21 @@ function PositionSquare({ value }: { value?: Position }) {
           : "border-[#FF5679] bg-[#25242A]")
       }
     >
-      {active ? (
-        <FallBackImage
+      {realPosition ? (
+        <Image
           src={positionIconSelected(value)}
           alt={value!}
           width={50}
           height={50}
-          fallbackSrc="/images/position-any-fill.png"
         />
-      ) : null}
+      ) : (
+        <Image
+          src={"/images/position-any-fill.png"}
+          alt={value!}
+          width={50}
+          height={50}
+        />
+      )}
       {active && (
         <span className="pointer-events-none absolute inset-0 rounded ring-2 ring-[#25242A]/60" />
       )}
@@ -75,7 +89,7 @@ export default function PositionPicker({
           align="start"
           className="w-auto p-2 bg-[#323036] border border-black/60"
         >
-          <div className="grid grid-cols-5 gap-2">
+          <div className="grid grid-cols-6 gap-2">
             {POSITIONS.map((p) => {
               const active = value === p;
               return (

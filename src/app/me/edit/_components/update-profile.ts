@@ -1,3 +1,5 @@
+"use server";
+
 import { patchToAPI } from "@/utils/patcher";
 
 /* 폼 수정 */

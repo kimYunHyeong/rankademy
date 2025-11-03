@@ -31,7 +31,7 @@ export default function FormSection({
   const [form, setForm] = useState<FormState>({
     username: data.username ?? "",
     major: data.univInfo.major ?? "",
-    admissionYear: data.univInfo.admissionYear ?? 25,
+    admissionYear: Number(data.univInfo.admissionYear) ?? 25,
     description: data.description ?? "",
     mainPosition: (data.mainPosition ?? "ANY") as Position,
     subPosition: (data.subPosition ?? "ANY") as Position,
@@ -168,8 +168,8 @@ export default function FormSection({
                   }));
                 }}
                 placeholder="22"
-                inputMode="numeric" // 모바일 키보드 숫자모드
-                maxLength={2} // 두 자리까지만
+                inputMode="numeric"
+                maxLength={2}
               />
 
               {/* 소개글 */}
@@ -221,12 +221,14 @@ export default function FormSection({
                     setForm((prev) => ({ ...prev, mainPosition: v }))
                   }
                 />
-                <PositionPicker
-                  value={form.subPosition}
-                  onChange={(v) =>
-                    setForm((prev) => ({ ...prev, subPosition: v }))
-                  }
-                />
+                {form.mainPosition !== "ANY" && (
+                  <PositionPicker
+                    value={form.subPosition}
+                    onChange={(v) =>
+                      setForm((prev) => ({ ...prev, subPosition: v }))
+                    }
+                  />
+                )}
               </div>
               {/* 폼 전송을 위한 hidden input */}
               <input

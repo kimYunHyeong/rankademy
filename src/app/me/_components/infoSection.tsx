@@ -17,7 +17,7 @@ export default function InfoSection({ data }: { data: MyProfile }) {
         <span>마이페이지</span>
       </div>
 
-      <div className="flex flex-col gap-5">
+      <div className="flex flex-col gap-2">
         {/* 수정하기 버튼 */}
         <div className="flex items-center justify-end px-20">
           <Link
@@ -166,15 +166,7 @@ export default function InfoSection({ data }: { data: MyProfile }) {
                 />
               )}
 
-              {!data.subPosition ? (
-                <div
-                  className="bg-[#25242A]
-                              border rounded border-[#323036]
-                              w-[50px] h-[50px]
-                              flex items-center justify-center
-                              mr-2"
-                />
-              ) : (
+              {data.mainPosition === "ANY" ? null : (
                 <FallBackImage
                   src={`${POSITION_IMG_URL}${data.subPosition.toLowerCase()}.svg`}
                   alt={data.subPosition.toLowerCase()}

@@ -134,7 +134,7 @@ function GroupImageUpload({
           </>
         ) : (
           // 비어 있을 때: 안내 높이 유지
-          <div className="flex flex-col justify-center items-center gap-2 pointer-events-none h-[140px] md:h-[160px]">
+          <div className="flex flex-col justify-center items-center gap-2 pointer-events-none h-[140px] md:h-40">
             <Image
               src="/images/image.png"
               alt="image"
@@ -222,11 +222,11 @@ export default function Page() {
 
         {/* 그룹 소개 */}
         <div className="flex flex-col my-10">
-          <span className="text-white text-sm self-start mt-[2px]">
+          <span className="text-white text-sm self-start mt-0.5">
             그룹 소개
           </span>
           <textarea
-            className="my-4 text-sm leading-relaxed text-left break-words max-h-[140px] overflow-y-auto scrollbar-none bg-[#323036] border border-[#323036] rounded px-3 py-2 text-white resize-none"
+            className="my-4 text-sm leading-relaxed text-left wrap-break-word max-h-[140px] overflow-y-auto scrollbar-none bg-[#323036] border border-[#323036] rounded px-3 py-2 text-white resize-none"
             onChange={handle("description")}
             rows={5}
             placeholder="자기소개를 입력하세요"
@@ -249,13 +249,13 @@ export default function Page() {
       <div className="flex justify-end mt-5">
         <Link
           href={`/groups`}
-          className="flex items-center justify-center border border-[#323036] w-[120px] h-[44px] text-[#B1ACC1] rounded bg-[#25242A33] text-center mr-2"
+          className="flex items-center justify-center border border-[#323036] w-[120px] h-11 text-[#B1ACC1] rounded bg-[#25242A33] text-center mr-2"
         >
           취소
         </Link>
         <Link
           href={`/recruits/edit`}
-          className="flex items-center justify-center w-[120px] h-[44px] font-semibold text-white rounded bg-[#FF567933] text-center"
+          className="flex items-center justify-center w-[120px] h-11 font-semibold text-white rounded bg-[#FF567933] text-center"
         >
           그룹 생성하기(요청 로직 작성 필요)
         </Link>

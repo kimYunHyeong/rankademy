@@ -1,12 +1,15 @@
 "use client";
 
+import { redirect } from "next/navigation";
 import { useCallback, useMemo, useState } from "react";
 
 type VerifyCardProps = {
   /** 인증 메일 전송 콜백 */
-  onRequestCode: (email: string) => Promise<void> | void;
+  sendEmailAction: (email: string) => Promise<{ ok: true; error: null }>;
   /** 인증번호 확인 콜백 */
-  onVerifyCode: (email: string, code: string) => Promise<void> | void;
+  verifyCodeAction: (
+    code: number | string
+  ) => Promise<{ ok: true; error: null }>;
   /** 초기 이메일 */
   initialEmail?: string;
   /** 허용 도메인(기본: ac.kr) — 필요시 확장 */
@@ -14,8 +17,8 @@ type VerifyCardProps = {
 };
 
 export default function VerifyCard({
-  onRequestCode,
-  onVerifyCode,
+  sendEmailAction,
+  verifyCodeAction,
   initialEmail = "",
   allowedDomains = ["ac.kr"],
 }: VerifyCardProps) {
@@ -43,14 +46,14 @@ export default function VerifyCard({
       setError(null);
       setHint(null);
       setReqLoading(true);
-      await onRequestCode(email);
+      await sendEmailAction(email);
       setHint("인증번호를 전송했어요. 메일함을 확인해 주세요.");
     } catch (e: any) {
       setError(e?.message ?? "인증 메일 전송에 실패했어요.");
     } finally {
       setReqLoading(false);
     }
-  }, [canRequest, email, onRequestCode]);
+  }, [canRequest, email, sendEmailAction]);
 
   const handleVerify = useCallback(async () => {
     if (!canVerify) return;
@@ -58,14 +61,15 @@ export default function VerifyCard({
       setError(null);
       setHint(null);
       setVerifyLoading(true);
-      await onVerifyCode(email, code.trim());
+      await verifyCodeAction(code.trim());
       setHint("인증이 완료되었습니다");
+      redirect("/me");
     } catch (e: any) {
       setError(e?.message ?? "인증번호가 올바르지 않아요.");
     } finally {
       setVerifyLoading(false);
     }
-  }, [canVerify, email, code, onVerifyCode]);
+  }, [canVerify, email, code, verifyCodeAction]);
 
   const onEnterCode = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
@@ -83,13 +87,13 @@ export default function VerifyCard({
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="example@seoultech.ac.kr"
-          className="h-[44px] rounded bg-[#323036] border border-[#323036] px-3 text-sm placeholder:text-[#B1ACC1] focus:outline-none focus:ring-2 focus:ring-[#FF567980]"
+          className="h-11 rounded bg-[#323036] border border-[#323036] px-3 text-sm placeholder:text-[#B1ACC1] focus:outline-none focus:ring-2 focus:ring-[#FF567980]"
         />
         <button
           type="button"
           onClick={handleRequest}
           disabled={!canRequest}
-          className="h-[44px] min-w-[110px] rounded bg-[#FF567933] text-sm disabled:opacity-50 hover:opacity-90 transition"
+          className="h-11 min-w-[110px] rounded bg-[#FF567933] text-sm disabled:opacity-50 hover:opacity-90 transition"
         >
           {reqLoading ? "전송 중..." : "인증 요청"}
         </button>
@@ -103,13 +107,13 @@ export default function VerifyCard({
           onChange={(e) => setCode(e.target.value)}
           onKeyDown={onEnterCode}
           placeholder="인증번호를 입력하세요"
-          className="h-[44px] rounded bg-[#323036] border border-[#323036] px-3 text-sm placeholder:text-[#B1ACC1] focus:outline-none focus:ring-2 focus:ring-[#FF567980]"
+          className="h-11 rounded bg-[#323036] border border-[#323036] px-3 text-sm placeholder:text-[#B1ACC1] focus:outline-none focus:ring-2 focus:ring-[#FF567980]"
         />
         <button
           type="button"
           onClick={handleVerify}
           disabled={!canVerify}
-          className="h-[44px] min-w-[110px] rounded bg-[#FF567933] text-sm disabled:opacity-50 hover:opacity-90 transition"
+          className="h-11 min-w-[110px] rounded bg-[#FF567933] text-sm disabled:opacity-50 hover:opacity-90 transition"
         >
           {verifyLoading ? "확인 중..." : "확인"}
         </button>

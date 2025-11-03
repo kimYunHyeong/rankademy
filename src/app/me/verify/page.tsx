@@ -1,3 +1,8 @@
-export default function Page() {
-  return "학교 인증 페이지";
+import VerifyCard from "@/components/verify-card";
+import { sendEmail, verifyCode } from "./verify-action";
+
+export default function VerifyUnivPage() {
+  return (
+    <VerifyCard sendEmailAction={sendEmail} verifyCodeAction={verifyCode} />
+  );
 }
