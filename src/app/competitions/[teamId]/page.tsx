@@ -242,7 +242,7 @@ export default async function TeamDetailPage({
                   <td className="px-6 py-4 w-[20%] text-left">
                     <div className="flex flex-col">
                       <span>{m.major}</span>
-                      <span>{m.admissionYear}학번</span>
+                      <span>{String(m.admissionYear).slice(2)}학번</span>
                     </div>
                   </td>
 

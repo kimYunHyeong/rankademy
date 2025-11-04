@@ -75,7 +75,7 @@ export default function GroupTable({
       cell: (row) => (
         <div className="flex flex-col">
           <span>{row.major}</span>
-          <span>{row.admissionYear}학번</span>
+          <span>{String(row.admissionYear).slice(2)}학번</span>
         </div>
       ),
     },
@@ -84,19 +84,24 @@ export default function GroupTable({
       header: "라인",
       headerClassName: "w-[10%]",
       cell: (row) => (
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 ">
           <FallBackImage
             src={`${POSITION_IMG_URL}${row.mainPosition.toLowerCase()}.svg`}
             alt={row.mainPosition}
             width={24}
             height={24}
+            fallbackSrc="/images/position-any-fill.png"
           />
-          <FallBackImage
-            src={`${POSITION_IMG_URL}${row.subPosition.toLowerCase()}.svg`}
-            alt={row.subPosition}
-            width={24}
-            height={24}
-          />
+
+          {row.mainPosition === "ANY" ? null : (
+            <FallBackImage
+              src={`${POSITION_IMG_URL}${row.subPosition.toLowerCase()}.svg`}
+              alt={row.subPosition}
+              width={24}
+              height={24}
+              fallbackSrc="/images/position-any-fill.png"
+            />
+          )}
         </div>
       ),
     },

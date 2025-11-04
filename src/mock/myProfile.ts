@@ -22,7 +22,7 @@ export const mockMyProfile: MyProfile = {
     univName: "서울과학기술대학교",
     univVerified: true,
     major: "컴퓨터공학과",
-    admissionYear: 21,
+    admissionYear: 2021,
   },
   description:
     "팀파이트 중심의 정글러. 시야 장악과 오브젝트 컨트롤에 자신 있습니다.",

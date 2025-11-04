@@ -23,7 +23,7 @@ export const mockScrimTeamDetail: ScrimTeamDetail = {
       summonerIcon: 0, // ← 숫자 필요: 임시 값
       univName: "서울과학기술대학교",
       major: "기술시스템디자인학과",
-      admissionYear: 21,
+      admissionYear: 2021,
       tierInfo: {
         tier: "CHALLENGER",
         rank: "1",
@@ -40,7 +40,7 @@ export const mockScrimTeamDetail: ScrimTeamDetail = {
       summonerIcon: 0,
       univName: "서울과학기술대학교",
       major: "기술시스템디자인학과",
-      admissionYear: 21,
+      admissionYear: 2021,
       tierInfo: {
         tier: "CHALLENGER",
         rank: "1",
@@ -57,7 +57,7 @@ export const mockScrimTeamDetail: ScrimTeamDetail = {
       summonerIcon: 0,
       univName: "서울과학기술대학교",
       major: "기술시스템디자인학과",
-      admissionYear: 21,
+      admissionYear: 2021,
       tierInfo: {
         tier: "CHALLENGER",
         rank: "1",
@@ -74,7 +74,7 @@ export const mockScrimTeamDetail: ScrimTeamDetail = {
       summonerIcon: 0,
       univName: "서울과학기술대학교",
       major: "기술시스템디자인학과",
-      admissionYear: 21,
+      admissionYear: 2021,
       tierInfo: {
         tier: "CHALLENGER",
         rank: "1",
@@ -91,7 +91,7 @@ export const mockScrimTeamDetail: ScrimTeamDetail = {
       summonerIcon: 0,
       univName: "서울과학기술대학교",
       major: "기술시스템디자인학과",
-      admissionYear: 21,
+      admissionYear: 2021,
       tierInfo: {
         tier: "CHALLENGER",
         rank: "1",

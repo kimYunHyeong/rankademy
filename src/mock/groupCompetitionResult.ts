@@ -10,7 +10,7 @@ const mockMembers: TeamMember[] = [
     summonerIcon: 23,
     univName: "서울과학기술대학교",
     major: "컴퓨터공학과",
-    admissionYear: 21,
+    admissionYear: 2021,
     tierInfo: {
       tier: "GOLD",
       rank: "1",
@@ -27,7 +27,7 @@ const mockMembers: TeamMember[] = [
     summonerIcon: 57,
     univName: "서울과학기술대학교",
     major: "전자공학과",
-    admissionYear: 20,
+    admissionYear: 2020,
     tierInfo: {
       tier: "PLATINUM",
       rank: "2",
@@ -44,7 +44,7 @@ const mockMembers: TeamMember[] = [
     summonerIcon: 57,
     univName: "서울과학기술대학교",
     major: "전자공학과",
-    admissionYear: 20,
+    admissionYear: 2020,
     tierInfo: {
       tier: "PLATINUM",
       rank: "2",
@@ -61,7 +61,7 @@ const mockMembers: TeamMember[] = [
     summonerIcon: 57,
     univName: "서울과학기술대학교",
     major: "전자공학과",
-    admissionYear: 20,
+    admissionYear: 2020,
     tierInfo: {
       tier: "PLATINUM",
       rank: "2",
@@ -78,7 +78,7 @@ const mockMembers: TeamMember[] = [
     summonerIcon: 57,
     univName: "서울과학기술대학교",
     major: "전자공학과",
-    admissionYear: 20,
+    admissionYear: 2020,
     tierInfo: {
       tier: "PLATINUM",
       rank: "2",

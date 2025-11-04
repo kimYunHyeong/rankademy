@@ -26,7 +26,7 @@ export const mockTeamDetail: TeamDetail = {
       summonerIcon: 1,
       univName: "서울과학기술대학교",
       major: "컴퓨터공학과",
-      admissionYear: 21,
+      admissionYear: 2021,
       tierInfo: {
         tier: "EMERALD",
         rank: "3",
@@ -43,7 +43,7 @@ export const mockTeamDetail: TeamDetail = {
       summonerIcon: 2,
       univName: "서울과학기술대학교",
       major: "컴퓨터공학과",
-      admissionYear: 21,
+      admissionYear: 2021,
       tierInfo: {
         tier: "EMERALD",
         rank: "3",

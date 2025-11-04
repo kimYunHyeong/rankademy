@@ -51,7 +51,8 @@ export default function IDCard({ data }: { data: MyProfile }) {
           </span>
           <span className="text-s mb-1">{"서울과학기술대학교"}</span>
           <span className="text-xs">
-            {data.univInfo.major} | {data.univInfo.admissionYear}학번
+            {data.univInfo.major} |{" "}
+            {String(data.univInfo.admissionYear).slice(2)}학번
           </span>
         </div>
 

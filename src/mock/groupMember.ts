@@ -26,7 +26,7 @@ export const mockGroupMembers: GroupMember[] = [
     summonerTag: "KR2",
     summonerIconId: 45,
     major: "전자공학과",
-    admissionYear: 21,
+    admissionYear: 2021,
     mainPosition: "TOP",
     subPosition: "BOTTOM",
     tierInfo: {
@@ -46,7 +46,7 @@ export const mockGroupMembers: GroupMember[] = [
     summonerTag: "KR3",
     summonerIconId: 12,
     major: "산업디자인과",
-    admissionYear: 20,
+    admissionYear: 2020,
     mainPosition: "UTILITY",
     subPosition: "MIDDLE",
     tierInfo: {

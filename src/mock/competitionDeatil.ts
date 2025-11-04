@@ -28,7 +28,7 @@ export const mockCompetitionDetail: APIres = {
         summonerIcon: 54,
         univName: "서울과학기술대학교",
         major: "컴퓨터공학과",
-        admissionYear: 21,
+        admissionYear: 2021,
         tierInfo: {
           tier: "EMERALD",
           rank: "4",
@@ -45,7 +45,7 @@ export const mockCompetitionDetail: APIres = {
         summonerIcon: 54,
         univName: "서울과학기술대학교",
         major: "컴퓨터공학과",
-        admissionYear: 21,
+        admissionYear: 2021,
         tierInfo: {
           tier: "EMERALD",
           rank: "4",
@@ -62,7 +62,7 @@ export const mockCompetitionDetail: APIres = {
         summonerIcon: 54,
         univName: "서울과학기술대학교",
         major: "컴퓨터공학과",
-        admissionYear: 21,
+        admissionYear: 2021,
         tierInfo: {
           tier: "EMERALD",
           rank: "4",
@@ -79,7 +79,7 @@ export const mockCompetitionDetail: APIres = {
         summonerIcon: 54,
         univName: "서울과학기술대학교",
         major: "컴퓨터공학과",
-        admissionYear: 21,
+        admissionYear: 2021,
         tierInfo: {
           tier: "EMERALD",
           rank: "4",
@@ -96,7 +96,7 @@ export const mockCompetitionDetail: APIres = {
         summonerIcon: 54,
         univName: "서울과학기술대학교",
         major: "컴퓨터공학과",
-        admissionYear: 21,
+        admissionYear: 2021,
         tierInfo: {
           tier: "EMERALD",
           rank: "4",
@@ -151,7 +151,7 @@ export const mockCompetitionDetail: APIres = {
         summonerIcon: 54,
         univName: "서울과학기술대학교",
         major: "컴퓨터공학과",
-        admissionYear: 21,
+        admissionYear: 2021,
         tierInfo: {
           tier: "EMERALD",
           rank: "4",
@@ -168,7 +168,7 @@ export const mockCompetitionDetail: APIres = {
         summonerIcon: 54,
         univName: "서울과학기술대학교",
         major: "컴퓨터공학과",
-        admissionYear: 21,
+        admissionYear: 2021,
         tierInfo: {
           tier: "EMERALD",
           rank: "4",
@@ -185,7 +185,7 @@ export const mockCompetitionDetail: APIres = {
         summonerIcon: 54,
         univName: "서울과학기술대학교",
         major: "컴퓨터공학과",
-        admissionYear: 21,
+        admissionYear: 2021,
         tierInfo: {
           tier: "EMERALD",
           rank: "4",
@@ -202,7 +202,7 @@ export const mockCompetitionDetail: APIres = {
         summonerIcon: 54,
         univName: "서울과학기술대학교",
         major: "컴퓨터공학과",
-        admissionYear: 21,
+        admissionYear: 2021,
         tierInfo: {
           tier: "EMERALD",
           rank: "4",

@@ -109,7 +109,7 @@ export const mockUnivUserRanking = [
   {
     userId: 8,
     puuid: "hij890",
-    summonerName: "WindArrow",
+    summonerName: "WindAr:row",
     summonerTag: "KR8",
     summonerIcon: 27,
     tierInfo: { tier: "SILVER", rank: "II", lp: 66, mappedTier: 6 },

@@ -9,11 +9,12 @@ import {
   SelectItem,
 } from "@/components/ui/select";
 import FallBackImage from "@/components/fallback-img";
-import { X } from "lucide-react";
 import { POSITION_IMG_URL } from "@/lib/api";
 
 export type FilterOption = { label: string; value: string };
-export type FilterOptions = { major: FilterOption[] };
+export type FilterOptions = {
+  major: FilterOption[];
+};
 export type FilterValue = {
   major: string;
   admissionYear: string;
@@ -24,8 +25,7 @@ const ADMISSION_YEAR_OPTIONS: FilterOption[] = Array.from(
   { length: 2025 - 1979 + 1 },
   (_, i) => {
     const year = 1979 + i;
-    const shortYear = String(year).slice(2);
-    return { label: `${shortYear}학번`, value: shortYear };
+    return { label: `${String(year).slice(2)}학번`, value: String(year) };
   }
 ).reverse();
 
@@ -35,6 +35,7 @@ const POSITION_OPTIONS: FilterOption[] = [
   { label: "미드", value: "MIDDLE" },
   { label: "바텀", value: "BOTTOM" },
   { label: "서포터", value: "UTILITY" },
+  { label: "상관 없음", value: "ANY" },
 ];
 
 export default function Filter({
@@ -113,12 +114,22 @@ export default function Filter({
                 className="hover:bg-[#24192F] focus:bg-[#24192F] focus:text-white gap-2"
               >
                 <span className="inline-flex items-center gap-2">
-                  <FallBackImage
-                    src={`${POSITION_IMG_URL}${o.value.toLowerCase()}.svg`}
-                    alt={o.value.toLowerCase()}
-                    width={16}
-                    height={16}
-                  />
+                  {o.value === "ANY" ? (
+                    <FallBackImage
+                      src={`/images/position-any-fill.png`}
+                      alt={o.value.toLowerCase()}
+                      width={16}
+                      height={16}
+                    />
+                  ) : (
+                    <FallBackImage
+                      src={`${POSITION_IMG_URL}${o.value.toLowerCase()}.svg`}
+                      alt={o.value.toLowerCase()}
+                      width={16}
+                      height={16}
+                    />
+                  )}
+
                   {o.label}
                 </span>
               </SelectItem>

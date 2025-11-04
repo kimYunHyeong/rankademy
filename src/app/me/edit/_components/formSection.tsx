@@ -31,7 +31,7 @@ export default function FormSection({
   const [form, setForm] = useState<FormState>({
     username: data.username ?? "",
     major: data.univInfo.major ?? "",
-    admissionYear: Number(data.univInfo.admissionYear) ?? 25,
+    admissionYear: Number(String(data.univInfo.admissionYear).slice(2)) ?? 25,
     description: data.description ?? "",
     mainPosition: (data.mainPosition ?? "ANY") as Position,
     subPosition: (data.subPosition ?? "ANY") as Position,
@@ -158,7 +158,7 @@ export default function FormSection({
                 type="text"
                 name="admissionYear"
                 className="bg-[#323036] border border-[#323036] rounded px-3 py-2 text-white"
-                value={form.admissionYear}
+                value={String(form.admissionYear).slice(2)}
                 onChange={(e) => {
                   // 입력값에서 숫자만 남김
                   const onlyNums = e.target.value.replace(/[^0-9]/g, "");

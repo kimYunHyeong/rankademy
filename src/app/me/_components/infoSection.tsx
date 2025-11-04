@@ -98,7 +98,9 @@ export default function InfoSection({ data }: { data: MyProfile }) {
 
             {/* 학번 */}
             <span className="font-semibold text-sm">학번</span>
-            <span className="text-sm">{data.univInfo.admissionYear}학번</span>
+            <span className="text-sm">
+              {String(data.univInfo.admissionYear).slice(2)}학번
+            </span>
 
             {/* 소개글 */}
             <span className="font-semibold text-sm self-start mt-0.5">
