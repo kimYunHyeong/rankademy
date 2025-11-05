@@ -6,6 +6,7 @@ export type recruit = {
   postId: number;
   groupId: number;
   groupName: string;
+  groupLogo: string;
   title: string;
   content: string;
   createdAt: string;
@@ -23,6 +24,7 @@ const mockRecruits: APIres = {
       postId: 1,
       groupId: 10,
       groupName: "서울과기대 컴공 20학번",
+      groupLogo: "string",
       title: "컴퓨터공학과 20학번 모집합니다",
       content:
         "본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문",

@@ -5,11 +5,11 @@ import GroupCards from "@/components/group-cards";
 import { GroupInviteMsg } from "@/types";
 import RowScrollContainer from "@/components/row-scroll-container";
 import { acceptGroupInvite, rejectGroupInvite } from "./actions";
+import CheckPopupGroupInvite from "@/components/check-popup-group-invite";
 
 /* 목데이터 */
 import { mockMyGroups } from "@/mock/myGroup";
 import { mockGroupInviationPopUp } from "@/mock/mockGroupInviationPopUp";
-import CheckPopupGroupInvite from "@/components/check-popup-group-invite";
 
 /* 내 그룹 */
 export type MyGroup = {

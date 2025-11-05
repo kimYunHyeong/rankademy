@@ -1,7 +1,7 @@
 import GroupInfo from "@/components/group-info";
 import Link from "next/link";
 import RowScrollContainer from "@/components/row-scroll-container";
-import { Switch } from "@/components/ui/switch";
+import Toggle from "@/components/toggle";
 import CheckPopupGroupJoinRequest from "@/components/check-popup-group-join-request";
 import {
   GroupDetail,
@@ -16,6 +16,8 @@ import {
   acceptGroupJoinRequest,
   rejectGroupJoinRequest,
   groupJoinAction,
+  startGroupRecruitment,
+  closeGroupRecruitment,
 } from "./actions";
 
 /* 목데이터 */
@@ -57,14 +59,13 @@ export default async function GroupDetailPage({
   const groupMember = groupMemberData.content;
   const pageData = groupMemberData.page;
 
-  if (groupDetailData.isLeader) {
-    /* 그룹 가입 요청 팝업 정보 */
-    const groupJoinRequestApiUrl = `/groups/${groupId}/join-requests?page=0`;
-    const groupJoinRequest = (await fetchFromAPI(
-      groupJoinRequestApiUrl
-    )) as GroupJoinRequestMsgApiRes;
-    const groupJoinRequestData = groupJoinRequest.content;
-  }
+  const groupJoinRequestData: GroupJoinRequestMsg[] = groupDetailData.isLeader
+    ? (
+        (await fetchFromAPI(
+          `/groups/${groupId}/join-requests?page=0`
+        )) as GroupJoinRequestMsgApiRes
+      ).content ?? []
+    : [];
 
   return (
     <>
@@ -97,13 +98,17 @@ export default async function GroupDetailPage({
             {/* 그룹원 모집 스위치 */}
             <div className="flex">
               <span className="text-white text-xs mr-2">그룹원 모집</span>
-              <Switch />
+              <Toggle
+                groupId={groupId}
+                onAble={startGroupRecruitment}
+                onDisable={closeGroupRecruitment}
+              />
             </div>
           </div>
 
           <RowScrollContainer>
             <CheckPopupGroupJoinRequest
-              data={mockGroupJoinRequestPopUp}
+              data={groupJoinRequestData}
               checkAction={acceptGroupJoinRequest}
               xAction={rejectGroupJoinRequest}
               groupId={groupId}

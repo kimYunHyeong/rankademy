@@ -77,9 +77,9 @@ export default function RecruitListSection({
                text-[#B1ACC1]
                w-full h-45 hover:bg-[#2E2C33] transition my-2"
             >
-              <div className="flex">
+              <div className="flex items-center h-full">
                 {/* 왼쪽 모집글 정보 */}
-                <div className="flex flex-col px-5 py-5 flex-1">
+                <div className="flex flex-col p-5 flex-1">
                   <span className="text-white text-2xl">{data.title}</span>
                   <span className="my-3 text-s line-clamp-2">
                     {data.content}
@@ -90,14 +90,14 @@ export default function RecruitListSection({
                 </div>
 
                 {/* 오른쪽 이미지: 있으면 표시 */}
-                {data.content && (
-                  <div className="relative w-[150px] h-[150px] flex items-center justify-center py-3 pr-3 shrink-0">
-                    <Image
-                      src={`${CHAMPION_IMG_URL}${data.content}.png`}
-                      alt={data.content}
+                {data.groupLogo && (
+                  <div className="flex items-center justify-center  w-[150px] h-[150px] p-4 shrink-0">
+                    <FallBackImage
+                      src={`${CHAMPION_IMG_URL}${data.groupLogo}.png`}
+                      alt={data.groupLogo}
                       width={150}
                       height={150}
-                      className="rounded-xl object-contain"
+                      className="rounded-l object-contain border border-[#2E2C33]"
                       draggable={false}
                     />
                   </div>

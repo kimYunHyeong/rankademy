@@ -100,19 +100,25 @@ export default function IDCard({ data }: { data: MyProfile }) {
               <span className="font-semibold text-[#B1ACC1] text-[12px] mb-2">
                 포지션
               </span>
-              <div className="flex">
+              <div className="flex items-center mt-2">
                 <FallBackImage
                   src={`${POSITION_IMG_URL}${data.mainPosition.toLowerCase()}.svg`}
                   alt={data.mainPosition}
-                  width={40}
-                  height={40}
+                  width={24}
+                  height={24}
+                  fallbackSrc="/images/position-any-fill.png"
                 />
-                <FallBackImage
-                  src={`${POSITION_IMG_URL}${data.subPosition.toLowerCase()}.svg`}
-                  alt={data.subPosition}
-                  width={40}
-                  height={40}
-                />
+
+                {data.mainPosition === "ANY" ? null : (
+                  <FallBackImage
+                    src={`${POSITION_IMG_URL}${data.subPosition.toLowerCase()}.svg`}
+                    alt={data.subPosition}
+                    width={24}
+                    height={24}
+                    fallbackSrc="/images/position-any-fill.png"
+                    fallbackClassName="bg-[#110D17] rounded"
+                  />
+                )}
               </div>
             </div>
 

@@ -103,12 +103,12 @@ export default async function RecruitDetailPage({
           {/* 이미지 */}
           {data.content && (
             <div className="relative w-full h-120 mx-auto my-10 flex items-center justify-center">
-              <Image
+              <FallBackImage
                 src={`${CHAMPION_IMG_URL}${data.content}.png`}
+                width={120}
+                height={120}
                 alt={data.content}
-                fill
-                className="rounded-xl object-contain"
-                draggable={false}
+                className="rounded object-contain"
               />
             </div>
           )}

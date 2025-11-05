@@ -49,20 +49,22 @@ export default function GroupTable({
       header: "유저명",
       headerClassName: "w-[20%]",
       cell: (row) => (
-        <Link href={`/user/${row.summonerName}`}>
-          <div className="flex items-center gap-2">
-            <FallBackImage
-              src={`${SUMMONER_ICON_URL}${row.summonerIconId}.png`}
-              alt={row.summonerIconId.toString()}
-              width={30}
-              height={30}
-              className="rounded"
-            />
-            <span>
-              {row.summonerName}#{row.summonerTag}
-            </span>
-          </div>
-        </Link>
+        /*      <Link href={`/user/${row.summonerName}`}>
+ 
+        </Link> */
+
+        <div className="flex items-center gap-2">
+          <FallBackImage
+            src={`${SUMMONER_ICON_URL}${row.summonerIconId}.png`}
+            alt={row.summonerIconId.toString()}
+            width={30}
+            height={30}
+            className="rounded"
+          />
+          <span>
+            {row.summonerName}#{row.summonerTag}
+          </span>
+        </div>
       ),
     },
     {
