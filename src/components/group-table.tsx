@@ -26,7 +26,7 @@ export default function GroupTable({
   groupMember,
   memberApiUrl,
   pageData,
-  joinAction,
+  groupJoinAction,
 }: {
   groupId: number;
   isLeader: boolean;
@@ -36,10 +36,7 @@ export default function GroupTable({
   groupMember: GroupMember[];
   memberApiUrl: string;
   pageData: PaginationData;
-  joinAction?: (
-    prev: any,
-    formData: FormData
-  ) => Promise<{ ok: boolean; error: string | null }>;
+  groupJoinAction: (groupId: number) => Promise<void>;
 }) {
   /* 페이지네이션 */
   const [pageState, setPageData] = useState<PaginationData>(pageData);
@@ -162,7 +159,7 @@ export default function GroupTable({
         capacity={capacity}
         isJoined={isJoined}
         isLeader={isLeader}
-        joinAction={joinAction}
+        groupJoinAction={groupJoinAction}
       />
 
       <RankingTable

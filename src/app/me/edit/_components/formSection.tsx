@@ -9,6 +9,13 @@ import Link from "next/link";
 import { capitalize } from "@/utils/capitalize";
 import { useRouter } from "next/navigation";
 import PositionPicker from "./position-select";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select";
 
 type FormState = {
   username: string;
@@ -18,6 +25,19 @@ type FormState = {
   mainPosition: Position;
   subPosition: Position;
 };
+
+/* 학번 선택 필터 */
+export type FilterOption = { label: string; value: string };
+type FilterValue = { admissionYear: string };
+
+/* 학번 옵션 */
+const ADMISSION_YEAR_OPTIONS: FilterOption[] = Array.from(
+  { length: 2025 - 1979 + 1 },
+  (_, i) => {
+    const year = 1979 + i;
+    return { label: `${String(year).slice(2)}학번`, value: String(year) };
+  }
+).reverse();
 
 export default function FormSection({
   data,
@@ -31,7 +51,7 @@ export default function FormSection({
   const [form, setForm] = useState<FormState>({
     username: data.username ?? "",
     major: data.univInfo.major ?? "",
-    admissionYear: Number(String(data.univInfo.admissionYear).slice(2)) ?? 25,
+    admissionYear: data.univInfo.admissionYear ?? 2025,
     description: data.description ?? "",
     mainPosition: (data.mainPosition ?? "ANY") as Position,
     subPosition: (data.subPosition ?? "ANY") as Position,
@@ -154,25 +174,44 @@ export default function FormSection({
 
               {/* 학번 */}
               <span className="font-semibold text-sm">학번</span>
+              <div className="flex items-center">
+                <Select
+                  value={String(form.admissionYear) || undefined}
+                  onValueChange={(e) => {
+                    setForm((prev) => ({
+                      ...prev,
+                      admissionYear: Number(e),
+                    }));
+                  }}
+                >
+                  <SelectTrigger className="bg-[#323036] w-full border border-[#323036] rounded px-3 py-2 text-white">
+                    <SelectValue
+                      placeholder={`${String(data.univInfo.admissionYear).slice(
+                        2
+                      )}학번`}
+                    />
+                  </SelectTrigger>
+                  <SelectContent className="bg-[#323036] border border-[#323036] rounded px-3 py-2 text-white">
+                    {ADMISSION_YEAR_OPTIONS.map((o) => (
+                      <SelectItem
+                        key={o.value}
+                        value={o.value}
+                        className="hover:bg-[#24192F] focus:bg-[#24192F] focus:text-white"
+                      >
+                        {o.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* 값 제출용 hidden filed */}
               <input
-                type="text"
+                type="hidden"
                 name="admissionYear"
-                className="bg-[#323036] border border-[#323036] rounded px-3 py-2 text-white"
-                value={String(form.admissionYear).slice(2)}
-                onChange={(e) => {
-                  // 입력값에서 숫자만 남김
-                  const onlyNums = e.target.value.replace(/[^0-9]/g, "");
-                  setForm((prev) => ({
-                    ...prev,
-                    admissionYear: Number(onlyNums),
-                  }));
-                }}
-                placeholder="22"
-                inputMode="numeric"
-                maxLength={2}
+                value={form.admissionYear ?? ""}
               />
 
-              {/* 소개글 */}
               <span className="font-semibold text-sm self-start mt-0.5">
                 소개글
               </span>

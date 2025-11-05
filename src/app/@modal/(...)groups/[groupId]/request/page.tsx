@@ -1,7 +1,7 @@
 import Modal from "@/components/modal";
 import PopupMessage from "@/components/popup-message";
 
-export default function Page() {
+export default function ModalGroupJoinRequestOkPage() {
   return (
     <Modal>
       <PopupMessage

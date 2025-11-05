@@ -1,12 +1,15 @@
 import SubHeaderMain from "@/components/sub-header-main";
 import { fetchFromAPI } from "@/utils/fetcher";
 import { PaginationData } from "@/types";
-import CheckPopup from "@/components/check-popup";
 import GroupCards from "@/components/group-cards";
+import { GroupInviteMsg } from "@/types";
+import RowScrollContainer from "@/components/row-scroll-container";
+import { acceptGroupInvite, rejectGroupInvite } from "./actions";
 
 /* 목데이터 */
 import { mockMyGroups } from "@/mock/myGroup";
-import RowScrollContainer from "@/components/row-scroll-container";
+import { mockGroupInviationPopUp } from "@/mock/mockGroupInviationPopUp";
+import CheckPopupGroupInvite from "@/components/check-popup-group-invite";
 
 /* 내 그룹 */
 export type MyGroup = {
@@ -17,23 +20,18 @@ export type MyGroup = {
   createdAt: string;
 };
 
-/* 그룹 초대 알람 */
-export type GroupInviteMsg = {
-  invitationId: number;
-  groupId: number;
-  groupName: string;
-  userId: number;
-  invitedAt: string;
-};
-
 export type GroupInviteMsgApiRes = {
   content: GroupInviteMsg[];
   page: PaginationData;
 };
 
 export default async function MyGroupListPage() {
-  const res = await fetchFromAPI("/groups/my");
-  /* const GroupInviteMsgRes = await fetchFromAPI(`/api/v1/groups/${groupId}/invitation`) */
+  const MyGroupRes = await fetchFromAPI("/groups/my");
+  const GroupInviteMsgRes = (await fetchFromAPI(
+    `/groups/invitation?page=0`
+  )) as GroupInviteMsgApiRes;
+  const popUpdata = GroupInviteMsgRes.content;
+
   return (
     <>
       <SubHeaderMain
@@ -45,14 +43,20 @@ export default async function MyGroupListPage() {
 
       <div className="h-20"></div>
 
+      {/* 팝업 메세지 */}
       <RowScrollContainer>
-        <CheckPopup />
+        <CheckPopupGroupInvite
+          data={popUpdata}
+          checkAction={acceptGroupInvite}
+          xAction={rejectGroupInvite}
+        />
       </RowScrollContainer>
 
       <div className="h-25"></div>
 
+      {/* 그룹 카드 */}
       <RowScrollContainer>
-        <GroupCards data={res} />
+        <GroupCards data={MyGroupRes} />
       </RowScrollContainer>
     </>
   );

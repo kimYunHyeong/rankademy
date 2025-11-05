@@ -1,5 +1,4 @@
 import Link from "next/link";
-import CheckPopup from "@/components/check-popup";
 import RowScrollContainer from "@/components/row-scroll-container";
 import FallBackImage from "@/components/fallback-img";
 import { capitalize } from "@/utils/capitalize";
@@ -96,7 +95,7 @@ export default async function TeamDetailPage({
 
           {/* 대항전 관련 알람 */}
           <RowScrollContainer>
-            <CheckPopup />
+            <div></div>
           </RowScrollContainer>
           <div className="mb-8"></div>
         </>

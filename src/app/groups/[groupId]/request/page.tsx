@@ -1,6 +1,6 @@
 import PopupMessage from "@/components/popup-message";
 
-export default function GroupJoinRequestPage() {
+export default function GroupJoinRequestOkPage() {
   return (
     <PopupMessage
       img="round-check"

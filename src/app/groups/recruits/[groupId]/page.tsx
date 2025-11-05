@@ -2,7 +2,6 @@ import Link from "next/link";
 import { Switch } from "@/components/ui/switch";
 import FallBackImage from "@/components/fallback-img";
 import Image from "next/image";
-import CheckPopup from "@/components/check-popup";
 import RowScrollContainer from "@/components/row-scroll-container";
 import { fetchFromAPI } from "@/utils/fetcher";
 import { CHAMPION_IMG_URL } from "@/lib/api";
@@ -85,7 +84,7 @@ export default async function RecruitDetailPage({
 
       {/* 그룹 가입 요청 */}
       <RowScrollContainer>
-        <CheckPopup />
+        <div></div>
       </RowScrollContainer>
       <div className="mt-5"></div>
 

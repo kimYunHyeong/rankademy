@@ -176,3 +176,28 @@ export type Session = {
   isAuthenticated: boolean;
   summonerIcon?: number | null;
 };
+
+/* 그룹 초대 알람 */
+export type GroupInviteMsg = {
+  invitationId: number;
+  groupId: number;
+  groupName: string;
+  userId: number;
+  invitedAt: string;
+};
+
+/* 그룹 가입 요청 알람 */
+export type GroupJoinRequestMsg = {
+  userId: number;
+  summonerName: string;
+  summonerTag: string;
+  requestedAt: string;
+};
+
+/* 대항전 신청 알람 */
+export type CompetitionRequestMsg = {
+  requestId: number;
+  fromTeamId: number;
+  fromTeamName: string;
+  requestedAt: string;
+};

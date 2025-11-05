@@ -1,23 +1,36 @@
 import GroupInfo from "@/components/group-info";
-
 import Link from "next/link";
-import CheckPopup from "@/components/check-popup";
 import RowScrollContainer from "@/components/row-scroll-container";
 import { Switch } from "@/components/ui/switch";
-import { GroupDetail, RecentCompetition } from "@/types";
+import CheckPopupGroupJoinRequest from "@/components/check-popup-group-join-request";
+import {
+  GroupDetail,
+  GroupJoinRequestMsg,
+  PaginationData,
+  RecentCompetition,
+} from "@/types";
 import { GroupMemberAPIres } from "@/types";
 import { fetchFromAPI } from "@/utils/fetcher";
 import GroupTable from "@/components/group-table";
-import { postToAPI } from "@/utils/patcher";
-import { redirect } from "next/navigation";
+import {
+  acceptGroupJoinRequest,
+  rejectGroupJoinRequest,
+  groupJoinAction,
+} from "./actions";
 
 /* 목데이터 */
 import { mockRecentCompetitionData } from "@/mock/recentCompetitionData";
+import { mockGroupJoinRequestPopUp } from "@/mock/mockGroupJoinRequestPopUp";
+
+type GroupJoinRequestMsgApiRes = {
+  content: GroupJoinRequestMsg[];
+  page: PaginationData;
+};
 
 export default async function GroupDetailPage({
   params,
 }: {
-  params: Promise<{ groupId: string }>;
+  params: Promise<{ groupId: number }>;
 }) {
   const { groupId } = await params;
 
@@ -44,12 +57,13 @@ export default async function GroupDetailPage({
   const groupMember = groupMemberData.content;
   const pageData = groupMemberData.page;
 
-  /* 그룹 가입 요청 */
-  async function joinAction(prev: any, formData: FormData) {
-    "use server";
-
-    await postToAPI(`/groups/${groupId}/join-requests`);
-    return { ok: true as const, error: null };
+  if (groupDetailData.isLeader) {
+    /* 그룹 가입 요청 팝업 정보 */
+    const groupJoinRequestApiUrl = `/groups/${groupId}/join-requests?page=0`;
+    const groupJoinRequest = (await fetchFromAPI(
+      groupJoinRequestApiUrl
+    )) as GroupJoinRequestMsgApiRes;
+    const groupJoinRequestData = groupJoinRequest.content;
   }
 
   return (
@@ -86,8 +100,14 @@ export default async function GroupDetailPage({
               <Switch />
             </div>
           </div>
+
           <RowScrollContainer>
-            <CheckPopup />
+            <CheckPopupGroupJoinRequest
+              data={mockGroupJoinRequestPopUp}
+              checkAction={acceptGroupJoinRequest}
+              xAction={rejectGroupJoinRequest}
+              groupId={groupId}
+            />
           </RowScrollContainer>
         </>
       )}
@@ -118,7 +138,7 @@ export default async function GroupDetailPage({
         memberApiUrl={groupMemberDataApiUrl}
         groupMember={groupMember}
         pageData={pageData}
-        joinAction={joinAction}
+        groupJoinAction={groupJoinAction}
       />
     </>
   );

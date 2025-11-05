@@ -1,6 +1,7 @@
 import { GroupMemberAPIres, GroupDetail } from "@/types";
 import { fetchFromAPI } from "@/utils/fetcher";
 import GroupTable from "@/components/group-table";
+import { groupJoinAction } from "../actions";
 
 export default async function GroupMemberEditPage({
   params,
@@ -44,6 +45,7 @@ export default async function GroupMemberEditPage({
           memberApiUrl={groupMemberDataApiUrl}
           groupMember={groupMember}
           pageData={pageData}
+          groupJoinAction={groupJoinAction}
         />
       </div>
     </>

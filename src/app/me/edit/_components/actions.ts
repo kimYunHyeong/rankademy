@@ -2,7 +2,7 @@
 
 import { patchToAPI } from "@/utils/patcher";
 
-/* 폼 수정 */
+/* 유저 프로필 수정 */
 export async function updateProfile(formData: FormData) {
   const payload = Object.fromEntries(formData.entries());
 

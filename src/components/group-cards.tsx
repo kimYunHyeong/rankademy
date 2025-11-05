@@ -27,7 +27,7 @@ export default function GroupCards({ data }: { data: MyGroup[] }) {
               [clip-path:inset(0_round_0.75rem)]
             "
           >
-            <Image
+            <FallBackImage
               src={`${SUMMONER_ICON_URL}${item.groupLogoImg}.png`}
               alt={item.groupName}
               width={380}
