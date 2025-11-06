@@ -1,10 +1,33 @@
-import DeleteMember from "@/components/delete-member";
+import { deleteGruopMember } from "@/app/groups/[groupId]/delete/_components/actions";
+import DeleteMember from "@/app/groups/[groupId]/delete/_components/delete-member";
 import Modal from "@/components/modal";
 
-export default function Page() {
+export default async function ModalDelteGroupMemberPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ groupId: number }>;
+  searchParams: Promise<{
+    userId: number;
+    summonerName: string;
+    summonerTag: string;
+  }>;
+}) {
+  const { groupId } = await params;
+  const sp = await searchParams;
+  const userId = sp.userId;
+  const summonerName = sp.summonerName;
+  const summonerTag = sp.summonerTag;
+
   return (
     <Modal>
-      <DeleteMember />
+      <DeleteMember
+        groupId={groupId}
+        userId={userId}
+        summonerName={summonerName}
+        summonerTag={summonerTag}
+        deleteAction={deleteGruopMember}
+      />
     </Modal>
   );
 }

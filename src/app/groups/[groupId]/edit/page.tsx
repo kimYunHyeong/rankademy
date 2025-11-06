@@ -1,12 +1,16 @@
 import { GroupMemberAPIres, GroupDetail } from "@/types";
 import { fetchFromAPI } from "@/utils/fetcher";
-import GroupTable from "@/components/group-table";
 import { groupJoinAction } from "../actions";
+
+/* 목데이터 */
+import { mockGroupMembers } from "@/mock/groupMember";
+import { mockPaginationData } from "@/mock/mockPaginationData";
+import TableSection from "./_components/tableSection";
 
 export default async function GroupMemberEditPage({
   params,
 }: {
-  params: Promise<{ groupId: string }>;
+  params: Promise<{ groupId: number }>;
 }) {
   const { groupId } = await params;
 
@@ -26,6 +30,8 @@ export default async function GroupMemberEditPage({
   const groupMember = groupMemberData.content;
   const pageData = groupMemberData.page;
 
+  /*   `/groups/${groupId}/members/manage${groupMemberDataRequieredQuery}` */
+
   return (
     <>
       {/* 헤더 */}
@@ -36,7 +42,7 @@ export default async function GroupMemberEditPage({
 
       <div className="table container">
         {/* 그룹원 정보 */}
-        <GroupTable
+        <TableSection
           groupId={groupDetailData.groupId}
           memberCnt={groupDetailData.memberCnt}
           capacity={groupDetailData.capacity}

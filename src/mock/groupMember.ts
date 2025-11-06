@@ -2,6 +2,7 @@ import { GroupMember } from "@/types";
 
 export const mockGroupMembers: GroupMember[] = [
   {
+    userId: 1,
     summonerName: "SilverFox",
     summonerTag: "KR1",
     summonerIconId: 23,
@@ -22,6 +23,7 @@ export const mockGroupMembers: GroupMember[] = [
     },
   },
   {
+    userId: 1,
     summonerName: "CrimsonBlade",
     summonerTag: "KR2",
     summonerIconId: 45,
@@ -42,6 +44,7 @@ export const mockGroupMembers: GroupMember[] = [
     },
   },
   {
+    userId: 1,
     summonerName: "Moonlight",
     summonerTag: "KR3",
     summonerIconId: 12,

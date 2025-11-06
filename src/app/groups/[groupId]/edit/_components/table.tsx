@@ -7,9 +7,10 @@ import { RankingTableProps } from "@/types";
 import { fetchFromAPI } from "@/utils/fetcher";
 import { Query } from "@/types";
 import { useEffect } from "react";
-import DeleteMember from "../app/groups/[groupId]/delete/_components/delete-member";
+import { useRouter } from "next/navigation";
 
 type Props<T> = RankingTableProps<T> & {
+  groupId: number;
   apiurl: string;
   query?: Query;
   onData?: (rows: T[], raw: any) => void;
@@ -24,7 +25,8 @@ function extractRows<T>(res: any): T[] {
   return [];
 }
 
-export default function RankingTable<T>({
+export default function Table<T>({
+  groupId,
   data,
   columns,
   apiurl,
@@ -36,6 +38,8 @@ export default function RankingTable<T>({
   const [rows, setRows] = React.useState<T[]>(() => data ?? []);
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState<unknown>(null);
+
+  const router = useRouter();
 
   /*query나 apiurl 변경 시마다 재요청  */
   useEffect(() => {
@@ -99,6 +103,38 @@ export default function RankingTable<T>({
                   {/* 첫 번째 셀 */}
                   <td className="rounded-l px-6 py-4">
                     <RankBadge rank={rank} />
+
+                    <div
+                      className="
+                          absolute inset-0 z-20 rounded
+        opacity-0 group-hover:opacity-100 transition-opacity
+        pointer-events-none group-hover:pointer-events-auto
+        border border-[#FF567980]
+                        "
+                    >
+                      {/* 어둡게 + 살짝 블러 */}
+                      <div
+                        className="
+                            absolute inset-0 rounded-[6px]
+                            bg-black/60 backdrop-blur-[2px]
+                          "
+                      />
+                      {/* 중앙 버튼 */}
+                      <button
+                        onClick={() =>
+                          router.push(
+                            `/groups/${groupId}/delete?userId=${
+                              (row as any).userId
+                            }&summonerName=${
+                              (row as any).summonerName
+                            }&summonerTag=${(row as any).summonerTag}`
+                          )
+                        }
+                        className="absolute inset-0 flex items-center justify-center text-white"
+                      >
+                        추방하기
+                      </button>
+                    </div>
                   </td>
 
                   {/* 나머지 셀들 */}

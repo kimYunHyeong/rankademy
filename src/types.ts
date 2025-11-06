@@ -94,6 +94,7 @@ export type GroupDetail = {
 
 /* 그룹 멤버 정보 */
 export type GroupMember = {
+  userId: number;
   summonerName: string;
   summonerTag: string;
   summonerIconId: number;

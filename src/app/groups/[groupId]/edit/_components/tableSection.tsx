@@ -1,15 +1,14 @@
 "use client";
 
 import FallBackImage from "@/components/fallback-img";
-import Link from "next/link";
-import RankingTable from "@/components/ranking-table";
+import Table from "./table";
 import type { Column } from "@/types";
 import { SUMMONER_ICON_URL, TIER_IMG_URL } from "@/lib/api";
 import { capitalize } from "@/utils/capitalize";
 import { POSITION_IMG_URL } from "@/lib/api";
-import GroupTableHeader from "./group-table-header";
+import GroupTableHeader from "@/components/group-table-header";
 import { GroupMember } from "@/types";
-import PaginationComponent from "./pagination";
+import PaginationComponent from "@/components/pagination";
 import { useState } from "react";
 import { PaginationData } from "@/types";
 import { Query } from "@/types";
@@ -17,7 +16,7 @@ import { Query } from "@/types";
 /* 목데이터 */
 import { mockGroupMembers } from "@/mock/groupMember";
 
-export default function GroupTable({
+export default function TableSection({
   groupId,
   isLeader,
   isJoined,
@@ -49,20 +48,18 @@ export default function GroupTable({
       header: "유저명",
       headerClassName: "w-[20%]",
       cell: (row) => (
-        <Link href={`/user/${row.userId}`}>
-          <div className="flex items-center gap-2">
-            <FallBackImage
-              src={`${SUMMONER_ICON_URL}${row.summonerIconId}.png`}
-              alt={row.summonerIconId.toString()}
-              width={30}
-              height={30}
-              className="rounded"
-            />
-            <span>
-              {row.summonerName}#{row.summonerTag}
-            </span>
-          </div>
-        </Link>
+        <div className="flex items-center gap-2">
+          <FallBackImage
+            src={`${SUMMONER_ICON_URL}${row.summonerIconId}.png`}
+            alt={row.summonerIconId.toString()}
+            width={30}
+            height={30}
+            className="rounded"
+          />
+          <span>
+            {row.summonerName}#{row.summonerTag}
+          </span>
+        </div>
       ),
     },
     {
@@ -162,7 +159,8 @@ export default function GroupTable({
         groupJoinAction={groupJoinAction}
       />
 
-      <RankingTable
+      <Table
+        groupId={groupId}
         apiurl={memberApiUrl}
         data={groupMember}
         columns={columns}
