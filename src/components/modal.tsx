@@ -52,7 +52,16 @@ export default function Modal({ children }: { children: ReactNode }) {
       "
     >
       {/* 클릭 닫기용 오버레이 */}
-      <div className="fixed inset-0" onClick={() => router.back()} />
+      <div
+        className="fixed inset-0"
+        onClick={() => {
+          router.back();
+
+          setTimeout(() => {
+            window.location.reload();
+          }, 100);
+        }}
+      />
 
       {/* 정중앙 배치 컨테이너 */}
       <div

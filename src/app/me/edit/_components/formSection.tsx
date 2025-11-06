@@ -16,6 +16,7 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/select";
+import RiotVerifySection from "@/components/riot-verify";
 
 type FormState = {
   username: string;
@@ -228,24 +229,7 @@ export default function FormSection({
             </div>
 
             {/* 라이엇 연동 */}
-            <div className="flex items-center justify-between w-full h-[88px] text-white rounded bg-[#25242A] text-center mt-5 p-6">
-              <div className="flex items-center">
-                <FallBackImage
-                  src="/images/riot-logo.png"
-                  alt="riot-logo"
-                  width={40}
-                  height={40}
-                />
-                <span className="ml-8">라이엇 게임즈</span>
-              </div>
-              <FallBackImage
-                src="/images/plus.png"
-                alt="plus"
-                width={20}
-                height={20}
-                className="items-end"
-              />
-            </div>
+            <RiotVerifySection />
           </div>
 
           {/* 우측 사이드 */}

@@ -8,6 +8,7 @@ import {
   SUMMONER_ICON_URL,
   TIER_IMG_URL,
 } from "@/lib/api";
+import RiotVerifySection from "@/components/riot-verify";
 
 export default function InfoSection({ data }: { data: MyProfile }) {
   return (
@@ -111,30 +112,7 @@ export default function InfoSection({ data }: { data: MyProfile }) {
             </p>
           </div>
 
-          <div
-            className="flex items-center justify-between
-                w-full h-[88px]
-                text-white  rounded 
-                bg-[#25242A] text-center mt-5 p-6"
-          >
-            <div className="flex items-center">
-              <FallBackImage
-                src="/images/riot-logo.png"
-                alt={"riot-logo"}
-                width={40}
-                height={40}
-              />
-              <span className="ml-8">라이엇 게임즈</span>
-            </div>
-
-            <FallBackImage
-              src="/images/plus.png"
-              alt={"plus"}
-              width={20}
-              height={20}
-              className="items-end"
-            />
-          </div>
+          <RiotVerifySection />
         </div>
 
         {/* 오른쪽 유저 정보 */}

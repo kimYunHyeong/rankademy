@@ -26,7 +26,13 @@ export default function PopupMessage({ img, text, subText }: Props) {
       </div>
 
       <button
-        onClick={() => router.back()}
+        onClick={() => {
+          router.back();
+
+          setTimeout(() => {
+            window.location.reload();
+          }, 100);
+        }}
         className="h-[10%] text-xs text-[#B1ACC1]"
       >
         닫기

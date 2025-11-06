@@ -9,6 +9,8 @@ type SearchBoxProps = {
   placeholder?: string;
   width?: string | number;
   onSubmit?: (value: string) => void;
+  value?: string;
+  onChange?: (v: string) => void;
 };
 
 export default function SearchBox({

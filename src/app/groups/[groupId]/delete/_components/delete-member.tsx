@@ -46,7 +46,9 @@ export default function DeleteMember({
           <button
             onClick={() => {
               deleteAction(groupId, userId);
-              router.push(`/ok`);
+              router.replace(
+                `/groups/${groupId}/delete/ok?userId=${userId}&summonerName=${summonerName}&summonerTag=${summonerTag}`
+              );
             }}
             className="flex items-center justify-center
                       w-[195px] h-11 text-white rounded
