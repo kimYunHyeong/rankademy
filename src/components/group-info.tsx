@@ -31,7 +31,7 @@ export default function GroupInfo({
         {/* 이미지와 정보를 분리하는 div */}
         <div className="flex pt-5 justify-center gap-2 max-md:flex-wrap">
           <FallBackImage
-            src={`${CHAMPION_IMG_URL}${groupDetailData.logoImageUrl}.png`}
+            src={groupDetailData.logoImageUrl}
             alt={groupDetailData.logoImageUrl}
             width={156}
             height={156}

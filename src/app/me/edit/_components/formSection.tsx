@@ -42,9 +42,11 @@ const ADMISSION_YEAR_OPTIONS: FilterOption[] = Array.from(
 
 export default function FormSection({
   data,
+  riotVerifyStatus,
   updateProfile,
 }: {
   data: MyProfile;
+  riotVerifyStatus: boolean;
   updateProfile: (formData: FormData) => Promise<void>;
 }) {
   const router = useRouter();
@@ -123,9 +125,11 @@ export default function FormSection({
                 />
                 <div className="text-[40px] ">
                   <span className="text-white">
-                    {data.summonerInfo.summonerName}
+                    {data.summonerInfo.summonerName ?? "소환사 정보 연동 필요"}
                   </span>
-                  <span>#{data.summonerInfo.summonerTag}</span>
+                  {data.summonerInfo.summonerTag ? (
+                    <span>#{data.summonerInfo.summonerTag}</span>
+                  ) : null}
                 </div>
               </div>
             </div>
@@ -135,7 +139,7 @@ export default function FormSection({
               {/* 소속 */}
               <span className="font-semibold text-sm">소속</span>
               <div className="flex items-center gap-2 text-sm">
-                {data.univInfo.univVerified ? (
+                {data.univInfo.univName && data.univInfo.univMail ? (
                   <>
                     <span>{data.univInfo.univName}</span>
                     <FallBackImage
@@ -145,7 +149,7 @@ export default function FormSection({
                       height={20}
                     />
                     <Link
-                      href="/me/verify"
+                      href="/me/edit/univ-verify"
                       className=" text-[#B1ACC1] hover:bg-[#25242A66] transition"
                     >
                       <span> 다시 인증하기 {">"}</span>
@@ -153,7 +157,7 @@ export default function FormSection({
                   </>
                 ) : (
                   <Link
-                    href="/me/verify"
+                    href="/me/edit/univ-verify"
                     className=" text-white hover:bg-[#25242A66] transition"
                   >
                     <span className="text-[#B1ACC1]">인증하기 {">"}</span>
@@ -229,7 +233,7 @@ export default function FormSection({
             </div>
 
             {/* 라이엇 연동 */}
-            <RiotVerifySection />
+            <RiotVerifySection status={riotVerifyStatus} />
           </div>
 
           {/* 우측 사이드 */}
@@ -329,28 +333,47 @@ export default function FormSection({
             {/* 티어 */}
             <div className="flex flex-col gap-2 mb-5">
               <span className="font-bold">티어</span>
-
-              <div className="flex">
-                <FallBackImage
-                  src={`${TIER_IMG_URL}${data.summonerInfo.tierInfo.tier.toLowerCase()}.svg`}
-                  alt={data.summonerInfo.tierInfo.tier}
-                  width={60}
-                  height={60}
-                  className=" mr-2"
-                />
-                <div className="text-[12px] mt-2">
-                  <div className="flex ">
-                    <span>
-                      {capitalize(
-                        data.summonerInfo.tierInfo.tier.toLowerCase()
-                      )}
-                    </span>
-                    <span className="w-1" />
-                    <span>{data.summonerInfo.tierInfo.rank}</span>
+              {data.summonerInfo.tierInfo ? (
+                <div className="flex">
+                  <FallBackImage
+                    src={`${TIER_IMG_URL}${data.summonerInfo.tierInfo.tier.toLowerCase()}.svg`}
+                    alt={data.summonerInfo.tierInfo.tier}
+                    width={60}
+                    height={60}
+                    className=" mr-2"
+                  />
+                  <div className="text-[12px] mt-2">
+                    <div className="flex ">
+                      <span>
+                        {capitalize(
+                          data.summonerInfo.tierInfo.tier.toLowerCase()
+                        )}
+                      </span>
+                      <span className="w-1" />
+                      <span>{data.summonerInfo.tierInfo.rank}</span>
+                    </div>
+                    <span>{data.summonerInfo.tierInfo.lp}</span>
                   </div>
-                  <span>{data.summonerInfo.tierInfo.lp}</span>
                 </div>
-              </div>
+              ) : (
+                <div className="flex">
+                  <FallBackImage
+                    src={`${TIER_IMG_URL}${"UNRANKED".toLowerCase()}.svg`}
+                    alt={"UNRANKED"}
+                    width={60}
+                    height={60}
+                    className=" mr-2"
+                  />
+                  <div className="text-[12px] mt-2">
+                    <div className="flex ">
+                      <span>{capitalize("UNRANKED".toLowerCase())}</span>
+                      <span className="w-1" />
+                      <span>{0}</span>
+                    </div>
+                    <span>{0}</span>
+                  </div>
+                </div>
+              )}
             </div>
 
             <div>

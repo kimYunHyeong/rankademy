@@ -1,6 +1,11 @@
 import CreateGroupFormSection from "./_components/formSection";
-import { createGroup } from "./actions";
+import { createGroup, uploadGroupLogo } from "./actions";
 
 export default function GroupCreatePage() {
-  return <CreateGroupFormSection submitAction={createGroup} />;
+  return (
+    <CreateGroupFormSection
+      imgUrlAction={uploadGroupLogo}
+      submitAction={createGroup}
+    />
+  );
 }

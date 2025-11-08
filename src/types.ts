@@ -90,6 +90,8 @@ export type GroupDetail = {
   createdAt: string;
   isJoined: boolean;
   isLeader: boolean;
+  isRecruiting: boolean;
+  univName: string;
 };
 
 /* 그룹 멤버 정보 */
@@ -163,6 +165,7 @@ export type GroupCompetitionResult = {
     teamId: number;
     teamName: string;
     groupName: string;
+    groupLogo: string;
     teamMembers: TeamMember[];
   };
   submittedAt: string;
@@ -201,4 +204,15 @@ export type CompetitionRequestMsg = {
   fromTeamId: number;
   fromTeamName: string;
   requestedAt: string;
+};
+
+export type ImageUrl = {
+  key: string;
+  contentType: string;
+};
+
+export type ImageUrlRes = {
+  presignedUrl: string;
+  publicUrl: string;
+  expiredAt: string;
 };

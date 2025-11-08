@@ -1,0 +1,14 @@
+"use server";
+
+import { postToAPI } from "@/utils/patcher";
+
+/* 그룹 가입 요청 */
+export async function putGroupRecruitmentAction(
+  groupId: number,
+  formData: FormData
+) {
+  const payload = Object.fromEntries(formData.entries());
+  await postToAPI(`/groups/${groupId}/posts`, {
+    body: payload,
+  });
+}

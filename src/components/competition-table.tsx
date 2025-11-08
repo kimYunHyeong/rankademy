@@ -20,6 +20,7 @@ import {
 import { fetchFromAPI } from "@/utils/fetcher";
 import { GroupCompetitionResult } from "@/types";
 import { formatDate } from "@/utils/format-date";
+import { useRouter } from "next/navigation";
 
 type Props = {
   data: GroupCompetitionResult[];
@@ -42,6 +43,8 @@ export default function CompetitionTable({ data, apiurl, query }: Props) {
   const [rows, setRows] = React.useState<GroupCompetitionResult[]>(data ?? []);
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState<unknown>(null);
+
+  const router = useRouter();
 
   // query / apiurl 변경 시마다 재요청
   React.useEffect(() => {
@@ -104,6 +107,8 @@ export default function CompetitionTable({ data, apiurl, query }: Props) {
 
             // 상태와 승패 정보
             const status = row.status as CompetitionStatus;
+            const clickable: boolean =
+              row.status === "SCHEDULED" || "COMPLETED" ? true : false;
             const isWin = row.isWin === true;
 
             // 상태별 텍스트
@@ -115,6 +120,26 @@ export default function CompetitionTable({ data, apiurl, query }: Props) {
             };
 
             const statusText = statusTextMap[status] ?? "-";
+
+            const handleRowClick = () => {
+              if (status === "SCHEDULED") {
+                router.push(`/competitions/result/${row.competitionId}`);
+                return;
+              }
+              if (status === "COMPLETED") {
+                toggleRow(row.competitionId);
+              }
+            };
+
+            const handleKeyDown: React.KeyboardEventHandler<
+              HTMLTableRowElement
+            > = (e) => {
+              if (!clickable) return;
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                handleRowClick();
+              }
+            };
 
             // 상태별 텍스트 색상
             const statusClass =
@@ -144,86 +169,54 @@ export default function CompetitionTable({ data, apiurl, query }: Props) {
             return (
               <React.Fragment key={row.competitionId}>
                 <TableRow
-                  className={`${rowClassName} w-full h-18 [&>td]:py-4 cursor-pointer group border-none`}
-                  onClick={
-                    /* 완료상태인 대항전만 전적을 보여주도록 */
-                    row.status === "COMPLETED"
-                      ? () => toggleRow(row.competitionId)
+                  className={`${rowClassName} w-full h-18 [&>td]:py-4 ${
+                    clickable ? "cursor-pointer" : "cursor-default"
+                  } group border-none`}
+                  onClick={clickable ? handleRowClick : undefined}
+                  onKeyDown={handleKeyDown}
+                  role={clickable ? "button" : undefined}
+                  tabIndex={clickable ? 0 : -1}
+                  aria-label={
+                    row.status === "SCHEDULED"
+                      ? "대항전 결과 페이지로 이동"
+                      : row.status === "COMPLETED"
+                      ? "대항전 전적 펼치기"
                       : undefined
                   }
                 >
-                  {row.status === "SCHEDULED" ? (
-                    <Link
-                      href={`/competitions/result/${row.competitionId}`}
-                      className="contents"
-                    >
-                      <TableCell className="rounded-l text-center border-none">
-                        VS
-                      </TableCell>
-                      <TableCell className=" border-none">
-                        <div className="flex items-center">
-                          {/* 그룹 아이콘 | 그룹 이름 */}
-                          {/*  <FallBackImage
-                            src={`${CHAMPION_IMG_URL}${row.otherTeam.groupIcon}.png`}
-                            alt={row.otherTeam.groupIcon}
-                            width={40}
-                            height={40}
-                          /> */}
-                          <span className="ml-3 justify-center">
-                            {row.otherTeam.groupName}
-                          </span>
-                        </div>
-                      </TableCell>
-                      <TableCell className="border-none">
-                        {/* 학교 */}
-                        {row.otherTeamUnivName}
-                      </TableCell>
-                      <TableCell className="border-none">
-                        {/* 진행일자 */}
-                        {formatDate(row.submittedAt)}
-                      </TableCell>
-                      <TableCell
-                        /* 결과 */
-                        className={`rounded-r border-none ${statusClass}`}
-                      >
-                        {statusText}
-                      </TableCell>
-                    </Link>
-                  ) : (
-                    <>
-                      <TableCell className="rounded-l text-center border-none">
-                        VS
-                      </TableCell>
-                      <TableCell className=" border-none">
-                        <div className="flex items-center">
-                          {/* 그룹 아이콘 | 그룹 이름 */}
-                          {/*  <FallBackImage
-                            src={`${CHAMPION_IMG_URL}${row.otherTeam.groupIcon}.png`}
-                            alt={row.otherTeam.groupIcon}
-                            width={40}
-                            height={40}
-                          /> */}
-                          <span className="ml-3 justify-center">
-                            {row.otherTeam.groupName}
-                          </span>
-                        </div>
-                      </TableCell>
-                      <TableCell className="border-none">
-                        {/* 학교 */}
-                        {row.otherTeamUnivName}
-                      </TableCell>
-                      <TableCell className="border-none">
-                        {/* 진행일자 */}
-                        {formatDate(row.submittedAt)}
-                      </TableCell>
-                      <TableCell
-                        /* 결과 */
-                        className={`rounded-r border-none ${statusClass}`}
-                      >
-                        {statusText}
-                      </TableCell>
-                    </>
-                  )}
+                  <TableCell className="rounded-l text-center border-none">
+                    VS
+                  </TableCell>
+
+                  <TableCell className="border-none">
+                    <div className="flex items-center">
+                      {/* 그룹 아이콘 | 그룹 이름 */}
+                      <FallBackImage
+                        src={row.otherTeam.groupLogo ?? null}
+                        alt={row.otherTeam.groupLogo ?? "otherTeamLogo"}
+                        width={40}
+                        height={40}
+                      />
+                      <span className="ml-3 justify-center">
+                        {row.otherTeam.groupName}
+                      </span>
+                    </div>
+                  </TableCell>
+
+                  <TableCell className="border-none">
+                    {/* 학교 */}
+                    {row.otherTeamUnivName}
+                  </TableCell>
+
+                  <TableCell className="border-none">
+                    {/* 진행일자 */}
+                    {formatDate(row.submittedAt)}
+                  </TableCell>
+
+                  <TableCell className={`rounded-r border-none ${statusClass}`}>
+                    {/* 결과 */}
+                    {statusText}
+                  </TableCell>
                 </TableRow>
 
                 {/* 열었을 때 나오는 아코디언 데이터 */}

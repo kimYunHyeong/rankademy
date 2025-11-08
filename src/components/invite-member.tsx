@@ -16,9 +16,11 @@ type Data = {
 
 export default function InviteMember({
   groupId,
+  univName,
   groupInvitationAction,
 }: {
   groupId: number;
+  univName: string;
   groupInvitationAction: (groupId: number, userId: number) => Promise<void>;
 }) {
   const router = useRouter();
@@ -45,13 +47,10 @@ export default function InviteMember({
     setErr(null);
 
     try {
-      const url = `/rankings/univ/${encodeURIComponent(
-        "서울과학기술대학교"
-      )}?page=0&userNameKey=${encodeURIComponent(keyword)}`;
-      const query = `page=0&userNameKey=${encodeURIComponent(keyword)}`;
+      const query = `univName=${univName}&userNameKey=${keyword}`;
+      const url = `/users/search?${query}`;
 
-      const res = await fetchFromAPI(url);
-      const data = res.content as Data[];
+      const data = (await fetchFromAPI(url)) as Data[];
 
       setFiltered(data);
     } catch (e: any) {

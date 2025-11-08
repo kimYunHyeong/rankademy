@@ -18,6 +18,7 @@ type MyCompetitionResult = {
     teamId: number;
     teamName: string;
     groupName: string;
+    groupLogo: string;
     teamMembers: TeamMember[];
   };
   submittedAt: string;
@@ -40,7 +41,7 @@ export default async function MyCompetitionPage() {
   const apiUrl = `/competitions/my${RequieredQuery}`;
   const res = (await fetchFromAPI(apiUrl)) as APIres;
 
-  const data = mockGroupCompetitionResult;
+  const data = res.content;
 
   return (
     <>
@@ -50,7 +51,7 @@ export default async function MyCompetitionPage() {
       </div>
       <div className="h-10"></div>
       <MyCompetitionResultSection
-        tableData={data}
+        tableData={mockGroupCompetitionResult}
         pageData={res.page}
         apiurl={apiUrl}
       />

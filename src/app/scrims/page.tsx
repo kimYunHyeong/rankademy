@@ -32,7 +32,8 @@ export default async function ScrimTeamListPage() {
     `/scrim-teams${resRequestedUrl}`
   )) as ScrimTeamList;
 
-  const data = mockScrimTeamList;
+  const data = res.content;
+  const pageData = res.page;
 
   return (
     <>
@@ -58,7 +59,7 @@ export default async function ScrimTeamListPage() {
           팀 생성
         </Link>
       </div>
-      <ScrimTeamListSection data={data} pageData={res.page} />
+      <ScrimTeamListSection data={data} pageData={pageData} />
     </>
   );
 }

@@ -48,15 +48,19 @@ export default function TeamListSection({
               {/* 티어 사진 */}
               <div className="flex flex-col relative items-center justify-center m-3 p-3 pr-0 shrink-0">
                 <FallBackImage
-                  src={`${TIER_IMG_URL}${data.avgTierInfo.tier}.svg`}
+                  src={`${TIER_IMG_URL}${
+                    data.avgTierInfo.tier.toLowerCase() ?? "unranked"
+                  }.svg`}
                   alt={data.avgTierInfo.tier}
                   width={80}
                   height={80}
                 />
                 <span className="text-white">
-                  {capitalize(data.avgTierInfo.tier)} {data.avgTierInfo.rank}
+                  {capitalize(data.avgTierInfo.tier.toLowerCase()) ??
+                    "unranked"}{" "}
+                  {data.avgTierInfo.rank ?? 0}
                 </span>
-                <span className="text-xs">{data.avgTierInfo.lp}LP</span>
+                <span className="text-xs">{data.avgTierInfo.lp ?? 0}LP</span>
               </div>
 
               {/* 글 정보 */}

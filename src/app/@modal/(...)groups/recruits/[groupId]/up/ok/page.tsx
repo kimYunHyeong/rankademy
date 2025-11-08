@@ -1,7 +1,7 @@
-import Modal from "@/components/modal";
 import PopupMessage from "@/components/popup-message";
+import Modal from "@/components/modal";
 
-export default function Page() {
+export default async function MockUpGroupRecruitOkPage() {
   return (
     <Modal>
       <PopupMessage

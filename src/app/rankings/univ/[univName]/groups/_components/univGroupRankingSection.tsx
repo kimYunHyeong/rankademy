@@ -46,7 +46,7 @@ export default function UnivGroupRankingSection({
             className="flex items-center gap-2 transition"
           >
             <FallBackImage
-              src={`${CHAMPION_IMG_URL}${row.logoImageUrl}.png`}
+              src={row.logoImageUrl}
               alt={row.logoImageUrl}
               width={30}
               height={30}

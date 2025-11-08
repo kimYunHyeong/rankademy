@@ -5,6 +5,7 @@ export const mockMyProfile: MyProfile = {
   id: 1,
   username: "rankhero",
   summonerInfo: {
+    puuid: "2",
     summonerName: "랭크히어로",
     summonerTag: "KR1",
     summonerIcon: 5883,
@@ -20,7 +21,7 @@ export const mockMyProfile: MyProfile = {
   },
   univInfo: {
     univName: "서울과학기술대학교",
-    univVerified: true,
+    univMail: "ajsl9749@naver.com",
     major: "컴퓨터공학과",
     admissionYear: 2021,
   },

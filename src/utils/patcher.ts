@@ -125,7 +125,7 @@ export async function mutateAPI(
   const { parsed, raw } = await safeParse(res);
   console.log("📥 [mutateAPI] Response");
   console.log("Status:", res.status, res.statusText);
-  console.log("Response Body:", String(raw).slice(0, 300));
+  console.log("Response Body:", String(raw));
   console.log("==============================\n");
 
   // 9) 에러 처리

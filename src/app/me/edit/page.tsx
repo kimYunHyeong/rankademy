@@ -12,5 +12,13 @@ export default async function EditMyProfile() {
   const apiUrl = "/me";
   const res = (await fetchFromAPI(apiUrl)) as MyProfile;
 
-  return <FormSection data={res} updateProfile={updateProfile} />;
+  const riotVerifyStatus: boolean = res.summonerInfo.puuid ? true : false;
+
+  return (
+    <FormSection
+      data={res}
+      updateProfile={updateProfile}
+      riotVerifyStatus={riotVerifyStatus}
+    />
+  );
 }

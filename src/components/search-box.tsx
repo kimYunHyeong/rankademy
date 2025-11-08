@@ -41,7 +41,7 @@ export default function SearchBox({
 
   return (
     <div
-      className="relative text-white rounded-md shadow-md"
+      className="relative text-white rounded-md shadow-md w-full"
       style={{ width: typeof width === "number" ? `${width}px` : width }}
     >
       {/* 검색 아이콘 */}

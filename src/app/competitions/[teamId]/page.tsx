@@ -2,7 +2,7 @@ import Link from "next/link";
 import RowScrollContainer from "@/components/row-scroll-container";
 import FallBackImage from "@/components/fallback-img";
 import { capitalize } from "@/utils/capitalize";
-import { Position, Tier } from "@/types";
+import { CompetitionRequestMsg, PaginationData, Position, Tier } from "@/types";
 import {
   CHAMPION_IMG_URL,
   POSITION_IMG_URL,
@@ -12,12 +12,18 @@ import {
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import "dayjs/locale/ko";
+import { fetchFromAPI } from "@/utils/fetcher";
+import CheckPopupCompetitionRequest from "@/components/check-popup-competition-request";
+import {
+  acceptCompetitionReq,
+  rejectCompetitionReq,
+} from "../_components/actions";
 
 dayjs.extend(relativeTime);
 dayjs.locale("ko");
 
 import { mockTeamDetail } from "@/mock/teamDeatil";
-import { fetchFromAPI } from "@/utils/fetcher";
+import { mockCompetitionRequestPopUp } from "@/mock/mockCompetitionRequestPopUp";
 
 export type TeamMember = {
   memberId: number;
@@ -58,15 +64,32 @@ export type TeamDetail = {
   isMyTeam: boolean;
 };
 
+type CompetitionRequestRes = {
+  content: CompetitionRequestMsg[];
+  page: PaginationData;
+};
+
 export default async function TeamDetailPage({
   params,
 }: {
-  params: Promise<{ teamId: string }>;
+  params: Promise<{ teamId: number }>;
 }) {
   const { teamId } = await params;
 
-  /* const res = (await fetchFromAPI(`/teams/${teamId}`)) as TeamDetail; */
+  /* 팀 상세정보 */
+  const res = (await fetchFromAPI(`/teams/${teamId}`)) as TeamDetail;
   const data = mockTeamDetail;
+
+  /* 대항전 요청 정보 */
+  const competitionReqData: CompetitionRequestMsg[] =
+    res.isTeamLeader === true
+      ? (
+          (await fetchFromAPI(
+            `/competition-requests/${teamId}`
+          )) as CompetitionRequestRes
+        ).content ?? []
+      : [];
+
   return (
     <>
       {/* 헤더 */}
@@ -85,24 +108,29 @@ export default async function TeamDetailPage({
             >
               게시글 삭제
             </Link>
-            <Link
+            {/*  <Link
               href={`${teamId}/edit`}
               className="flex items-center justify-center border border-[#323036] w-[120px] h-11 text-[#B1ACC1] rounded bg-[#25242A33] text-center mr-2"
             >
               게시글 수정
-            </Link>
+            </Link> */}
           </div>
 
           {/* 대항전 관련 알람 */}
           <RowScrollContainer>
-            <div></div>
+            <CheckPopupCompetitionRequest
+              data={mockCompetitionRequestPopUp}
+              checkAction={acceptCompetitionReq}
+              xAction={rejectCompetitionReq}
+              teamId={teamId}
+            />
           </RowScrollContainer>
           <div className="mb-8"></div>
         </>
       ) : data.isMyTeam && !data.isTeamLeader ? (
         <div className="flex justify-end mb-8">
           <Link
-            href={`${teamId}/request`}
+            href={`${teamId}/withdraw`}
             className=" text-[#B1ACC1] border border-[#323036] rounded p-2 cursor-pointer hover:bg-[#FF567920] transition-colors "
           >
             팀 탈퇴하기
@@ -179,11 +207,12 @@ export default async function TeamDetailPage({
           </div>
         </div>
         <FallBackImage
-          src={`${CHAMPION_IMG_URL}${data.groupLogo}.png`}
-          alt={data.groupLogo}
+          src={data.groupLogo}
+          alt={String(data.groupLogo)}
           width={300}
           height={300}
-          className="w-[25%] h-[300px] rounded-2xl ml-5 shrink-0"
+          className="w-[25%] h-[300px] rounded-xl ml-5 shrink-0"
+          fallbackClassName="bg-[#25242A33]"
         />
       </div>
 
@@ -229,7 +258,7 @@ export default async function TeamDetailPage({
                           alt={m.summonerIcon.toString()}
                           width={30}
                           height={30}
-                          className="shrink-0"
+                          className="shrink-0 rounded"
                         />
                         <span className="truncate">{m.summonerName}</span>
                         <span className="shrink-0">#{m.summonerTag}</span>
@@ -249,18 +278,24 @@ export default async function TeamDetailPage({
                   <td className="rounded-r px-6 py-4 w-[12%] text-left">
                     <div className="flex items-center gap-2">
                       <FallBackImage
-                        src={`${TIER_IMG_URL}${m.tierInfo.tier.toLowerCase()}.svg`}
-                        alt={m.tierInfo.tier}
+                        src={`${TIER_IMG_URL}${
+                          m.tierInfo?.tier.toLowerCase() ?? "unranked"
+                        }.svg`}
+                        alt={m.tierInfo?.tier ?? "unranked"}
                         width={30}
                         height={30}
                       />
                       <div>
                         <div className="flex">
-                          <span>{capitalize(m.tierInfo.tier)}</span>
+                          <span>
+                            {capitalize(
+                              m.tierInfo?.tier.toLowerCase() ?? "Unranked"
+                            )}
+                          </span>
                           <span className="w-1" />
-                          <span>{m.tierInfo.rank}</span>
+                          <span>{m.tierInfo?.rank ?? 0}</span>
                         </div>
-                        <span>{m.tierInfo.lp}</span>
+                        <span>{m.tierInfo?.lp ?? 0}</span>
                       </div>
                     </div>
                   </td>
@@ -275,7 +310,7 @@ export default async function TeamDetailPage({
       {!data.isMyTeam ? (
         <div className="flex justify-end mt-5">
           <Link
-            href={`${teamId}/request`}
+            href={`/competitions/${teamId}/competition-request`}
             className=" text-[#B1ACC1] border border-[#323036] rounded p-2 cursor-pointer hover:bg-[#FF567920] transition-colors "
           >
             결투 신청하기

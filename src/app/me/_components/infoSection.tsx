@@ -10,7 +10,13 @@ import {
 } from "@/lib/api";
 import RiotVerifySection from "@/components/riot-verify";
 
-export default function InfoSection({ data }: { data: MyProfile }) {
+export default function InfoSection({
+  data,
+  riotVerifyStatus,
+}: {
+  data: MyProfile;
+  riotVerifyStatus: boolean;
+}) {
   return (
     <>
       {/* 헤더 */}
@@ -46,20 +52,23 @@ export default function InfoSection({ data }: { data: MyProfile }) {
                 bg-[#25242A33] text-center mt-10 p-6"
           >
             <FallBackImage
-              src={`${SUMMONER_ICON_URL}${data.summonerInfo.summonerIcon}.png`}
+              src={`${SUMMONER_ICON_URL}${
+                data.summonerInfo.summonerIcon ?? 65
+              }.png`}
               alt={data.summonerInfo.summonerIcon.toString()}
               width={100}
               height={100}
               className="rounded-2xl mr-4"
             />
-
             <div className="flex flex-col items-start">
               <span>{data.username}</span>
-              <div className="text-[40px] ">
+              <div className="text-[40px]">
                 <span className="text-white">
-                  {data.summonerInfo.summonerName}
+                  {data.summonerInfo.summonerName ?? "소환사 정보 연동 필요"}
                 </span>
-                <span>#{data.summonerInfo.summonerTag}</span>
+                {data.summonerInfo.summonerTag ? (
+                  <span>#{data.summonerInfo.summonerTag}</span>
+                ) : null}
               </div>
             </div>
           </div>
@@ -73,7 +82,7 @@ export default function InfoSection({ data }: { data: MyProfile }) {
             {/* 소속 */}
             <span className="font-semibold text-sm">소속</span>
             <div className="flex items-center gap-2 text-sm">
-              {data.univInfo.univVerified ? (
+              {data.univInfo.univName && data.univInfo.univMail ? (
                 <>
                   <span>{data.univInfo.univName}</span>
                   <FallBackImage
@@ -85,7 +94,7 @@ export default function InfoSection({ data }: { data: MyProfile }) {
                 </>
               ) : (
                 <Link
-                  href="/me/verify"
+                  href="/me/edit/univ-verify"
                   className=" text-white hover:bg-[#25242A66] transition"
                 >
                   <span className="text-[#B1ACC1]">인증하기 {">"}</span>
@@ -112,7 +121,7 @@ export default function InfoSection({ data }: { data: MyProfile }) {
             </p>
           </div>
 
-          <RiotVerifySection />
+          <RiotVerifySection status={riotVerifyStatus} />
         </div>
 
         {/* 오른쪽 유저 정보 */}
@@ -221,26 +230,47 @@ export default function InfoSection({ data }: { data: MyProfile }) {
 
           <div className="flex flex-col gap-2 mb-5">
             <span className="font-bold">티어</span>
-
-            <div className="flex">
-              <FallBackImage
-                src={`${TIER_IMG_URL}${data.summonerInfo.tierInfo.tier.toLowerCase()}.svg`}
-                alt={data.summonerInfo.tierInfo.tier}
-                width={60}
-                height={60}
-                className=" mr-2"
-              />
-              <div className="text-[12px] mt-2">
-                <div className="flex ">
-                  <span>
-                    {capitalize(data.summonerInfo.tierInfo.tier.toLowerCase())}
-                  </span>
-                  <span className="w-1" />
-                  <span>{data.summonerInfo.tierInfo.rank}</span>
+            {data.summonerInfo.tierInfo ? (
+              <div className="flex">
+                <FallBackImage
+                  src={`${TIER_IMG_URL}${data.summonerInfo.tierInfo.tier.toLowerCase()}.svg`}
+                  alt={data.summonerInfo.tierInfo.tier}
+                  width={60}
+                  height={60}
+                  className=" mr-2"
+                />
+                <div className="text-[12px] mt-2">
+                  <div className="flex ">
+                    <span>
+                      {capitalize(
+                        data.summonerInfo.tierInfo.tier.toLowerCase()
+                      )}
+                    </span>
+                    <span className="w-1" />
+                    <span>{data.summonerInfo.tierInfo.rank}</span>
+                  </div>
+                  <span>{data.summonerInfo.tierInfo.lp}</span>
                 </div>
-                <span>{data.summonerInfo.tierInfo.lp}</span>
               </div>
-            </div>
+            ) : (
+              <div className="flex">
+                <FallBackImage
+                  src={`${TIER_IMG_URL}${"unranked"}.svg`}
+                  alt={"UNRANKED"}
+                  width={60}
+                  height={60}
+                  className=" mr-2"
+                />
+                <div className="text-[12px] mt-2">
+                  <div className="flex ">
+                    <span>{capitalize("UNRANKED".toLowerCase())}</span>
+                    <span className="w-1" />
+                    <span>{0}</span>
+                  </div>
+                  <span>{0}</span>
+                </div>
+              </div>
+            )}
           </div>
 
           <div>

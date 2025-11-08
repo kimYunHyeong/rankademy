@@ -3,13 +3,11 @@
 import Link from "next/link";
 import SubHeaderMain from "@/components/sub-header-main";
 import FallBackImage from "@/components/fallback-img";
-import Image from "next/image";
 import { useState } from "react";
 import React from "react";
 import { PaginationData } from "@/types";
 import { Query } from "@/types";
 import { recruit } from "../page";
-import { CHAMPION_IMG_URL } from "@/lib/api";
 import PaginationComponent from "@/components/pagination";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
@@ -26,8 +24,8 @@ export default function RecruitListSection({
   pageData: PaginationData;
 }) {
   const [pageState, setPageData] = useState<PaginationData>(pageData);
-
   const [query, setQuery] = useState<Query>({ page: 0, univNameKey: "" });
+
   return (
     <>
       <SubHeaderMain
@@ -93,7 +91,7 @@ export default function RecruitListSection({
                 {data.groupLogo && (
                   <div className="flex items-center justify-center  w-[150px] h-[150px] p-4 shrink-0">
                     <FallBackImage
-                      src={`${CHAMPION_IMG_URL}${data.groupLogo}.png`}
+                      src={data.groupLogo}
                       alt={data.groupLogo}
                       width={150}
                       height={150}

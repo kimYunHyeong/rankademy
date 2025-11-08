@@ -27,4 +27,6 @@ export const mockGroupDetail: GroupDetail = {
   createdAt: "2024-11-10T14:35:00Z",
   isJoined: true,
   isLeader: false,
+  isRecruiting: true,
+  univName: "서울과학기술대학교",
 };

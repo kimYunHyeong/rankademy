@@ -5,9 +5,13 @@ import { useCallback, useMemo, useState } from "react";
 
 type VerifyCardProps = {
   /** 인증 메일 전송 콜백 */
-  sendEmailAction: (email: string) => Promise<{ ok: true; error: null }>;
+  sendEmailAction: (
+    univName: string,
+    email: string
+  ) => Promise<{ ok: true; error: null }>;
   /** 인증번호 확인 콜백 */
   verifyCodeAction: (
+    email: string,
     code: number | string
   ) => Promise<{ ok: true; error: null }>;
   /** 초기 이메일 */
@@ -22,6 +26,7 @@ export default function VerifyCard({
   initialEmail = "",
   allowedDomains = ["ac.kr"],
 }: VerifyCardProps) {
+  const [univName, setUnivName] = useState("");
   const [email, setEmail] = useState(initialEmail);
   const [code, setCode] = useState("");
   const [reqLoading, setReqLoading] = useState(false);
@@ -46,7 +51,7 @@ export default function VerifyCard({
       setError(null);
       setHint(null);
       setReqLoading(true);
-      await sendEmailAction(email);
+      await sendEmailAction(univName, email);
       setHint("인증번호를 전송했어요. 메일함을 확인해 주세요.");
     } catch (e: any) {
       setError(e?.message ?? "인증 메일 전송에 실패했어요.");
@@ -61,7 +66,7 @@ export default function VerifyCard({
       setError(null);
       setHint(null);
       setVerifyLoading(true);
-      await verifyCodeAction(code.trim());
+      await verifyCodeAction(email, code.trim());
       setHint("인증이 완료되었습니다");
       redirect("/me");
     } catch (e: any) {
@@ -79,7 +84,18 @@ export default function VerifyCard({
   };
 
   return (
-    <div className="w-[550px] h-[300px] rounded bg-[#25242A] p-6 md:p-8 text-white">
+    <div className="w-[550px] h-90 rounded bg-[#25242A] p-6 md:p-8 text-white">
+      {/* 학교 이름 */}
+      <label className="block text-sm mb-2 mt-4">학교 이름</label>
+      <div className="grid grid-cols-[1fr_auto] gap-3">
+        <input
+          value={univName}
+          onChange={(e) => setUnivName(e.target.value)}
+          placeholder="서울과학기술대학교"
+          className="w-full h-11 rounded bg-[#323036] border border-[#323036] px-3 text-sm placeholder:text-[#B1ACC1] focus:outline-none focus:ring-2 focus:ring-[#FF567980]"
+        />
+      </div>
+
       {/* 이메일 */}
       <label className="block text-sm mb-2 mt-4">학교 이메일</label>
       <div className="grid grid-cols-[1fr_auto] gap-3">

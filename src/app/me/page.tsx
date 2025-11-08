@@ -9,6 +9,7 @@ export type MyProfile = {
   id: number;
   username: string;
   summonerInfo: {
+    puuid: string;
     summonerName: string;
     summonerTag: string;
     summonerIcon: number;
@@ -24,7 +25,7 @@ export type MyProfile = {
   };
   univInfo: {
     univName: string;
-    univVerified: boolean;
+    univMail: string;
     major: string;
     admissionYear: number;
   };
@@ -36,7 +37,9 @@ export type MyProfile = {
 
 export default async function MyPage() {
   const apiUrl = "/me";
-  const data = await fetchFromAPI(apiUrl);
+  const data = (await fetchFromAPI(apiUrl)) as MyProfile;
 
-  return <InfoSection data={data} />;
+  const riotVerifyStatus: boolean = data.summonerInfo.puuid ? true : false;
+
+  return <InfoSection data={data} riotVerifyStatus={riotVerifyStatus} />;
 }

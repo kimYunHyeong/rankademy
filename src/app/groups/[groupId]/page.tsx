@@ -59,13 +59,14 @@ export default async function GroupDetailPage({
   const groupMember = groupMemberData.content;
   const pageData = groupMemberData.page;
 
-  const groupJoinRequestData: GroupJoinRequestMsg[] = groupDetailData.isLeader
-    ? (
-        (await fetchFromAPI(
-          `/groups/${groupId}/join-requests?page=0`
-        )) as GroupJoinRequestMsgApiRes
-      ).content ?? []
-    : [];
+  const groupJoinRequestData: GroupJoinRequestMsg[] =
+    groupDetailData.isLeader === true
+      ? (
+          (await fetchFromAPI(
+            `/groups/${groupId}/join-requests?page=0`
+          )) as GroupJoinRequestMsgApiRes
+        ).content ?? []
+      : [];
 
   return (
     <>
@@ -82,7 +83,7 @@ export default async function GroupDetailPage({
                 모집 게시글 보기
               </Link>
               <Link
-                href={`${groupDetailData.groupId}/invite`}
+                href={`${groupDetailData.groupId}/invite?univName=${groupDetailData.univName}`}
                 className="flex items-center justify-center border border-[#323036] w-30 h-11 text-[#B1ACC1] rounded bg-[#25242A33] text-center mr-2"
               >
                 그룹원 초대
@@ -102,6 +103,7 @@ export default async function GroupDetailPage({
                 groupId={groupId}
                 onAble={startGroupRecruitment}
                 onDisable={closeGroupRecruitment}
+                defaultChecked={groupDetailData.isRecruiting}
               />
             </div>
           </div>

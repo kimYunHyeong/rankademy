@@ -1,6 +1,6 @@
-// app/groups/edit/actions.ts
 "use server";
 
+import { ImageUrl, ImageUrlRes } from "@/types";
 import { postToAPI } from "@/utils/patcher";
 
 export type CreateGroupResult =
@@ -13,6 +13,7 @@ export type CreateGroupResult =
       };
     };
 
+/* 그룹 생성 요청 */
 export async function createGroup(
   formData: FormData
 ): Promise<CreateGroupResult> {
@@ -31,4 +32,10 @@ export async function createGroup(
       },
     };
   }
+}
+
+/* 그룹 이미지 업로드 URL 받기 */
+export async function uploadGroupLogo(payload: ImageUrl[]) {
+  const data = await postToAPI("/storage/pre-signed/batch", { body: payload });
+  return data as ImageUrlRes[];
 }

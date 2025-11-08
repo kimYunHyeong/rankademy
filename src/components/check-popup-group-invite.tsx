@@ -65,7 +65,13 @@ export default function CheckPopupGroupInvite({
             <div className="flex">
               <button
                 className="mr-0.5"
-                onClick={() => handleSubmit(item, checkAction)}
+                onClick={() => {
+                  handleSubmit(item, checkAction);
+
+                  setTimeout(() => {
+                    window.location.reload();
+                  }, 100);
+                }}
                 aria-label="초대 수락"
               >
                 <FallBackImage

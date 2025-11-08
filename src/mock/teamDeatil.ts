@@ -5,7 +5,7 @@ export const mockTeamDetail: TeamDetail = {
   teamName: "Rankademy",
   univName: "서울과학기술대학교",
   groupName: "Rankademy 그룹",
-  groupLogo: "Zac",
+  groupLogo: "/sdffafd",
   intro:
     "랭크 전문 팀 랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀랭크 전문 팀",
   createdAt: "2025-01-01T12:00:00",
@@ -104,6 +104,6 @@ export const mockTeamDetail: TeamDetail = {
       },
     },
   ],
-  isTeamLeader: true,
-  isMyTeam: true,
+  isTeamLeader: false,
+  isMyTeam: false,
 };

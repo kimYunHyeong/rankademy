@@ -1,7 +1,7 @@
 import Modal from "@/components/modal";
 import VerifyCard from "@/components/verify-card";
 import { mockMyProfile } from "@/mock/myProfile";
-import { sendEmail, verifyCode } from "@/app/me/verify/verify-action";
+import { sendEmail, verifyCode } from "@/app/me/edit/univ-verify/action";
 
 export default function ModalVerifyUnivPage() {
   const data = mockMyProfile;

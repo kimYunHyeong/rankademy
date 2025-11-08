@@ -37,7 +37,7 @@ export async function fetchFromAPI(endpoint: string, query?: Query) {
     headers["Authorization"] = `Bearer ${accessToken}`;
   }
 
-  // 4️⃣ 요청 로그
+  /* // 4️⃣ 요청 로그
   console.log("\n==============================");
   console.log("📡 [fetchFromAPI] Request");
   console.log("URL:", url.toString());
@@ -51,7 +51,7 @@ export async function fetchFromAPI(endpoint: string, query?: Query) {
   } else {
     console.log("엑세스토큰이 없습니다.");
   }
-  console.log("==============================");
+  console.log("=============================="); */
 
   // 5️⃣ 실제 요청
   const res = await fetch(url.toString(), {
@@ -65,10 +65,10 @@ export async function fetchFromAPI(endpoint: string, query?: Query) {
     .catch(() => "(no body)");
 
   // 6️⃣ 응답 로그
-  console.log("📥 [fetchFromAPI] Response");
+  /*  console.log("📥 [fetchFromAPI] Response");
   console.log("Status:", res.status, res.statusText);
   console.log("Response Body:", text.slice(0, 300));
-  console.log("==============================\n");
+  console.log("==============================\n"); */
 
   // 7️⃣ 에러 처리
   if (!res.ok) {

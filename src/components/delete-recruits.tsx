@@ -28,7 +28,7 @@ export default function DeleteRecruits() {
             취소
           </button>
           <button className="flex items-center justify-center  w-[195px] h-11  text-white rounded bg-[#FF567933] text-center">
-            삭제하기(로직 필요)
+            삭제하기
           </button>
         </div>
       </div>

@@ -1,6 +1,6 @@
 import PopupMessage from "@/components/popup-message";
 
-export default function Page() {
+export default async function UpGroupRecruitOkPage() {
   return (
     <PopupMessage
       img="round-check"

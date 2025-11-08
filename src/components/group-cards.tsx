@@ -28,7 +28,7 @@ export default function GroupCards({ data }: { data: MyGroup[] }) {
             "
           >
             <FallBackImage
-              src={`${SUMMONER_ICON_URL}${item.groupLogoImg}.png`}
+              src={item.groupLogoImg}
               alt={item.groupName}
               width={380}
               height={316}

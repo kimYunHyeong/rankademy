@@ -26,6 +26,9 @@ export default function RiotVerifyCard({
         await verifyAction(formData);
         setHint("인증되었습니다.");
       } catch (e: any) {
+        if (e.status === 404) {
+          setError(e?.message ?? "인증에 실패했습니다.");
+        }
         setError(e?.message ?? "인증에 실패했습니다.");
       } finally {
         setReqLoading(false);
