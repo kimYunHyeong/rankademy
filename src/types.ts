@@ -216,3 +216,13 @@ export type ImageUrlRes = {
   publicUrl: string;
   expiredAt: string;
 };
+
+export type OcrReq = {
+  image: File;
+  teamA: string;
+  teamAMembers: string[];
+  teamB: string;
+  teamBMembers: string[];
+};
+
+export type OcrResult = { winner: string; loser: string; gameTime: string };

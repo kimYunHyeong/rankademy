@@ -1,6 +1,6 @@
-import { APIres } from "@/app/competitions/result/[competitioId]/page";
+import { CompetitionDetailAPIres } from "@/app/competitions/result/[competitioId]/page";
 
-export const mockCompetitionDetail: APIres = {
+export const mockCompetitionDetail: CompetitionDetailAPIres = {
   competitionId: 1,
   status: "SCHEDULED",
   team1: {
@@ -129,7 +129,7 @@ export const mockCompetitionDetail: APIres = {
       {
         memberId: 10,
         position: "TOP",
-        summonerName: "Ranker",
+        summonerName: "Ranker1",
         summonerTag: "KR1",
         summonerIcon: 6,
         major: "컴퓨터공학과",
@@ -146,7 +146,7 @@ export const mockCompetitionDetail: APIres = {
       {
         memberId: 10,
         position: "TOP",
-        summonerName: "Ranker",
+        summonerName: "Ranker2",
         summonerTag: "KR1",
         summonerIcon: 54,
         univName: "서울과학기술대학교",
@@ -163,7 +163,7 @@ export const mockCompetitionDetail: APIres = {
       {
         memberId: 10,
         position: "TOP",
-        summonerName: "Ranker",
+        summonerName: "Ranker3",
         summonerTag: "KR1",
         summonerIcon: 54,
         univName: "서울과학기술대학교",
@@ -180,7 +180,7 @@ export const mockCompetitionDetail: APIres = {
       {
         memberId: 10,
         position: "TOP",
-        summonerName: "Ranker",
+        summonerName: "Ranker4",
         summonerTag: "KR1",
         summonerIcon: 54,
         univName: "서울과학기술대학교",
@@ -197,7 +197,7 @@ export const mockCompetitionDetail: APIres = {
       {
         memberId: 10,
         position: "TOP",
-        summonerName: "Ranker",
+        summonerName: "Ranker5",
         summonerTag: "KR1",
         summonerIcon: 54,
         univName: "서울과학기술대학교",

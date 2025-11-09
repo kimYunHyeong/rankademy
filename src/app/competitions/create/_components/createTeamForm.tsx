@@ -89,7 +89,7 @@ export default function CreateTeamFrom({
     fd.append("name", body.name);
     fd.append("intro", body.intro);
     fd.append("representativeId", String(body.representativeId));
-    fd.append("members", JSON.stringify(body.members)); // 서버에서 JSON 파싱
+    fd.append("members", JSON.stringify(body.members));
 
     await submitAction(fd);
   };

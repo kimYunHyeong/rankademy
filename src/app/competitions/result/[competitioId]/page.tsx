@@ -28,7 +28,7 @@ type TeamDetail = {
   isMyTeam: boolean;
 };
 
-export type APIres = {
+export type CompetitionDetailAPIres = {
   competitionId: number;
   status: CompetitionStatus;
   team1: TeamDetail;
@@ -41,7 +41,7 @@ export default async function CompetitionDetailPage({
   params: Promise<{ competitionId: number }>;
 }) {
   const { competitionId } = await params;
-  /*  const res = (await fetchFromAPI(`competitions/${competitionId}`)) as APIres; */
+  /*  const res = (await fetchFromAPI(`competitions/${competitionId}`)) as CompetitionDetailAPIres; */
 
   const data = mockCompetitionDetail;
   return (
