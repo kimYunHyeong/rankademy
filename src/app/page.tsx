@@ -1,36 +1,7 @@
 import UnivRankingSection from "@/_components/univRankingSection";
 import SubHeaderMain from "@/components/sub-header-main";
-import { fetchFromAPI } from "@/utils/fetcher";
-import { PaginationData } from "@/types";
-
-/* 목데이터 */
-import { mockUnivRanking } from "@/mock/univRanking";
-
-export type univRanking = {
-  univName: string;
-  totalUserCnt: number;
-  competitionTotalCnt: number;
-  competitionWinCnt: number;
-  rankerDto: {
-    id: number;
-    summonerName: string;
-    summonerTag: string;
-    summonerIcon: number;
-  };
-};
-
-type APIres = {
-  content: univRanking[];
-  page: PaginationData;
-};
 
 export default async function Home() {
-  const apiUrl = "/rankings/univ";
-  const res = (await fetchFromAPI(apiUrl)) as APIres;
-
-  const tableData = res.content;
-  const pageData = res.page;
-
   return (
     <>
       <SubHeaderMain
@@ -40,11 +11,7 @@ export default async function Home() {
         ]}
       />
       <div className="h-20"></div>
-      <UnivRankingSection
-        tableData={tableData}
-        apiurl={apiUrl}
-        pageData={pageData}
-      />
+      <UnivRankingSection />
     </>
   );
 }

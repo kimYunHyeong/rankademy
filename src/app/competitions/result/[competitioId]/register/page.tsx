@@ -22,13 +22,16 @@ export default async function SubmitCompetitonResultPage({
 
   /* A팀의 정보 */
   const teamA = competitionInfo.team1.groupName;
-
+  const teamAId = competitionInfo.team1.teamId;
+  const teamAGroup = competitionInfo.team1.groupId;
   const teamAMembers = competitionInfo.team1.teamMembers
     .slice(0, 5)
     .map((m) => m.summonerName);
 
   /* B팀의 정보 */
   const teamB = competitionInfo.team2.groupName;
+  const teamBId = competitionInfo.team2.teamId;
+  const teamBGroup = competitionInfo.team2.groupId;
   const teamBMembers = competitionInfo.team2.teamMembers
     .slice(0, 5)
     .map((m) => m.summonerName);
@@ -43,8 +46,12 @@ export default async function SubmitCompetitonResultPage({
 
       <CompetitionResultForm
         teamA={teamA}
+        teamAId={teamAId}
+        teamAGroup={teamAGroup}
         teamAMembers={teamAMembers}
         teamB={teamB}
+        teamBId={teamBId}
+        teamBGroup={teamBGroup}
         teamBMembers={teamBMembers}
         competitionId={competitionId}
         requestOcr={requestOCRResult}

@@ -23,7 +23,7 @@ export default function MyCompetitionResultSection({
 
   return (
     <>
-      <CompetitionTable data={tableData} apiurl={apiurl} query={query} />
+      {/*  <CompetitionTable data={tableData} apiurl={apiurl} query={query} /> */}
 
       {/* 페이지네이션 */}
       <PaginationComponent

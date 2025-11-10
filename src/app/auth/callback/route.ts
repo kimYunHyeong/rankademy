@@ -7,6 +7,7 @@ export async function GET(req: Request) {
     const accessToken = searchParams.get("accessToken");
     const refreshToken = searchParams.get("refreshToken");
     const summonerIcon = searchParams.get("summonerIcon");
+    const userId = searchParams.get("userId");
 
     if (!accessToken || !refreshToken) {
       return NextResponse.redirect(
@@ -27,6 +28,10 @@ export async function GET(req: Request) {
 
     if (summonerIcon !== null) {
       (await cookies()).set("summonerIcon", String(summonerIcon), opts);
+    }
+
+    if (userId !== null) {
+      (await cookies()).set("userId", String(userId), opts);
     }
 
     // 원하는 페이지로

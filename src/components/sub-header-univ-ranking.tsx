@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useMemo } from "react";
+import FallBackImage from "./fallback-img";
 
 type Item = {
   label: string;
@@ -23,6 +24,13 @@ type Props = {
   /** 헤더 높이(px) – 배경/타이틀 구간 + 토글 여유 포함 */
   headerHeight?: number; // default 240
   className?: string;
+};
+
+const mockOptions = {
+  major: [
+    { label: "컴퓨터공학과", value: "컴퓨터공학과" },
+    { label: "전자공학과", value: "전자공학과" },
+  ],
 };
 
 export default function SubHeaderUnivRanking({
@@ -86,7 +94,13 @@ export default function SubHeaderUnivRanking({
       rounded-full overflow-hidden opacity-25
     "
         >
-          <Image src={logoSrc} alt="" fill priority className="object-cover" />
+          <FallBackImage
+            src={logoSrc}
+            alt={logoSrc}
+            fill
+            priority
+            className="object-cover"
+          />
         </div>
 
         {/* 하단 페이드 아웃(배경과 본문 연결을 부드럽게) */}

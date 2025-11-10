@@ -1,12 +1,11 @@
-import { CompetitionDetailAPIres } from "@/app/competitions/result/[competitioId]/page";
-
-export const mockCompetitionDetail: CompetitionDetailAPIres = {
+export const mockCompetitionDetail = {
   competitionId: 1,
   status: "SCHEDULED",
   team1: {
     teamId: 1,
     teamName: "Rankademy",
     univName: "서울과학기술대학교",
+    groupId: 25,
     groupName: "Rankademy 그룹",
     groupLogo: "string",
     intro: "랭크 전문 팀",
@@ -113,6 +112,7 @@ export const mockCompetitionDetail: CompetitionDetailAPIres = {
     teamId: 1,
     teamName: "Rankademy",
     univName: "서울과학기술대학교",
+    groupId: 25,
     groupName: "Rankademy 그룹",
     groupLogo: "string",
     intro: "랭크 전문 팀",

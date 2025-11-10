@@ -11,6 +11,7 @@ type TeamDetail = {
   teamId: number;
   teamName: string;
   univName: string;
+  groupId: number;
   groupName: string;
   groupLogo: string;
   intro: string;

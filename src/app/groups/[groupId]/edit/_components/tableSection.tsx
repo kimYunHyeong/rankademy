@@ -159,13 +159,7 @@ export default function TableSection({
         groupJoinAction={groupJoinAction}
       />
 
-      <Table
-        groupId={groupId}
-        apiurl={memberApiUrl}
-        data={groupMember}
-        columns={columns}
-        pageSize={pageData.size}
-      />
+      <Table groupId={groupId} apiurl={memberApiUrl} columns={columns} />
 
       {/* 페이지네이션 */}
       <PaginationComponent

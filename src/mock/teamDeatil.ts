@@ -104,6 +104,6 @@ export const mockTeamDetail: TeamDetail = {
       },
     },
   ],
-  isTeamLeader: false,
-  isMyTeam: false,
+  isTeamLeader: true,
+  isMyTeam: true,
 };

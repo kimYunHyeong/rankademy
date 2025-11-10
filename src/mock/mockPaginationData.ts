@@ -1,7 +1,7 @@
 import { PaginationData } from "./../types";
 export const mockPaginationData: PaginationData = {
   size: 10,
-  number: 2,
-  totalElements: 2,
-  totalPages: 5,
+  number: 0,
+  totalElements: 20,
+  totalPages: 2,
 };

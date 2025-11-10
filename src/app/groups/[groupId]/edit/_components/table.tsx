@@ -27,7 +27,7 @@ function extractRows<T>(res: any): T[] {
 
 export default function Table<T>({
   groupId,
-  data,
+
   columns,
   apiurl,
   query,
@@ -35,7 +35,7 @@ export default function Table<T>({
   const pathname = usePathname();
 
   //내부 표시용 데이터 상태 (초기값은 props.data)
-  const [rows, setRows] = React.useState<T[]>(() => data ?? []);
+  const [rows, setRows] = React.useState<T[]>(() => []);
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState<unknown>(null);
 
@@ -149,9 +149,7 @@ export default function Table<T>({
                     return (
                       <td
                         key={col.id}
-                        className={`last:rounded-r px-6 py-4 ${
-                          col.cellClassName ?? ""
-                        } ${
+                        className={`last:rounded-r px-6 py-4${
                           gradientOn
                             ? "bg-[linear-gradient(149.06deg,#FFA1D9_10.49%,#FF5679_60.64%)] bg-clip-text text-transparent font-bold"
                             : "text-white"

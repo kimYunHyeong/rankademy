@@ -1,12 +1,49 @@
 "use server";
 
-import { postToAPI } from "@/utils/patcher";
+import { CreateScrimTeamFormBody } from "./createScrimTeamForm";
+import { API_BASE_URL } from "@/lib/api";
+import { cookies } from "next/headers";
 
 /* 스크림 팀 생성 요청 */
-export async function createScrimTeam(formData: FormData) {
-  const payload = Object.fromEntries(formData.entries());
+export async function createScrimTeam(body: CreateScrimTeamFormBody) {
+  const cookieStore = cookies();
+  const accessToken = (await cookieStore).get("accessToken")?.value;
 
-  await postToAPI(`/scrim-teams`, {
-    body: payload,
-  });
+  const headers = new Headers();
+  headers.set("Content-Type", "application/json");
+  if (accessToken) {
+    headers.set("Authorization", `Bearer ${accessToken}`);
+  }
+
+  console.log("📤 [createScrimTeam] Request Body:", body);
+  console.log("📤 [createScrimTeam] JSON Body:", JSON.stringify(body, null, 2));
+
+  try {
+    const res = await fetch(`${API_BASE_URL}/scrim-teams`, {
+      method: "POST",
+      headers,
+      body: JSON.stringify(body),
+    });
+
+    const data = await res.json().catch(() => null);
+
+    if (!res.ok) {
+      console.error("❌ [createScrimTeam] Error Response:", data);
+      return {
+        ok: false,
+        status: res.status,
+        detail: data?.detail ?? "요청 중 오류가 발생했습니다.",
+      };
+    }
+
+    console.log("📥 [createScrimTeam] Response:", data);
+    return { ok: true, status: res.status, data };
+  } catch (err: any) {
+    console.error("💥 [createScrimTeam] Network/Server Error:", err);
+    return {
+      ok: false,
+      status: 500,
+      detail: err?.message ?? "서버 연결 중 오류가 발생했습니다.",
+    };
+  }
 }

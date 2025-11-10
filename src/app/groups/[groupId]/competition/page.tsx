@@ -1,12 +1,7 @@
 import GroupInfo from "@/components/group-info";
-import {
-  GroupCompetitionResult,
-  GroupDetail,
-  PaginationData,
-  RecentCompetition,
-} from "@/types";
+import { GroupDetail, RecentCompetition } from "@/types";
 import { fetchFromAPI } from "@/utils/fetcher";
-import GroupCompetitionResultSection from "./_components/groupCompetitionResultSection";
+import CompetitionTable from "@/components/competition-table";
 
 /* 목데이터 */
 import { mockRecentCompetitionData } from "@/mock/recentCompetitionData";
@@ -15,59 +10,35 @@ import { mockGroupCompetitionResult } from "@/mock/groupCompetitionResult";
 export default async function GroupCompetitionPage({
   params,
 }: {
-  params: Promise<{ groupId: string }>;
+  params: Promise<{ groupId: number }>;
 }) {
   const { groupId } = await params;
 
   /* 그룹 세부 정보 */
-  const groupDetailDataRequieredQuery = `?page=0&groupId=${groupId}`;
-  const groupDetailDataApiUrl = `/groups/${groupId}${groupDetailDataRequieredQuery}`;
-  const groupDetailData = (await fetchFromAPI(
-    groupDetailDataApiUrl
-  )) as GroupDetail;
+  const data = (await fetchFromAPI(`/groups/${groupId}`)) as GroupDetail;
+
+  /* 대항전 결과 리스트 */
+  const URL = `/competitions/groups/${groupId}`;
 
   /* 최근 대항전 정보 */
-  const recentCompetitionDataRequieredQuery = `?page=0&groupId=${groupId}`;
-  const recentCompetitionDataApiUrl = `/groups/${groupId}/recent-competitions${recentCompetitionDataRequieredQuery}`;
-  const recentCompetitionData = (await fetchFromAPI(
-    recentCompetitionDataApiUrl
+  const RecentCompetitionInfo = (await fetchFromAPI(
+    `/groups/${groupId}/recent-competitions`
   )) as RecentCompetition[];
-
-  /* 그룹의 대항전 기록 */
-  type competitionResultAPIres = {
-    content: GroupCompetitionResult[];
-    page: PaginationData;
-  };
-
-  const competitionResultDataRequieredQuery = `?page=0&groupId=${groupId}`;
-  const competitionResultDataApiUrl = `/competitions/groups/${groupId}${competitionResultDataRequieredQuery}`;
-  const competitionResultData = (await fetchFromAPI(
-    competitionResultDataApiUrl
-  )) as competitionResultAPIres;
 
   return (
     <>
       <div className="flex justify-center text-white">대항전 기록</div>
-      <div className="h-4"></div>
 
       {/* 그룹 정보 */}
-      <GroupInfo
-        groupDetailData={groupDetailData}
-        competitionInfo={
-          groupDetailData?.competitionInfo ?? {
-            winCount: 0,
-            lossCount: 0,
-            winRate: 0,
-          }
-        }
-        recentCompetitionData={recentCompetitionData}
-      />
-      <div className="h-4"></div>
-      <GroupCompetitionResultSection
-        tableData={competitionResultData.content}
-        pageData={competitionResultData.page}
-        apiurl={competitionResultDataApiUrl}
-      />
+      <div className="my-4">
+        <GroupInfo
+          groupId={groupId}
+          data={data}
+          RecentCompetitionInfo={RecentCompetitionInfo}
+        />
+      </div>
+
+      <CompetitionTable APIURL={URL} isJoined={data.isJoined} />
     </>
   );
 }

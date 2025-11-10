@@ -38,11 +38,7 @@ export default function DeleteRiotVerifyPopUp({
           <button
             onClick={() => {
               deleteAction();
-              router.replace(`/me`);
-
-              setTimeout(() => {
-                window.location.reload();
-              }, 100);
+              router.back();
             }}
             className="flex items-center justify-center
                       w-[195px] h-11 text-white rounded

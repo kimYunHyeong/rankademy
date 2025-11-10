@@ -1,22 +1,18 @@
 "use client";
 
-import React from "react";
-import { usePathname } from "next/navigation";
-import Link from "next/link";
-import { RankingTableProps } from "@/types";
+import React, { useEffect, useState } from "react";
+import { PaginationData, RankingTableProps } from "@/types";
 import { fetchFromAPI } from "@/utils/fetcher";
 import { Query } from "@/types";
-import { useEffect } from "react";
-import DeleteMember from "../app/groups/[groupId]/delete/_components/delete-member";
+import PaginationComponent from "./pagination";
+import { mockPaginationData } from "@/mock/mockPaginationData";
 
 type Props<T> = RankingTableProps<T> & {
-  apiurl: string;
+  APIURL: string;
   query?: Query;
-  onData?: (rows: T[], raw: any) => void;
-  onLoadingChange?: (loading: boolean) => void;
 };
 
-/* api주소로부터 테이블 데이터 추출  */
+/* 테이블 데이터 추출  */
 function extractRows<T>(res: any): T[] {
   if (Array.isArray(res)) return res as T[];
   if (Array.isArray(res?.content)) return res.content as T[];
@@ -24,36 +20,66 @@ function extractRows<T>(res: any): T[] {
   return [];
 }
 
-export default function RankingTable<T>({
-  data,
-  columns,
-  apiurl,
-  query,
-}: Props<T>) {
-  const pathname = usePathname();
+/* 페이지 정보 추출 */
+function extractPage(res: any): PaginationData {
+  const p = res?.page;
 
-  //내부 표시용 데이터 상태 (초기값은 props.data)
-  const [rows, setRows] = React.useState<T[]>(() => data ?? []);
-  const [loading, setLoading] = React.useState(false);
-  const [error, setError] = React.useState<unknown>(null);
+  return {
+    size: p.size ?? 10,
+    number: p.number ?? 0,
+    totalElements: p.totalElements ?? 0,
+    totalPages: p.totalPages ?? 1,
+  };
+}
 
-  /*query나 apiurl 변경 시마다 재요청  */
+export default function RankingTable<T>({ columns, APIURL, query }: Props<T>) {
+  /* 페이지네이션 설정 */
+  const [pageState, setPageData] = useState<PaginationData>(mockPaginationData);
+  const [currentPage, setCurrentPage] = useState<number>(0);
+
+  // ✅ query가 변경될 때마다 첫 페이지로 초기화
+  useEffect(() => {
+    if (query) setCurrentPage(0);
+  }, [JSON.stringify(query)]);
+
+  // 내부 표시용 데이터 상태 (초기값은 props.data)
+  const [rows, setRows] = useState<T[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<unknown>(null);
+
+  /* query(단, page 제외)나 apiurl, currentPage 변경 시 재요청  */
   useEffect(() => {
     let alive = true;
 
     const run = async () => {
       setLoading(true);
-
       setError(null);
       try {
-        const res = await fetchFromAPI(apiurl, query);
-        const nextRows = extractRows<T>(res);
+        // page는 내부 상태로 일원화
+        const mergedQuery = { ...(query ?? {}), page: currentPage };
+        const res = await fetchFromAPI(APIURL, mergedQuery);
+
         if (!alive) return;
+
+        const nextRows = extractRows<T>(res);
+        const nextPage = extractPage(res);
+
         setRows(nextRows);
+        setPageData(nextPage);
+        // 서버가 강제로 페이지를 보정할 수 있으니 동기화(선택)
+        if (
+          typeof nextPage.number === "number" &&
+          nextPage.number !== currentPage
+        ) {
+          setCurrentPage(nextPage.number);
+        }
       } catch (e) {
         if (!alive) return;
         setError(e);
         console.error("RankingTable fetch failed:", e);
+      } finally {
+        if (!alive) return;
+        setLoading(false);
       }
     };
 
@@ -61,7 +87,11 @@ export default function RankingTable<T>({
     return () => {
       alive = false;
     };
-  }, [apiurl, JSON.stringify(query)]);
+  }, [
+    APIURL,
+    currentPage,
+    JSON.stringify({ ...(query ?? {}), page: undefined }),
+  ]);
 
   return (
     <div className="w-full">
@@ -113,9 +143,7 @@ export default function RankingTable<T>({
                     return (
                       <td
                         key={col.id}
-                        className={`last:rounded-r px-6 py-4 ${
-                          col.cellClassName ?? ""
-                        } ${
+                        className={`last:rounded-r px-6 py-4  ${
                           gradientOn
                             ? "bg-[linear-gradient(149.06deg,#FFA1D9_10.49%,#FF5679_60.64%)] bg-clip-text text-transparent font-bold"
                             : "text-white"
@@ -131,6 +159,18 @@ export default function RankingTable<T>({
           </tbody>
         </table>
       </div>
+
+      {/* 페이지네이션 */}
+      <PaginationComponent
+        pageData={pageState}
+        onPageChange={(qs) => {
+          // qs 예: "page=0"
+          const m = qs.match(/page=(\d+)/);
+          const p = m ? Number(m[1]) : 0;
+          if (!Number.isFinite(p) || p < 0) return; // 0-base 허용
+          setCurrentPage(p);
+        }}
+      />
     </div>
   );
 }

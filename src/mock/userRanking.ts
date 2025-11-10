@@ -1,6 +1,6 @@
-import { userRanking } from "@/app/rankings/page";
+import { UserRanking } from "@/app/rankings/_components/userRankingSection";
 
-export const mockUserRanking = [
+export const mockUserRanking: UserRanking[] = [
   {
     userId: 1,
     puuid: "abc123",
@@ -239,4 +239,4 @@ export const mockUserRanking = [
     mainPosition: "UTILITY",
     subPosition: "BOTTOM",
   },
-] satisfies userRanking[];
+];

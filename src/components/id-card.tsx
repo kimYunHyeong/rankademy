@@ -11,16 +11,19 @@ import {
 
 export default function IDCard({ data }: { data: MyProfile }) {
   return (
-    <div className="w-[500px] h-[670px] flex justify-center p-6 border-2 border-[#323036] rounded-xl bg-[#FF56790D]">
-      <div className="text-white">
+    <div
+      className="w-[500px] h-[670px] flex justify-center p-6 border-2 border-[#323036] rounded-xl 
+   bg-[#24192F] bg-linear-to-b from-[#FF5679]/12 to-transparent"
+    >
+      <div className="text-white w-full">
         {/* 사진 및 칭호 */}
         <div>
           <FallBackImage
             src={`${SUMMONER_ICON_URL}${data.summonerInfo.summonerIcon}.png`}
-            alt={"summonerIcon"}
+            alt={String(data.summonerInfo.summonerIcon)}
             width={140}
             height={140}
-            className="rounded-2xl"
+            className="rounded"
           />
           <div className="w-[140px] h-[26px] border border-[#323036] rounded bg-[#FF56790D] flex items-center justify-center mt-1">
             <span className="bg-[linear-gradient(149.06deg,#FFA1D9_10.49%,#FF5679_60.64%)] bg-clip-text text-transparent font-semibold ">
@@ -80,18 +83,21 @@ export default function IDCard({ data }: { data: MyProfile }) {
                   alt={"Most Champion 1"}
                   width={40}
                   height={40}
+                  className="mr-0.5 rounded-lg"
                 />
                 <FallBackImage
                   src={`${CHAMPION_IMG_URL}${data.mostChampionIds[1]}.png`}
                   alt={"Most Champion 2"}
                   width={40}
                   height={40}
+                  className="mr-0.5 rounded-lg"
                 />
                 <FallBackImage
                   src={`${CHAMPION_IMG_URL}${data.mostChampionIds[2]}.png`}
                   alt={"Most Champion 3"}
                   width={40}
                   height={40}
+                  className="mr-0.5 rounded-lg"
                 />
               </div>
             </div>
@@ -150,7 +156,7 @@ export default function IDCard({ data }: { data: MyProfile }) {
             </div>
 
             <div className="flex items-center gap-2 w-full">
-              <div className="relative flex-1 w-40 h-[30px] border-[#323036] rounded-lg bg-[#110D17] overflow-hidden">
+              <div className="relative flex-1 w-40 h-[30px] border-[#323036] rounded bg-[#110D17] overflow-hidden">
                 <div
                   className="h-full bg-[#FF567980]"
                   style={{ width: `${data.summonerInfo.winRate}%` }}
@@ -174,8 +180,8 @@ export default function IDCard({ data }: { data: MyProfile }) {
         <FallBackImage
           src={`/images/logo-greyfont.png`}
           alt={"logo-greyfont"}
-          width={80}
-          height={50}
+          width={40}
+          height={10}
         />
       </div>
     </div>

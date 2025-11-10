@@ -1,50 +1,12 @@
 import SubHeaderUnivRanking from "@/components/sub-header-univ-ranking";
 import UnivUserRankingSection from "./_components/univUserRankingSection";
-import { fetchFromAPI } from "@/utils/fetcher";
-import type { Position, Tier, PaginationData } from "@/types";
-
-const mockOptions = {
-  major: [
-    { label: "컴퓨터공학과", value: "컴퓨터공학과" },
-    { label: "전자공학과", value: "전자공학과" },
-  ],
-};
-
-export type univUserRanking = {
-  userId: number;
-  puuid: string;
-  summonerName: string;
-  summonerTag: string;
-  summonerIcon: number;
-  tierInfo: { tier: Tier; rank: string; lp: number; mappedTier: number };
-  winRate: number;
-  winCount: number;
-  lossCount: number;
-  mainPosition: Position;
-  subPosition: Position;
-  admissionYear: number;
-  major: string;
-};
-
-type APIres = {
-  content: univUserRanking[];
-  page: PaginationData;
-};
-
-type Params = Promise<{ univName: string }>;
 
 export default async function UnivUserRankingPage({
   params,
 }: {
-  params: Params;
+  params: Promise<{ univName: string }>;
 }) {
   const { univName } = await params;
-  const requieredQuery = `?univName=${univName}`;
-  const apiUrl = `/rankings/univ/${univName}${requieredQuery}`;
-  const res = (await fetchFromAPI(apiUrl)) as APIres;
-
-  const tableData = res.content;
-  const pageData = res.page;
 
   return (
     <>
@@ -66,12 +28,7 @@ export default async function UnivUserRankingPage({
         headerHeight={260}
       />
 
-      <UnivUserRankingSection
-        tableData={tableData}
-        apiurl={apiUrl}
-        pageData={pageData}
-        univName={univName}
-      />
+      <UnivUserRankingSection univName={univName} />
     </>
   );
 }

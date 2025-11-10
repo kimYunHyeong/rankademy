@@ -7,7 +7,7 @@ export async function withdrawTeam(teamId: number) {
   await deleteFromAPI(`/teams/${teamId}/withdraw`);
 }
 
-/* 결투 신청하기 */
+/* 팀 삭제하기 */
 export async function deleteTeam(teamId: number) {
   await deleteFromAPI(`/teams/${teamId}`);
 }

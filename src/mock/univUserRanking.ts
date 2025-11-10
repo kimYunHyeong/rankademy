@@ -1,6 +1,6 @@
-import { univUserRanking } from "@/app/rankings/univ/[univName]/users/page";
+import { UnivUserRanking } from "@/app/rankings/univ/[univName]/users/_components/univUserRankingSection";
 
-export const mockUnivUserRanking = [
+export const mockUnivUserRanking: UnivUserRanking[] = [
   {
     userId: 1,
     puuid: "abc123",
@@ -181,4 +181,4 @@ export const mockUnivUserRanking = [
     admissionYear: 2019,
     major: "기계공학과",
   },
-] satisfies univUserRanking[];
+];

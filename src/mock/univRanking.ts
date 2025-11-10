@@ -1,6 +1,6 @@
-import { univRanking } from "@/app/page";
+import { UnivRanking } from "@/_components/univRankingSection";
 
-export const mockUnivRanking: univRanking[] = [
+export const mockUnivRanking: UnivRanking[] = [
   {
     univName: "서울과학기술대학교",
     totalUserCnt: 200,

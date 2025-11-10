@@ -2,11 +2,15 @@ import { fetchFromAPI } from "@/utils/fetcher";
 import CreateTeamFrom from "./_components/createTeamForm";
 import { GroupSummaryList } from "@/app/groups/recruits/edit/page";
 import { createTeam } from "./_components/actions";
+import { cookies } from "next/headers";
 
 export default async function CreateTeamPage() {
   const myGroupsList = (await fetchFromAPI(
     `/groups/my/summary`
   )) as GroupSummaryList[];
+
+  const cookieStore = cookies();
+  const userId = (await cookieStore).get("userId")?.value;
 
   return (
     <div className="flex flex-col justify-center items-center">
@@ -15,7 +19,11 @@ export default async function CreateTeamPage() {
         <span>대항전 팀 생성</span>
       </div>
       <div className="h-6"></div>
-      <CreateTeamFrom groupList={myGroupsList} submitAction={createTeam} />
+      <CreateTeamFrom
+        userId={Number(userId)}
+        groupList={myGroupsList}
+        submitAction={createTeam}
+      />
     </div>
   );
 }

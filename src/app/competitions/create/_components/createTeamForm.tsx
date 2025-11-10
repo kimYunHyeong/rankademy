@@ -21,7 +21,7 @@ type FormMember = {
   position: Position;
 };
 
-type FormBody = {
+export type CreateTeamFormBody = {
   groupId: number;
   name: string;
   intro: string;
@@ -30,11 +30,15 @@ type FormBody = {
 };
 
 export default function CreateTeamFrom({
+  userId,
   groupList,
   submitAction,
 }: {
+  userId: number;
   groupList: GroupSummaryList[];
-  submitAction: (formData: FormData) => Promise<void>;
+  submitAction: (
+    body: CreateTeamFormBody
+  ) => Promise<{ ok: boolean; status: number; detail?: string; data?: any }>;
 }) {
   const router = useRouter();
 
@@ -75,23 +79,31 @@ export default function CreateTeamFrom({
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
 
-    const body: FormBody = {
-      groupId: selectedId,
+    const body: CreateTeamFormBody = {
       name: teamName.trim(),
+      groupId: selectedId,
       intro: intro.trim(),
-      representativeId: representativeId ?? members[0].userId,
+      representativeId: userId,
       members,
     };
 
-    // FormData에 직렬화
-    const fd = new FormData();
-    fd.append("groupId", String(body.groupId));
-    fd.append("name", body.name);
-    fd.append("intro", body.intro);
-    fd.append("representativeId", String(body.representativeId));
-    fd.append("members", JSON.stringify(body.members));
+    try {
+      const res = await submitAction(body);
+      if (!res.ok) {
+        if (res.status === 409) {
+          alert(`팀 멤버들 중 중복되는 유저가 있을 수 없습니다.`);
+        } else {
+          alert(`에러코드 [${res.status}]: ${res.detail}`);
+        }
 
-    await submitAction(fd);
+        return;
+      }
+
+      router.push("/competitions");
+    } catch (err: any) {
+      console.error("💥 handleSubmit Error:", err);
+      alert("요청 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
+    }
   };
 
   return (
@@ -188,37 +200,6 @@ export default function CreateTeamFrom({
               }}
             />
           </div>
-
-          {/* 대표자 선택 (선택된 팀원 중에서) */}
-          {/* <div className="flex flex-col mt-6">
-            <span className="text-white text-sm mb-2">대표자</span>
-            <Select
-              value={
-                representativeId !== null ? String(representativeId) : undefined
-              }
-              onValueChange={(v) => setRepresentativeId(Number(v))}
-            >
-              <SelectTrigger className="w-48 h-11 border-[#323036] bg-[#1D1921] text-[#B1ACC1] rounded">
-                <SelectValue placeholder="대표자 선택" />
-              </SelectTrigger>
-              <SelectContent className="border-[#323036] bg-[#1D1921] text-[#B1ACC1] rounded">
-                {representativeOptions.length === 0 ? (
-                  <SelectItem value="0" disabled>
-                    팀원을 먼저 선택하세요
-                  </SelectItem>
-                ) : (
-                  representativeOptions.map((m) => (
-                    <SelectItem
-                      key={`${m.position}-${m.userId}`}
-                      value={String(m.userId)}
-                    >
-                      {m.position} · {m.userId}
-                    </SelectItem>
-                  ))
-                )}
-              </SelectContent>
-            </Select>
-          </div> */}
         </div>
 
         {/* 팀 소개 */}
@@ -234,7 +215,10 @@ export default function CreateTeamFrom({
               height={24}
               className="object-contain ml-5 mr-1"
             />
-            <span className="text-white">대표자 연락처를 꼭 포함해주세요</span>
+            <span className="text-white">
+              대표자 연락처를 꼭 포함해주세요. 한 번 생성한 팀은 수정할 수
+              없습니다.
+            </span>
           </div>
 
           <textarea

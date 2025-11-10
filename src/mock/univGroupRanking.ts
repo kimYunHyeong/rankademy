@@ -1,6 +1,5 @@
-import { univGroupRanking } from "@/app/rankings/univ/[univName]/groups/page";
-
-export const mockUnivGroupRanking = [
+import { UnivGroupRanking } from "@/app/rankings/univ/[univName]/groups/_components/univGroupRankingSection";
+export const mockUnivGroupRanking: UnivGroupRanking[] = [
   {
     groupId: 1,
     name: "서울대 레전더즈",
@@ -257,4 +256,4 @@ export const mockUnivGroupRanking = [
       summonerIcon: 96,
     },
   },
-] satisfies univGroupRanking[];
+];

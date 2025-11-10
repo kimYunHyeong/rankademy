@@ -23,6 +23,7 @@ import {
 /* 목데이터 */
 import { mockRecentCompetitionData } from "@/mock/recentCompetitionData";
 import { mockGroupJoinRequestPopUp } from "@/mock/mockGroupJoinRequestPopUp";
+import GroupTableHeader from "@/components/group-table-header";
 
 type GroupJoinRequestMsgApiRes = {
   content: GroupJoinRequestMsg[];
@@ -37,30 +38,17 @@ export default async function GroupDetailPage({
   const { groupId } = await params;
 
   /* 그룹 세부 정보 */
-  const groupDetailDataRequieredQuery = `?page=0&groupId=${groupId}`;
-  const groupDetailDataApiUrl = `/groups/${groupId}${groupDetailDataRequieredQuery}`;
-  const groupDetailData = (await fetchFromAPI(
-    groupDetailDataApiUrl
-  )) as GroupDetail;
+  const data = (await fetchFromAPI(`/groups/${groupId}`)) as GroupDetail;
 
   /* 최근 대항전 정보 */
-  const recentCompetitionDataRequieredQuery = `?page=0&groupId=${groupId}`;
-  const recentCompetitionDataApiUrl = `/groups/${groupId}/recent-competitions${recentCompetitionDataRequieredQuery}`;
-  const recentCompetitionData = (await fetchFromAPI(
-    recentCompetitionDataApiUrl
-  )) as RecentCompetition[];
+  const RecentCompetitionInfo =
+    ((await fetchFromAPI(
+      `/groups/${groupId}/recent-competitions`
+    )) as RecentCompetition[]) ?? [];
 
-  /* 그룹 멤버 정보 */
-  const groupMemberDataRequieredQuery = `?page=0&groupId=${groupId}`;
-  const groupMemberDataApiUrl = `/groups/${groupId}/members${groupMemberDataRequieredQuery}`;
-  const groupMemberData = (await fetchFromAPI(
-    groupMemberDataApiUrl
-  )) as GroupMemberAPIres;
-  const groupMember = groupMemberData.content;
-  const pageData = groupMemberData.page;
-
+  /* 그룹 가입 요청 확인 */
   const groupJoinRequestData: GroupJoinRequestMsg[] =
-    groupDetailData.isLeader === true
+    data.isLeader === true
       ? (
           (await fetchFromAPI(
             `/groups/${groupId}/join-requests?page=0`
@@ -71,25 +59,25 @@ export default async function GroupDetailPage({
   return (
     <>
       {/* 그룹 리더일 때 표시할 정보 */}
-      {groupDetailData.isLeader && (
+      {data.isLeader && (
         <>
           {/* 모집 게시글 | 그룹원 초대 | 그룹원 관리 */}
           <div className="flex justify-between items-center mb-12">
             <div className="flex text-[14px]">
               <Link
-                href={`recruits/${groupDetailData.groupId}`}
+                href={`recruits/${data.groupId}`}
                 className="flex items-center justify-center border border-[#323036] w-30 h-11 text-[#B1ACC1] rounded bg-[#25242A33] text-center mr-2"
               >
                 모집 게시글 보기
               </Link>
               <Link
-                href={`${groupDetailData.groupId}/invite?univName=${groupDetailData.univName}`}
+                href={`${data.groupId}/invite?univName=${data.univName}`}
                 className="flex items-center justify-center border border-[#323036] w-30 h-11 text-[#B1ACC1] rounded bg-[#25242A33] text-center mr-2"
               >
                 그룹원 초대
               </Link>
               <Link
-                href={`${groupDetailData.groupId}/edit`}
+                href={`${data.groupId}/edit`}
                 className="flex items-center justify-center border border-[#323036] w-30 h-11 text-[#B1ACC1] rounded bg-[#25242A33] text-center"
               >
                 그룹원 관리
@@ -103,11 +91,12 @@ export default async function GroupDetailPage({
                 groupId={groupId}
                 onAble={startGroupRecruitment}
                 onDisable={closeGroupRecruitment}
-                defaultChecked={groupDetailData.isRecruiting}
+                defaultChecked={data.isRecruiting}
               />
             </div>
           </div>
 
+          {/* 그룹 가입 요청 알림 */}
           <RowScrollContainer>
             <CheckPopupGroupJoinRequest
               data={groupJoinRequestData}
@@ -119,34 +108,27 @@ export default async function GroupDetailPage({
         </>
       )}
 
-      <div className="h-4"></div>
-
       {/* 그룹 정보 */}
-      <GroupInfo
-        groupDetailData={groupDetailData}
-        competitionInfo={
-          groupDetailData?.competitionInfo ?? {
-            winCount: 0,
-            lossCount: 0,
-            winRate: 0,
-          }
-        }
-        recentCompetitionData={recentCompetitionData}
-      />
+      <div className="my-4">
+        <GroupInfo
+          groupId={groupId}
+          data={data}
+          RecentCompetitionInfo={RecentCompetitionInfo}
+        />
+      </div>
 
-      <div className="h-4"></div>
-      {/* 그룹원 정보 */}
-      <GroupTable
-        groupId={groupDetailData.groupId}
-        memberCnt={groupDetailData.memberCnt}
-        capacity={groupDetailData.capacity}
-        isLeader={groupDetailData.isLeader}
-        isJoined={groupDetailData.isJoined}
-        memberApiUrl={groupMemberDataApiUrl}
-        groupMember={groupMember}
-        pageData={pageData}
+      {/* 그룹원 헤더 */}
+      <GroupTableHeader
+        groupId={groupId}
+        memberCnt={data.memberCnt}
+        capacity={data.capacity}
+        isJoined={data.isJoined}
+        isLeader={data.isLeader}
         groupJoinAction={groupJoinAction}
       />
+
+      {/* 그룹원 정보 */}
+      <GroupTable groupId={groupId} />
     </>
   );
 }

@@ -11,7 +11,7 @@ type FormMember = {
   position: Position;
 };
 
-type FormBody = {
+export type CreateScrimTeamFormBody = {
   name: string;
   intro: string;
   representativeId: number;
@@ -19,9 +19,13 @@ type FormBody = {
 };
 
 export default function CreateScrimTeamFrom({
+  userId,
   submitAction,
 }: {
-  submitAction: (formData: FormData) => Promise<void>;
+  userId: number;
+  submitAction: (
+    body: CreateScrimTeamFormBody
+  ) => Promise<{ ok: boolean; status: number; detail?: string; data?: any }>;
 }) {
   const router = useRouter();
 
@@ -41,37 +45,34 @@ export default function CreateScrimTeamFrom({
     });
   };
 
-  // 대표자 후보: 현재 선택된 멤버 목록
-  const representativeOptions = useMemo(() => members, [members]);
-
-  // 대표자가 팀원에서 제거되면 대표자 해제
-  const currentMemberIds = useMemo(
-    () => new Set(members.map((m) => m.userId)),
-    [members]
-  );
-  if (representativeId !== null && !currentMemberIds.has(representativeId)) {
-    setRepresentativeId(null);
-  }
-
   // 제출
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
 
-    const body: FormBody = {
+    const body: CreateScrimTeamFormBody = {
       name: teamName.trim(),
       intro: intro.trim(),
-      representativeId: representativeId ?? members[0].userId,
+      representativeId: userId,
       members,
     };
 
-    // FormData에 직렬화
-    const fd = new FormData();
-    fd.append("name", body.name);
-    fd.append("intro", body.intro);
-    fd.append("representativeId", String(body.representativeId));
-    fd.append("members", JSON.stringify(body.members));
+    try {
+      const res = await submitAction(body);
+      if (!res.ok) {
+        if (res.status === 409) {
+          alert(`팀 멤버들 중 중복되는 유저가 있을 수 없습니다.`);
+        } else {
+          alert(`에러코드 [${res.status}]: ${res.detail}`);
+        }
 
-    await submitAction(fd);
+        return;
+      }
+
+      router.push("/scrims");
+    } catch (err: any) {
+      console.error("💥 handleSubmit Error:", err);
+      alert("요청 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
+    }
   };
 
   return (
@@ -135,37 +136,6 @@ export default function CreateScrimTeamFrom({
               }}
             />
           </div>
-
-          {/* 대표자 선택 (선택된 팀원 중에서) */}
-          {/* <div className="flex flex-col mt-6">
-            <span className="text-white text-sm mb-2">대표자</span>
-            <Select
-              value={
-                representativeId !== null ? String(representativeId) : undefined
-              }
-              onValueChange={(v) => setRepresentativeId(Number(v))}
-            >
-              <SelectTrigger className="w-48 h-11 border-[#323036] bg-[#1D1921] text-[#B1ACC1] rounded">
-                <SelectValue placeholder="대표자 선택" />
-              </SelectTrigger>
-              <SelectContent className="border-[#323036] bg-[#1D1921] text-[#B1ACC1] rounded">
-                {representativeOptions.length === 0 ? (
-                  <SelectItem value="0" disabled>
-                    팀원을 먼저 선택하세요
-                  </SelectItem>
-                ) : (
-                  representativeOptions.map((m) => (
-                    <SelectItem
-                      key={`${m.position}-${m.userId}`}
-                      value={String(m.userId)}
-                    >
-                      {m.position} · {m.userId}
-                    </SelectItem>
-                  ))
-                )}
-              </SelectContent>
-            </Select>
-          </div> */}
         </div>
 
         {/* 팀 소개 */}
@@ -194,8 +164,6 @@ export default function CreateScrimTeamFrom({
             required
           />
         </div>
-
-        {/* 숨김 필드: groupId / representativeId / members(JSON) */}
 
         <div className="flex justify-end mt-5">
           <button

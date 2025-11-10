@@ -2,11 +2,15 @@ import { fetchFromAPI } from "@/utils/fetcher";
 import CreateScrimTeamFrom from "./_components/createScrimTeamForm";
 import { GroupSummaryList } from "@/app/groups/recruits/edit/page";
 import { createScrimTeam } from "./_components/actions";
+import { cookies } from "next/headers";
 
 export default async function createScrimTeamPage() {
   const myGroupsList = (await fetchFromAPI(
     `/groups/my/summary`
   )) as GroupSummaryList[];
+
+  const cookieStore = cookies();
+  const userId = (await cookieStore).get("userId")?.value;
 
   return (
     <div className="flex flex-col justify-center items-center">
@@ -15,7 +19,10 @@ export default async function createScrimTeamPage() {
         <span>스크림 팀 생성</span>
       </div>
       <div className="h-6"></div>
-      <CreateScrimTeamFrom submitAction={createScrimTeam} />
+      <CreateScrimTeamFrom
+        userId={Number(userId)}
+        submitAction={createScrimTeam}
+      />
     </div>
   );
 }

@@ -106,14 +106,8 @@ export default async function TeamDetailPage({
               href={`${teamId}/delete`}
               className="flex items-center justify-center border border-[#323036] w-[120px] h-11 text-[#B1ACC1] rounded bg-[#25242A33] text-center mr-2"
             >
-              게시글 삭제
+              팀 삭제
             </Link>
-            {/*  <Link
-              href={`${teamId}/edit`}
-              className="flex items-center justify-center border border-[#323036] w-[120px] h-11 text-[#B1ACC1] rounded bg-[#25242A33] text-center mr-2"
-            >
-              게시글 수정
-            </Link> */}
           </div>
 
           {/* 대항전 관련 알람 */}

@@ -1,23 +1,20 @@
 "use client";
 
-import Image from "next/image";
-import { useMemo, useState } from "react";
+import Image, { ImageProps } from "next/image";
+import { useEffect, useMemo, useRef, useState } from "react";
 
-interface FallBackImageProps {
+export type FallBackImageProps = Omit<ImageProps, "src"> & {
   src: string;
-  alt: string;
-  width: number;
-  height: number;
-  className?: string;
   fallbackSrc?: string;
   fallbackClassName?: string;
-  draggable?: boolean;
-  unoptimizedFallback?: boolean; // 외부 도메인 미설정 대비(선택)
-}
+  unoptimizedFallback?: boolean;
+  onError?: ImageProps["onError"];
+  onLoad?: ImageProps["onLoad"];
+  fallbackDelayMs?: number; // 기본 100ms 지연
+};
 
 function isValidNextImageSrc(s?: string) {
   if (!s) return false;
-  // next/image가 허용하는 형태: / 로 시작, http(s)://, data:, blob:
   return (
     s.startsWith("/") ||
     /^https?:\/\//i.test(s) ||
@@ -26,54 +23,90 @@ function isValidNextImageSrc(s?: string) {
   );
 }
 
-export default function FallBackImage({
-  src,
-  alt,
-  width,
-  height,
-  className,
-  fallbackSrc = "/images/logo-underside-512x512.png",
-  fallbackClassName,
-  draggable,
-  unoptimizedFallback = false,
-}: FallBackImageProps) {
-  // 1) 렌더 전 형식 검증 → 잘못된 형식이면 바로 fallback 사용
-  const initialIsInvalid = !isValidNextImageSrc(src);
-  const [hasError, setHasError] = useState<boolean>(initialIsInvalid);
+export default function FallBackImage(props: FallBackImageProps) {
+  const {
+    src,
+    alt,
+    className,
+    fallbackSrc = "/images/logo-underside-512x512.png",
+    fallbackClassName,
+    unoptimizedFallback = false,
+    onError: userOnError,
+    onLoad: userOnLoad,
+    fallbackDelayMs = 100,
+    ...rest
+  } = props;
 
-  // 현재 표시할 이미지 src/className 계산
+  const initialIsInvalid = !isValidNextImageSrc(src);
+  const [hasError, setHasError] = useState(initialIsInvalid);
+
+  // 현재 시도 중인 원본 src 추적 (지연 중에 src가 바뀌면 fallback 전환 방지)
+  const lastSrcRef = useRef(src);
+  const errorTimerRef = useRef<number | null>(null);
+
+  // src 변경 시: 타이머 정리 & 오류 상태 재평가
+  useEffect(() => {
+    lastSrcRef.current = src;
+    if (errorTimerRef.current) {
+      clearTimeout(errorTimerRef.current);
+      errorTimerRef.current = null;
+    }
+    setHasError(!isValidNextImageSrc(src));
+    // cleanup on unmount
+    return () => {
+      if (errorTimerRef.current) {
+        clearTimeout(errorTimerRef.current);
+        errorTimerRef.current = null;
+      }
+    };
+  }, [src]);
+
+  const usingFallback = hasError || initialIsInvalid;
+
   const { currentSrc, currentClassName } = useMemo(() => {
-    const usingFallback = hasError || initialIsInvalid;
     return {
       currentSrc: usingFallback ? fallbackSrc : src,
       currentClassName: usingFallback
         ? [className, fallbackClassName].filter(Boolean).join(" ")
         : className ?? "",
     };
-  }, [
-    src,
-    className,
-    fallbackClassName,
-    hasError,
-    initialIsInvalid,
-    fallbackSrc,
-  ]);
+  }, [src, className, fallbackClassName, usingFallback, fallbackSrc]);
 
   return (
     <Image
+      {...rest}
       src={currentSrc}
       alt={alt}
-      width={width}
-      height={height}
       className={currentClassName}
-      draggable={draggable}
-      // 2) 네트워크 실패(404/403 등) 시 fallback으로 전환
-      onError={() => {
-        // 이미 fallback을 쓰는 중이라면 더 이상 루프 방지
-        if (!hasError) setHasError(true);
+      // 로드 성공 시: 지연 타이머 취소 & 오류상태 해제
+      onLoad={(e) => {
+        if (errorTimerRef.current) {
+          clearTimeout(errorTimerRef.current);
+          errorTimerRef.current = null;
+        }
+        setHasError(false);
+        userOnLoad?.(e);
       }}
-      // 외부 도메인 미설정으로 인한 최적화 실패 대응이 필요할 때만 사용
-      unoptimized={unoptimizedFallback && (hasError || initialIsInvalid)}
+      onError={(e) => {
+        userOnError?.(e);
+
+        // 이미 fallback을 쓰는 중이거나, 초기 형식 자체가 잘못된 경우는 즉시 유지
+        if (usingFallback) return;
+
+        // fallbackSrc 자체 로딩 실패 루프 방지
+        if (currentSrc === fallbackSrc) return;
+
+        if (errorTimerRef.current) {
+          clearTimeout(errorTimerRef.current);
+        }
+        errorTimerRef.current = window.setTimeout(() => {
+          if (lastSrcRef.current === src) {
+            setHasError(true);
+          }
+          errorTimerRef.current = null;
+        }, fallbackDelayMs);
+      }}
+      unoptimized={unoptimizedFallback && usingFallback}
     />
   );
 }

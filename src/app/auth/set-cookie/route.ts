@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
     payload = await req.json();
   } catch {}
 
-  const { accessToken, refreshToken, summonerIcon } = payload ?? {};
+  const { accessToken, refreshToken, summonerIcon, userId } = payload ?? {};
 
   if (LOG) {
     console.log("\n[set-cookie] incoming");
@@ -32,7 +32,6 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  // dev(http://localhost)에서는 secure=false여야 쿠키가 저장됩니다.
   const isProd = process.env.NODE_ENV === "production";
   const secure = isProd; // dev=false, prod=true
 
@@ -62,6 +61,18 @@ export async function POST(req: NextRequest) {
     res.cookies.set({
       name: "summonerIcon",
       value: String(summonerIcon),
+      httpOnly: false,
+      secure,
+      sameSite: "lax",
+      path: "/",
+      maxAge: 60 * 60 * 24 * 7,
+    });
+  }
+
+  if (userId) {
+    res.cookies.set({
+      name: "userId",
+      value: String(userId),
       httpOnly: false,
       secure,
       sameSite: "lax",

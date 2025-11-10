@@ -9,18 +9,19 @@ import { CHAMPION_IMG_URL, TIER_IMG_URL } from "@/lib/api";
 import WinRateDonut from "./win-rate-donut";
 import { formatDate } from "@/utils/format-date";
 import FallBackImage from "@/components/fallback-img";
+import { fetchFromAPI } from "@/utils/fetcher";
 
 export default function GroupInfo({
-  groupDetailData,
-  competitionInfo,
-  recentCompetitionData,
+  groupId,
+  data,
+  RecentCompetitionInfo,
 }: {
-  groupDetailData: GroupDetail;
-  competitionInfo: { winCount: number; lossCount: number; winRate: number };
-  recentCompetitionData: RecentCompetition[];
+  groupId: number;
+  data: GroupDetail;
+  RecentCompetitionInfo?: RecentCompetition[];
 }) {
   const pathname = usePathname();
-  const competitionPath = `/groups/${groupDetailData.groupId}/competition`;
+  const competitionPath = `/groups/${groupId}/competition`;
   const isCompetitionPage = pathname === competitionPath;
 
   return (
@@ -31,8 +32,8 @@ export default function GroupInfo({
         {/* 이미지와 정보를 분리하는 div */}
         <div className="flex pt-5 justify-center gap-2 max-md:flex-wrap">
           <FallBackImage
-            src={groupDetailData.logoImageUrl}
-            alt={groupDetailData.logoImageUrl}
+            src={data.logoImageUrl}
+            alt={data.logoImageUrl}
             width={156}
             height={156}
             className="rounded mr-5 shrink-0"
@@ -41,25 +42,24 @@ export default function GroupInfo({
 
           <div className="flex-1 min-w-0">
             <h2 className="flex items-center text-[40px] leading-tight wrap-break-word">
-              {groupDetailData.name}
+              {data.name}
             </h2>
 
             {/* 창단일, 그룹장, 평균티어 */}
             <div className="w-[90%] flex items-center justify-between text-[12px] gap-x-3 gap-y-1 max-md:w-full max-md:flex-wrap">
               <span className="wrap-break-word">
-                창단일 | {formatDate(groupDetailData.createdAt)}
+                창단일 | {formatDate(data.createdAt)}
               </span>
 
               <span className="wrap-break-word">
-                그룹장 | {groupDetailData.leader.summonerName}#
-                {groupDetailData.leader.summonerTag}
+                그룹장 | {data.leader.summonerName}#{data.leader.summonerTag}
               </span>
               <div className="flex items-center">
                 <span className="mr-4">평균티어 | </span>
                 <div className="flex items-center gap-2">
                   <FallBackImage
-                    src={`${TIER_IMG_URL}${groupDetailData.avgTierInfo.tier.toLowerCase()}.svg`}
-                    alt={groupDetailData.avgTierInfo.tier}
+                    src={`${TIER_IMG_URL}${data.avgTierInfo.tier.toLowerCase()}.svg`}
+                    alt={data.avgTierInfo.tier}
                     width={30}
                     height={30}
                     className="shrink-0"
@@ -67,14 +67,12 @@ export default function GroupInfo({
                   <div className="min-w-0">
                     <div className="flex">
                       <span>
-                        {capitalize(
-                          groupDetailData.avgTierInfo.tier.toLowerCase()
-                        )}
+                        {capitalize(data.avgTierInfo.tier.toLowerCase())}
                       </span>
                       <span className="w-1" />
-                      <span>{groupDetailData.avgTierInfo.rank}</span>
+                      <span>{data.avgTierInfo.rank}</span>
                     </div>
-                    <span>{groupDetailData.avgTierInfo.lp}</span>
+                    <span>{data.avgTierInfo.lp}</span>
                   </div>
                 </div>
               </div>
@@ -83,7 +81,7 @@ export default function GroupInfo({
             <div className="h-3" />
 
             <span className="text-[#B1ACC1] wrap-break-word ">
-              {groupDetailData.about}
+              {data.about}
             </span>
           </div>
         </div>
@@ -109,21 +107,22 @@ export default function GroupInfo({
           {/* 왼쪽 그래프 */}
           <div className="w-1/2 flex items-center justify-center">
             <WinRateDonut
-              winCnt={competitionInfo.winCount}
-              lossCnt={competitionInfo.lossCount}
-              winRate={competitionInfo.winRate}
+              winCnt={data.competitionInfo?.winCount ?? 0}
+              lossCnt={data.competitionInfo?.lossCount ?? 0}
+              winRate={data.competitionInfo?.winRate ?? 0}
             />
           </div>
 
           {/* 오른쪽 부분 */}
           <div className="w-1/2 flex flex-col  ">
             <span className="text-[24px]">
-              {competitionInfo.winCount + competitionInfo.lossCount}전{" "}
-              {competitionInfo.winRate}승
+              {(data.competitionInfo?.winCount ?? 0) +
+                (data.competitionInfo?.lossCount ?? 0)}
+              전 {data.competitionInfo?.winRate ?? 0}승
             </span>
             {/* 가장 최근 3개 반복 */}
             <div className="flex flex-col mt-2">
-              {recentCompetitionData.slice(0, 3).map((match, idx) => (
+              {RecentCompetitionInfo?.slice(0, 3).map((match, idx) => (
                 <div
                   key={idx}
                   className="text-[#B1ACC1] flex justify-between py-1 "
