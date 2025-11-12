@@ -1,37 +1,14 @@
 import SubHeaderMain from "@/components/sub-header-main";
-import { fetchFromAPI } from "@/utils/fetcher";
-import { PaginationData } from "@/types";
 import GroupCards from "@/components/group-cards";
-import { GroupInviteMsg } from "@/types";
 import RowScrollContainer from "@/components/row-scroll-container";
-import { acceptGroupInvite, rejectGroupInvite } from "./actions";
+import {
+  acceptGroupInvite,
+  rejectGroupInvite,
+  showMyGroupList,
+} from "./actions";
 import CheckPopupGroupInvite from "@/components/check-popup-group-invite";
 
-/* 목데이터 */
-import { mockMyGroups } from "@/mock/myGroup";
-import { mockGroupInviationPopUp } from "@/mock/mockGroupInviationPopUp";
-
-/* 내 그룹 */
-export type MyGroup = {
-  groupId: number;
-  groupName: string;
-  groupLogoImg: string;
-  about: string;
-  createdAt: string;
-};
-
-export type GroupInviteMsgApiRes = {
-  content: GroupInviteMsg[];
-  page: PaginationData;
-};
-
 export default async function MyGroupListPage() {
-  const MyGroupRes = await fetchFromAPI("/groups/my");
-  const GroupInviteMsgRes = (await fetchFromAPI(
-    `/groups/invitation?page=0`
-  )) as GroupInviteMsgApiRes;
-  const popUpdata = GroupInviteMsgRes.content;
-
   return (
     <>
       <SubHeaderMain
@@ -46,7 +23,6 @@ export default async function MyGroupListPage() {
       {/* 팝업 메세지 */}
       <RowScrollContainer>
         <CheckPopupGroupInvite
-          data={popUpdata}
           checkAction={acceptGroupInvite}
           xAction={rejectGroupInvite}
         />
@@ -56,7 +32,7 @@ export default async function MyGroupListPage() {
 
       {/* 그룹 카드 */}
       <RowScrollContainer>
-        <GroupCards data={MyGroupRes} />
+        <GroupCards showGroupList={showMyGroupList} />
       </RowScrollContainer>
     </>
   );

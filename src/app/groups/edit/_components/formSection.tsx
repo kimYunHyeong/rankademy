@@ -52,8 +52,6 @@ export default function CreateGroupFormSection({
       });
 
       if (!putRes.ok) {
-        const text = await putRes.text().catch(() => "(no body)");
-        // S3의 에러는 XML로 내려옴. 예: <Error><Code>SignatureDoesNotMatch</Code><Message>...</Message></Error>
         console.error("❌ S3 PUT 실패", putRes.status, putRes.statusText);
         throw new Error(
           `S3 업로드 실패: ${putRes.status} ${putRes.statusText} `
@@ -61,12 +59,9 @@ export default function CreateGroupFormSection({
       }
 
       console.log("✅ S3 업로드 성공:", publicUrl);
-
-      // 이후 publicUrl을 hidden input에 넣거나 서버에 PATCH로 저장
       setLogoUrl(publicUrl);
       return publicUrl;
     } catch (e) {
-      // 네트워크 레벨 실패(TypeError)나 위에서 throw한 에러 모두 여기로
       console.error("❌ 로고 업로드 실패:", e);
     }
   }

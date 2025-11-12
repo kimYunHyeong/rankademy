@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
-import { OcrResult } from "@/types";
+import { ImageUrl, ImageUrlRes, OcrResult } from "@/types";
 
 export default function UploadCompeitionReusltImage({
   teamA,
@@ -10,6 +10,8 @@ export default function UploadCompeitionReusltImage({
   requestOcr,
   onChange,
   onOcrResult,
+  onSetImgUrl,
+  imgUrlAction,
   initialPreviewUrl,
   accept,
 }: {
@@ -20,6 +22,8 @@ export default function UploadCompeitionReusltImage({
   requestOcr: (formData: FormData) => Promise<OcrResult>;
   onChange?: (file: File | null) => void;
   onOcrResult?: (result: OcrResult | null) => void;
+  onSetImgUrl?: (imgUrl: string) => void;
+  imgUrlAction: (payload: ImageUrl[]) => Promise<ImageUrlRes[]>;
   initialPreviewUrl?: string;
   accept?: string;
 }) {
@@ -64,7 +68,8 @@ export default function UploadCompeitionReusltImage({
     const url = URL.createObjectURL(file);
     setPreviewUrl(url);
     onChange?.(file);
-
+    /* 이미지 s3에 업로드 */
+    handleUploadSetImage(file);
     // 이미지가 유효하면 즉시 OCR 요청
     submitOcr(file).catch((e) => {
       // 에러는 내부에서 처리하지만, 혹시 모를 누락 대비
@@ -83,21 +88,24 @@ export default function UploadCompeitionReusltImage({
       fd.append("image", file);
       fd.append("teamA", teamA);
       fd.append("teamB", teamB);
-      // 배열은 서버에서 JSON으로 파싱하기 쉽게 문자열화
       fd.append("teamAMembers", JSON.stringify(teamAMembers));
       fd.append("teamBMembers", JSON.stringify(teamBMembers));
 
-      // 콘솔에 요청 바디(요약) 출력
-      console.log("✍️ [OCR Request] FormData", {
-        image: { name: file.name, type: file.type, size: file.size },
-        teamA,
-        teamB,
-        teamAMembers,
-        teamBMembers,
-      });
+      // 디버그: FormData 실제 전송값 확인
+      console.log("✍️ [OCR Request] FormData entries:");
+      for (const [k, v] of fd.entries()) {
+        if (v instanceof File) {
+          console.log(
+            `  ${k}: <File name=${v.name} type=${v.type} size=${v.size}>`
+          );
+        } else {
+          console.log(`  ${k}: ${v}`);
+        }
+      }
 
       const res = await requestOcr(fd);
       setOcrResult(res);
+      onOcrResult?.(res);
     } catch (e: any) {
       console.error("❌ [OCR Error]", e);
       setError(e?.message ?? "OCR 요청 중 오류가 발생했습니다.");
@@ -106,18 +114,76 @@ export default function UploadCompeitionReusltImage({
     }
   };
 
+  /* S3로부터 반환된 이미지 주소 저장*/
+  const [image, setImage] = useState<string>("");
+
+  /*  1. Pre-Signed URL 발급 객체 생성 */
+  function makeImageUrlPayload(file: File | null): ImageUrl[] {
+    if (!file) return [];
+    return [
+      {
+        key: file.name,
+        contentType: file.type,
+      },
+    ];
+  }
+
+  /* S3로부터 사진 저장*/
+  async function handleUploadSetImage(file: File | null) {
+    if (!file) return;
+
+    try {
+      // 1) 발급 요청
+      const payload: ImageUrl[] = makeImageUrlPayload(file);
+      const res: ImageUrlRes[] = await imgUrlAction(payload);
+
+      const presignedUrl = res?.[0]?.presignedUrl ?? "";
+      const publicUrl = res?.[0]?.publicUrl ?? "";
+
+      if (!presignedUrl) throw new Error("presignedUrl 없음");
+
+      const putRes = await fetch(presignedUrl, {
+        method: "PUT",
+        headers: {
+          "Content-Type": file.type,
+        },
+        body: file,
+      });
+
+      if (!putRes.ok) {
+        console.error("❌ S3 PUT 실패", putRes.status, putRes.statusText);
+        throw new Error(
+          `S3 업로드 실패: ${putRes.status} ${putRes.statusText} `
+        );
+      }
+
+      console.log("✅ S3 업로드 성공:", publicUrl);
+      setImage(publicUrl);
+      onSetImgUrl?.(publicUrl);
+      return publicUrl;
+    } catch (e) {
+      console.error("❌ 로고 업로드 실패:", e);
+    }
+  }
+
   /* 드롭 */
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     setIsDragging(false);
     const f = e.dataTransfer.files?.[0];
-    if (f) validateAndSet(f);
+    if (f) {
+      validateAndSet(f);
+      handleUploadSetImage(f);
+    }
   };
 
   /* 파일 선택 */
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const f = e.target.files?.[0];
-    if (f) validateAndSet(f);
+    if (f) {
+      validateAndSet(f);
+      handleUploadSetImage(f);
+    }
   };
 
   /* 이미지 제거 */
@@ -125,6 +191,7 @@ export default function UploadCompeitionReusltImage({
     setPreviewUrl(null);
     setAspectRatio(null);
     setOcrResult(null);
+    setImage("/null");
     if (inputRef.current) inputRef.current.value = "";
     onChange?.(null);
   };
@@ -193,7 +260,7 @@ export default function UploadCompeitionReusltImage({
             )}
             {ocrResult && (
               <div className="absolute left-2 bottom-2 rounded bg-black/60 px-2 py-1 text-[11px]">
-                {`승자: ${ocrResult.winner} / 경기시간: ${ocrResult.gameTime}`}
+                {`승자: ${ocrResult.winner}`}
               </div>
             )}
           </>

@@ -9,6 +9,11 @@ const nextConfig: NextConfig = {
       "static.rankademy.app", //목데이터
     ], // 외부 이미지 도메인 허용
   },
+  experimental: {
+    serverActions: {
+      bodySizeLimit: "10mb", //
+    },
+  },
 };
 
 export default nextConfig;

@@ -1,11 +1,12 @@
 import { fetchFromAPI } from "@/utils/fetcher";
 import CompetitionResultForm from "./_components/CompetitionResultForm";
-import { CompetitionDetailAPIres } from "../page";
+import { CompetitionDetailAPIres, TeamDetail } from "../page";
 import { mockCompetitionDetail } from "@/mock/competitionDeatil";
 import {
   requestOCRResult,
   registerCompetitionResult,
 } from "./_components/actions";
+import { uploadImage } from "@/app/groups/edit/actions";
 
 export default async function SubmitCompetitonResultPage({
   params,
@@ -20,21 +21,9 @@ export default async function SubmitCompetitonResultPage({
 
   const competitionInfo = mockCompetitionDetail;
 
-  /* A팀의 정보 */
-  const teamA = competitionInfo.team1.groupName;
-  const teamAId = competitionInfo.team1.teamId;
-  const teamAGroup = competitionInfo.team1.groupId;
-  const teamAMembers = competitionInfo.team1.teamMembers
-    .slice(0, 5)
-    .map((m) => m.summonerName);
-
-  /* B팀의 정보 */
-  const teamB = competitionInfo.team2.groupName;
-  const teamBId = competitionInfo.team2.teamId;
-  const teamBGroup = competitionInfo.team2.groupId;
-  const teamBMembers = competitionInfo.team2.teamMembers
-    .slice(0, 5)
-    .map((m) => m.summonerName);
+  /* 팀의 정보 */
+  const teamA = competitionInfo.team1;
+  const teamB = competitionInfo.team2;
 
   return (
     <>
@@ -46,15 +35,10 @@ export default async function SubmitCompetitonResultPage({
 
       <CompetitionResultForm
         teamA={teamA}
-        teamAId={teamAId}
-        teamAGroup={teamAGroup}
-        teamAMembers={teamAMembers}
         teamB={teamB}
-        teamBId={teamBId}
-        teamBGroup={teamBGroup}
-        teamBMembers={teamBMembers}
         competitionId={competitionId}
         requestOcr={requestOCRResult}
+        imgUrlAction={uploadImage}
         registerResult={registerCompetitionResult}
       />
     </>

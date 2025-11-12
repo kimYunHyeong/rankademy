@@ -7,7 +7,7 @@ import { POSITION_IMG_URL, SUMMONER_ICON_URL, TIER_IMG_URL } from "@/lib/api";
 import Image from "next/image";
 import { fetchFromAPI } from "@/utils/fetcher";
 
-type TeamDetail = {
+export type TeamDetail = {
   teamId: number;
   teamName: string;
   univName: string;

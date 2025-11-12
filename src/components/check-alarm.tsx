@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import FallBackImage from "@/components/fallback-img";
 import { Alarm } from "@/app/layout";
 import { fetchFromAPI } from "@/utils/fetcher";
+import Image from "next/image";
 
 type AlarmRes = {
   content: Alarm[];
@@ -110,7 +111,7 @@ export default function AlarmSection({
           aria-label="알람"
           className="focus:outline-none"
         >
-          <FallBackImage
+          <Image
             src="/images/alarm.png"
             alt="알람"
             width={18}

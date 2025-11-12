@@ -2,11 +2,12 @@
 
 import FallBackImage from "@/components/fallback-img";
 import { useRouter } from "next/navigation";
+import { DeleteRiotVerifyResult } from "../../actions";
 
 export default function DeleteRiotVerifyPopUp({
   deleteAction,
 }: {
-  deleteAction: () => Promise<void>;
+  deleteAction: () => Promise<DeleteRiotVerifyResult>;
 }) {
   const router = useRouter();
   return (

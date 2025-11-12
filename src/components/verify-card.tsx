@@ -1,6 +1,6 @@
 "use client";
 
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { useCallback, useMemo, useState } from "react";
 
 type VerifyCardProps = {
@@ -33,6 +33,8 @@ export default function VerifyCard({
   const [verifyLoading, setVerifyLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [hint, setHint] = useState<string | null>(null);
+
+  const router = useRouter();
 
   const isEmailValid = useMemo(() => {
     if (!email) return false;
@@ -68,7 +70,7 @@ export default function VerifyCard({
       setVerifyLoading(true);
       await verifyCodeAction(email, code.trim());
       setHint("인증이 완료되었습니다");
-      redirect("/me");
+      router.push("/me");
     } catch (e: any) {
       setError(e?.message ?? "인증번호가 올바르지 않아요.");
     } finally {

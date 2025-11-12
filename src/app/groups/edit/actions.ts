@@ -35,7 +35,7 @@ export async function createGroup(
 }
 
 /* 그룹 이미지 업로드 URL 받기 */
-export async function uploadGroupLogo(payload: ImageUrl[]) {
+export async function uploadImage(payload: ImageUrl[]) {
   const data = await postToAPI("/storage/pre-signed/batch", { body: payload });
   return data as ImageUrlRes[];
 }

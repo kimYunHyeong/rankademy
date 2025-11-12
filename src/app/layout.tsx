@@ -9,6 +9,7 @@ import { checkAlarm } from "@/app/actions";
 import { fetchFromAPI } from "@/utils/fetcher";
 import { PaginationData } from "@/types";
 import AlarmSection from "@/components/check-alarm";
+import Image from "next/image";
 
 type NavItem = {
   href: string;
@@ -120,7 +121,7 @@ export default async function RootLayout({
                 className="flex flex-col items-center font-helveticaInserat text-white"
                 href="/"
               >
-                <FallBackImage
+                <Image
                   src="/images/logo-underside.png"
                   alt="Rankademy 로고"
                   width={61}
@@ -137,7 +138,7 @@ export default async function RootLayout({
                 {isAuthenticated ? (
                   <div className="flex flex-col items-center text-white space-y-3">
                     <Link className="text-[#B6B6B6]" href="/pro">
-                      <FallBackImage
+                      <Image
                         src="/images/pro.png"
                         alt="Rankademy 로고"
                         width={31}
@@ -180,7 +181,7 @@ export default async function RootLayout({
           <div className="w-[80%] flex flex-col space-y-2">
             <div className="h-4"></div>
             <div className="flex space-x-2">
-              <FallBackImage
+              <Image
                 src="/images/logo.png"
                 alt="Rankademy 로고"
                 width={150.58}
@@ -190,7 +191,7 @@ export default async function RootLayout({
             </div>
             <span className="my-3">이용약관 | 개인정보처리방침</span>
             <div className="flex flex-col">
-              <span>E-mail: ajsl9749@naver.com</span>
+              <span>E-mail: rankademy@gmail.com</span>
               <span>@ 2025 Rankademy All rights reserved</span>
             </div>
           </div>

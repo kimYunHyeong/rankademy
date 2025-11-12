@@ -41,7 +41,7 @@ export default function TeamRegisterInput({
     setErr(null);
 
     try {
-      const url = `/groups/${201}/members/search?memberNameKey=${encodeURIComponent(
+      const url = `/groups/${groupId}/members/search?memberNameKey=${encodeURIComponent(
         keyword.trim()
       )}`;
       const data = (await fetchFromAPI(url)) as Data[];

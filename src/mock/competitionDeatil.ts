@@ -1,12 +1,14 @@
-export const mockCompetitionDetail = {
+import { CompetitionDetailAPIres } from "@/app/competitions/result/[competitionId]/page";
+
+export const mockCompetitionDetail: CompetitionDetailAPIres = {
   competitionId: 1,
   status: "SCHEDULED",
   team1: {
     teamId: 1,
-    teamName: "Rankademy",
+    teamName: "YB",
     univName: "서울과학기술대학교",
-    groupId: 25,
-    groupName: "Rankademy 그룹",
+    groupId: 1,
+    groupName: "젊은이 그룹",
     groupLogo: "string",
     intro: "랭크 전문 팀",
     createdAt: "2025-01-01T12:00:00",
@@ -22,7 +24,7 @@ export const mockCompetitionDetail = {
       {
         memberId: 10,
         position: "TOP",
-        summonerName: "Ranker",
+        summonerName: "수은정글분",
         summonerTag: "KR1",
         summonerIcon: 54,
         univName: "서울과학기술대학교",
@@ -39,7 +41,7 @@ export const mockCompetitionDetail = {
       {
         memberId: 10,
         position: "TOP",
-        summonerName: "Ranker",
+        summonerName: "합차와 제곱차",
         summonerTag: "KR1",
         summonerIcon: 54,
         univName: "서울과학기술대학교",
@@ -56,7 +58,7 @@ export const mockCompetitionDetail = {
       {
         memberId: 10,
         position: "TOP",
-        summonerName: "Ranker",
+        summonerName: "컨 미",
         summonerTag: "KR1",
         summonerIcon: 54,
         univName: "서울과학기술대학교",
@@ -73,7 +75,7 @@ export const mockCompetitionDetail = {
       {
         memberId: 10,
         position: "TOP",
-        summonerName: "Ranker",
+        summonerName: "상 진",
         summonerTag: "KR1",
         summonerIcon: 54,
         univName: "서울과학기술대학교",
@@ -90,7 +92,7 @@ export const mockCompetitionDetail = {
       {
         memberId: 10,
         position: "TOP",
-        summonerName: "Ranker",
+        summonerName: "1748615",
         summonerTag: "KR1",
         summonerIcon: 54,
         univName: "서울과학기술대학교",
@@ -109,11 +111,11 @@ export const mockCompetitionDetail = {
     isMyTeam: true,
   },
   team2: {
-    teamId: 1,
-    teamName: "Rankademy",
+    teamId: 2,
+    teamName: "OB",
     univName: "서울과학기술대학교",
-    groupId: 25,
-    groupName: "Rankademy 그룹",
+    groupId: 2,
+    groupName: "늙은이 그룹",
     groupLogo: "string",
     intro: "랭크 전문 팀",
     createdAt: "2025-01-01T12:00:00",
@@ -129,7 +131,7 @@ export const mockCompetitionDetail = {
       {
         memberId: 10,
         position: "TOP",
-        summonerName: "Ranker1",
+        summonerName: "즐겁게게임하는놈",
         summonerTag: "KR1",
         summonerIcon: 6,
         major: "컴퓨터공학과",
@@ -146,7 +148,7 @@ export const mockCompetitionDetail = {
       {
         memberId: 10,
         position: "TOP",
-        summonerName: "Ranker2",
+        summonerName: "AngelRaguel",
         summonerTag: "KR1",
         summonerIcon: 54,
         univName: "서울과학기술대학교",
@@ -163,7 +165,7 @@ export const mockCompetitionDetail = {
       {
         memberId: 10,
         position: "TOP",
-        summonerName: "Ranker3",
+        summonerName: "질병 Game",
         summonerTag: "KR1",
         summonerIcon: 54,
         univName: "서울과학기술대학교",
@@ -180,7 +182,7 @@ export const mockCompetitionDetail = {
       {
         memberId: 10,
         position: "TOP",
-        summonerName: "Ranker4",
+        summonerName: "천복 10세",
         summonerTag: "KR1",
         summonerIcon: 54,
         univName: "서울과학기술대학교",
@@ -197,7 +199,7 @@ export const mockCompetitionDetail = {
       {
         memberId: 10,
         position: "TOP",
-        summonerName: "Ranker5",
+        summonerName: "롤유정",
         summonerTag: "KR1",
         summonerIcon: 54,
         univName: "서울과학기술대학교",

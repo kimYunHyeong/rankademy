@@ -3,6 +3,7 @@
 import Link from "next/link";
 import FallBackImage from "@/components/fallback-img";
 import { usePathname } from "next/navigation";
+import Image from "next/image";
 
 type NavItem = {
   href: string;
@@ -30,7 +31,7 @@ export default function NavMenu({ items }: { items: NavItem[] }) {
             className="flex flex-col items-center justify-center"
             aria-current={isActive ? "page" : undefined}
           >
-            <FallBackImage
+            <Image
               src={`/images/${item.key}${isActive ? "-full" : "-empty"}.png`}
               alt={`${item.label} 로고`}
               width={46}
