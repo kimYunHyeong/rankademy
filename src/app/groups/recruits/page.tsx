@@ -41,7 +41,8 @@ const mockRecruits: APIres = {
 
 export default async function RecruitListPage() {
   const resRequestedUrl = "?page=0";
-  const res = (await fetchFromAPI(`/groups/posts${resRequestedUrl}`)) as APIres;
+  const res = (await fetchFromAPI(`/groups/posts${resRequestedUrl}`))
+    .data as APIres;
 
   return <RecruitListSection data={res.content} pageData={res.page} />;
 }

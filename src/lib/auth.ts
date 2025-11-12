@@ -3,6 +3,7 @@ import { cookies } from "next/headers";
 export const ACCESS_COOKIE = "accessToken";
 export const REFRESH_COOKIE = "refreshToken";
 export const SUMMONER_ICON_COOKIE = "summonerIcon";
+export const USER_ID = "userId";
 
 // 필요 시: JWT exp 확인용
 export function parseJwt<T = any>(token: string): T | null {

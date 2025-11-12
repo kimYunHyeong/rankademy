@@ -11,7 +11,7 @@ type Params = Promise<{ id: number }>;
 export default async function UserProFilePage({ params }: { params: Params }) {
   const { id } = await params;
   const apiUrl = `/users/${id}`;
-  const res = (await fetchFromAPI(apiUrl)) as MyProfile;
+  const res = (await fetchFromAPI(apiUrl)).data as MyProfile;
   return (
     <div className="flex justify-center items-center h-full">
       <IDcard data={res} />

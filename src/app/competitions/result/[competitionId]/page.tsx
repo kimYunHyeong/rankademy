@@ -42,9 +42,10 @@ export default async function CompetitionDetailPage({
   params: Promise<{ competitionId: number }>;
 }) {
   const { competitionId } = await params;
-  /*  const res = (await fetchFromAPI(`competitions/${competitionId}`)) as CompetitionDetailAPIres; */
+  const res = (await fetchFromAPI(`/competitions/${competitionId}`))
+    .data as CompetitionDetailAPIres;
 
-  const data = mockCompetitionDetail;
+  const data = res;
   return (
     <>
       {/* 헤더 */}
@@ -95,7 +96,7 @@ export default async function CompetitionDetailPage({
                 <div className="relative w-60 h-60 mb-6">
                   {/* 학교 로고 */}
                   <Image
-                    src={`/univ-emblem/${data.team1.univName}.png`}
+                    src={data.team1.groupLogo}
                     alt={data.team1.univName}
                     fill
                     className="object-contain rounded-full z-10 -translate-y-2.5"
@@ -331,11 +332,12 @@ export default async function CompetitionDetailPage({
                 {/* 로고 + 테두리 (완전 겹치기) */}
                 <div className="relative w-60 h-60 mb-6">
                   {/* 학교 로고 */}
-                  <Image
-                    src={`/univ-emblem/${data.team2.univName}.png`}
+                  <FallBackImage
+                    src={data.team2.groupLogo}
                     alt={data.team2.univName}
                     fill
                     className="object-contain rounded-full z-10 -translate-y-2.5"
+                    fallbackClassName="bg-[#323036]"
                   />
                   {/* 로고 테두리 오버레이 */}
                   <Image

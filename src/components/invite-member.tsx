@@ -50,7 +50,7 @@ export default function InviteMember({
       const query = `univName=${univName}&userNameKey=${keyword}`;
       const url = `/users/search?${query}`;
 
-      const data = (await fetchFromAPI(url)) as Data[];
+      const data = (await fetchFromAPI(url)).data as Data[];
 
       setFiltered(data);
     } catch (e: any) {

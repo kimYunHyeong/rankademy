@@ -7,7 +7,7 @@ import { cookies } from "next/headers"; // 서버에서 쿠키 접근 가능
 import { redirect } from "next/navigation";
 
 export async function fetchFromAPI(endpoint: string, query?: Query) {
-  // 1️⃣ URL 직렬화
+  //URL 직렬화
   const url = new URL(`${API_BASE_URL}${endpoint}`);
 
   /* 쿼리 파라미터 변경 */
@@ -24,25 +24,32 @@ export async function fetchFromAPI(endpoint: string, query?: Query) {
     if (qs) url.search = qs;
   }
 
-  // 2️⃣ 쿠키에서 accessToken 읽기 (httpOnly 쿠키)
+  // 쿠키에서 accessToken 읽기
   const cookieStore = cookies();
   const accessToken = (await cookieStore).get("accessToken")?.value;
 
-  // 3️⃣ 요청 헤더 구성
-  const headers: HeadersInit = {
-    "Content-Type": "application/json",
-  };
+  // 실제 요청
+  const res = await fetch(url.toString(), {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${accessToken ?? ""}`,
+      Accept: "application/json",
+    },
+    cache: "no-store",
+    next: { revalidate: 0 },
+  });
 
-  if (accessToken) {
-    headers["Authorization"] = `Bearer ${accessToken}`;
-  }
+  const text = await res
+    .clone()
+    .text()
+    .catch(() => "(no body)");
 
-  // 4️⃣ 요청 로그
-  console.log("\n==============================");
+  // 요청 로그
+  /*   console.log("\n==============================");
   console.log("📡 [fetchFromAPI] Request");
   console.log("URL:", url.toString());
   console.log("Method: GET");
-  console.log("Headers:", headers);
+  console.log(`Authorization:Bearer ${accessToken}`);
   if (accessToken) {
     console.log(
       "Access Token (first 20 chars):",
@@ -51,43 +58,55 @@ export async function fetchFromAPI(endpoint: string, query?: Query) {
   } else {
     console.log("엑세스토큰이 없습니다.");
   }
-  console.log("==============================");
+  console.log("=============================="); */
 
-  // 5️⃣ 실제 요청
-  const res = await fetch(url.toString(), {
-    headers,
-    cache: "no-store",
-  });
-
-  const text = await res
-    .clone()
-    .text()
-    .catch(() => "(no body)");
-
-  // 6️⃣ 응답 로그
-  console.log("📥 [fetchFromAPI] Response");
+  // 응답 로그
+  /*   console.log("📥 [fetchFromAPI] Response");
   console.log("Status:", res.status, res.statusText);
   console.log("Response Body:", text.slice(0, 300));
-  console.log("==============================\n");
+  console.log("==============================\n"); */
 
-  // 7️⃣ 에러 처리
+  // 에러 처리
   if (!res.ok) {
-    if (res.status === 401 || res.status === 400) {
+    if (res.status === 401) {
       console.warn(
-        "❌ Unauthorized (401) or Bad Request (400) — No or invalid access token."
+        "[에러코드]: 401(Unauthorized) — No or invalid access token."
       );
+      res.status;
+      text;
+
       redirect("/login");
-    } else if (res.status === 404) {
-      console.warn("❌ Not Found (404) — Page Does NOT Exists.");
+    }
+
+    if (res.status === 404) {
+      console.warn("[에러코드]: 404(Not Found) — Page Does NOT Exists.");
       redirect("/404");
     }
-    throw new Error(`API Error: ${res.status} ${text.slice(0, 200)}`);
+
+    // 그 외의 에러는 status와 detail 반환
+    console.error(`❌ [fetchFromAPI] API Error: ${res.status}`);
+    return {
+      ok: false as const,
+      status: res.status,
+      detail:
+        text.slice(0, 300) ||
+        `[에러코드]: ${res.status} - 서버 응답이 없습니다.`,
+    };
   }
 
-  // 8️⃣ JSON 파싱
+  // JSON 파싱
   try {
-    return JSON.parse(text);
+    const data = JSON.parse(text);
+    return {
+      ok: true as const,
+      status: res.status,
+      data,
+    };
   } catch {
-    return text;
+    return {
+      ok: true as const,
+      status: res.status,
+      data: text,
+    };
   }
 }

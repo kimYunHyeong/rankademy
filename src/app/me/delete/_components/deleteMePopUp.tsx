@@ -1,14 +1,36 @@
 "use client";
 
 import FallBackImage from "@/components/fallback-img";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 
-export default function DeleteRiotVerifyPopUp({
+export default function DeleteMePopUp({
   deleteAction,
 }: {
-  deleteAction: () => Promise<{ ok: true; error: null }>;
+  deleteAction: () => Promise<void>;
 }) {
   const router = useRouter();
+
+  const handleLogout = async () => {
+    try {
+      await deleteAction();
+      await fetch("/auth/logout", {
+        method: "POST",
+        credentials: "include",
+        cache: "no-store",
+        headers: { "Content-Type": "application/json" },
+      });
+
+      // ✅ 모달/인터셉팅을 완전히 우회
+      if (typeof window !== "undefined") {
+        window.location.replace("/");
+      }
+    } catch (e) {
+      console.error(e);
+      // 실패 시에만 모달 닫기(선택)
+      router.back();
+    }
+  };
+
   return (
     <>
       <div className="flex flex-col w-[450px] h-60 border border-[#323036] rounded bg-[#25242A] text-white justify-center items-center">
@@ -20,7 +42,7 @@ export default function DeleteRiotVerifyPopUp({
             height={48}
           />
           <span className="text-white text-2xl my-3">
-            라이엇 연동을 해제하시겠습니까?
+            회원을 탈퇴하시겠습니까?
           </span>
         </div>
         <div className="flex justify-end mt-5">
@@ -33,12 +55,11 @@ export default function DeleteRiotVerifyPopUp({
                       transition-colors duration-300 ease-in-out
                        bg-[#25242A33] text-center mr-3"
           >
-            돌아가기
+            취소
           </button>
           <button
             onClick={() => {
-              deleteAction();
-              router.back();
+              handleLogout();
             }}
             className="flex items-center justify-center
                       w-[195px] h-11 text-white rounded
@@ -47,7 +68,7 @@ export default function DeleteRiotVerifyPopUp({
                       transition-colors duration-300 ease-in-out
                       text-center"
           >
-            인증 해제
+            삭제하기
           </button>
         </div>
       </div>

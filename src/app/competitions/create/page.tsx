@@ -5,9 +5,8 @@ import { createTeam } from "./_components/actions";
 import { cookies } from "next/headers";
 
 export default async function CreateTeamPage() {
-  const myGroupsList = (await fetchFromAPI(
-    `/groups/my/summary`
-  )) as GroupSummaryList[];
+  const myGroupsList = (await fetchFromAPI(`/groups/my/summary`))
+    .data as GroupSummaryList[];
 
   const cookieStore = cookies();
   const userId = (await cookieStore).get("userId")?.value;

@@ -56,16 +56,16 @@ export default async function RecruitDetailPage({
   const { groupId } = await params;
 
   /* 모집 게시글 데이터 */
-  const res = (await fetchFromAPI(`/groups/${groupId}/post`)) as RecruitDetail;
+  const res = (await fetchFromAPI(`/groups/${groupId}/post`))
+    .data as RecruitDetail;
   const data = res;
 
   /* 그룹 가입 요청 데이터 */
   const groupJoinRequestData: GroupJoinRequestMsg[] =
     data.isLeader === true
       ? (
-          (await fetchFromAPI(
-            `/groups/${groupId}/join-requests?page=0`
-          )) as GroupJoinRequestMsgRes
+          (await fetchFromAPI(`/groups/${groupId}/join-requests?page=0`))
+            .data as GroupJoinRequestMsgRes
         ).content ?? []
       : [];
 

@@ -1,7 +1,6 @@
 import { PaginationData } from "@/types";
 import { sendCompetitionReq } from "@/app/competitions/_components/actions";
 import CompetitionRequestSection from "@/app/competitions/[teamId]/competition-request/_components/competitionRequstSection";
-import { fetchFromAPI } from "@/utils/fetcher";
 import Modal from "@/components/modal";
 
 export type TeamInfo = {
@@ -52,7 +51,7 @@ export default async function ModalCompetitionRequestPage({
 }) {
   const { teamId } = await params;
 
-  /* const res = (await fetchFromAPI(`teams/my`)) as MyTeamList; */
+  /* const res = (await fetchFromAPI(`teams/my`)).data as MyTeamList; */
   const data = mock;
   return (
     <Modal>

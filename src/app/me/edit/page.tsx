@@ -10,7 +10,7 @@ import { MyProfile } from "../page";
 
 export default async function EditMyProfile() {
   const apiUrl = "/me";
-  const res = (await fetchFromAPI(apiUrl)) as MyProfile;
+  const res = (await fetchFromAPI(apiUrl)).data as MyProfile;
 
   const riotVerifyStatus: boolean = res.summonerInfo.puuid ? true : false;
 

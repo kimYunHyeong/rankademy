@@ -28,35 +28,14 @@ export default function CheckPopupGroupInvite({
 
   useEffect(() => {
     async function load() {
-      try {
-        const res = await fetchFromAPI(`/groups/invitation?page=0`);
+      const res = await fetchFromAPI(`/groups/invitation?page=0`);
 
-        // fetchFromAPI가 Response 객체를 반환하는 경우
-        if (res instanceof Response) {
-          if (res.status === 403) {
-            alert("학교 및 라이엇 인증 후 진행해주세요");
-            router.replace("/me");
-            return;
-          }
-          if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
-          const json = (await res.json()) as GroupInviteMsgApiRes;
-          setData(json.content);
-          return;
-        }
-
-        // fetchFromAPI가 JSON만 반환하는 경우 (Response 아님)
-        if (res?.status === 403) {
+      if (!res.ok) {
+        if (res.status === 403) {
           alert("학교 및 라이엇 인증 후 진행해주세요");
           router.replace("/me");
           return;
         }
-
-        const json = res as GroupInviteMsgApiRes;
-        setData(json.content);
-      } catch (err: any) {
-        console.error("❌ [GroupInviteFetcher] Error:", err);
-        alert("학교 및 라이엇 인증 후 진행해주세요");
-        router.replace("/me");
       }
     }
 

@@ -35,7 +35,7 @@ export default function FallBackImage({
 
   // 100ms 지연 후 렌더링
   useEffect(() => {
-    const timer = setTimeout(() => setShow(true), 400);
+    const timer = setTimeout(() => setShow(true), 300);
     return () => clearTimeout(timer);
   }, []);
 

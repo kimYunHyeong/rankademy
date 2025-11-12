@@ -1,4 +1,4 @@
-import { MyGroup } from "@/components/group-cards";
+import { MyGroup } from "@/app/groups/page";
 
 export const mockMyGroups: MyGroup[] = [
   {

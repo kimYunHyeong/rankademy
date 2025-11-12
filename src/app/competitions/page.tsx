@@ -31,7 +31,7 @@ export type TeamList = {
 
 export default async function TeamListPage() {
   const resRequestedUrl = "?page=0";
-  const res = (await fetchFromAPI(`/teams${resRequestedUrl}`)) as TeamList;
+  const res = (await fetchFromAPI(`/teams${resRequestedUrl}`)).data as TeamList;
 
   const data = res;
 

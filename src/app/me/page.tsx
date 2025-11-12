@@ -33,11 +33,12 @@ export type MyProfile = {
   mostChampionIds: string[];
   mainPosition: Position;
   subPosition: Position;
+  labels: string[];
 };
 
 export default async function MyPage() {
   const apiUrl = "/me";
-  const data = (await fetchFromAPI(apiUrl)) as MyProfile;
+  const data = (await fetchFromAPI(apiUrl)).data as MyProfile;
 
   const riotVerifyStatus: boolean = data.summonerInfo.puuid ? true : false;
 

@@ -28,9 +28,8 @@ export type ScrimTeamList = {
 
 export default async function ScrimTeamListPage() {
   const resRequestedUrl = "?page=0";
-  const res = (await fetchFromAPI(
-    `/scrim-teams${resRequestedUrl}`
-  )) as ScrimTeamList;
+  const res = (await fetchFromAPI(`/scrim-teams${resRequestedUrl}`))
+    .data as ScrimTeamList;
 
   const data = res.content;
   const pageData = res.page;

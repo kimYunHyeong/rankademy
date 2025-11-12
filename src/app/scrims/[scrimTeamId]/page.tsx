@@ -38,7 +38,7 @@ export default async function Page({
   const { scrimTeamId } = await params;
   /*  const res = (await fetchFromAPI(
     `scrim-teams/${scrimTeamId}`
-  )) as ScrimTeamDetail;
+  )).data as ScrimTeamDetail;
  */
   const data = mockScrimTeamDetail;
 

@@ -15,15 +15,15 @@ export default async function GroupCompetitionPage({
   const { groupId } = await params;
 
   /* 그룹 세부 정보 */
-  const data = (await fetchFromAPI(`/groups/${groupId}`)) as GroupDetail;
+  const data = (await fetchFromAPI(`/groups/${groupId}`)).data as GroupDetail;
 
   /* 대항전 결과 리스트 */
   const URL = `/competitions/groups/${groupId}`;
 
   /* 최근 대항전 정보 */
-  const RecentCompetitionInfo = (await fetchFromAPI(
-    `/groups/${groupId}/recent-competitions`
-  )) as RecentCompetition[];
+  const RecentCompetitionInfo = (
+    await fetchFromAPI(`/groups/${groupId}/recent-competitions`)
+  ).data as RecentCompetition[];
 
   return (
     <>

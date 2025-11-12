@@ -57,7 +57,7 @@ export default function RankingTable<T>({ columns, APIURL, query }: Props<T>) {
       try {
         // page는 내부 상태로 일원화
         const mergedQuery = { ...(query ?? {}), page: currentPage };
-        const res = await fetchFromAPI(APIURL, mergedQuery);
+        const res = (await fetchFromAPI(APIURL, mergedQuery)).data;
 
         if (!alive) return;
 
@@ -66,6 +66,7 @@ export default function RankingTable<T>({ columns, APIURL, query }: Props<T>) {
 
         setRows(nextRows);
         setPageData(nextPage);
+
         // 서버가 강제로 페이지를 보정할 수 있으니 동기화(선택)
         if (
           typeof nextPage.number === "number" &&

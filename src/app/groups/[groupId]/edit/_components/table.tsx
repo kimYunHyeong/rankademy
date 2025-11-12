@@ -50,7 +50,7 @@ export default function Table<T>({
 
       setError(null);
       try {
-        const res = await fetchFromAPI(apiurl, query);
+        const res = (await fetchFromAPI(apiurl, query)).data;
         const nextRows = extractRows<T>(res);
         if (!alive) return;
         setRows(nextRows);

@@ -60,9 +60,11 @@ export default function CompetitionTable({
       setLoading(true);
       setError(null);
       try {
-        const res = (await fetchFromAPI(APIURL, {
-          page: currentPage,
-        })) as CompetitionResultAPIres;
+        const res = (
+          await fetchFromAPI(APIURL, {
+            page: currentPage,
+          })
+        ).data as CompetitionResultAPIres;
 
         if (!alive) return;
 
@@ -130,7 +132,27 @@ export default function CompetitionTable({
         <TableBody>
           {rows.map((row) => {
             const isOpen = openIds.has(row.competitionId);
-
+            console.log(row.competitionId);
+            console.log(row.competitionId);
+            console.log(row.competitionId);
+            console.log(row.competitionId);
+            console.log(row.competitionId);
+            console.log(row.competitionId);
+            console.log(row.competitionId);
+            console.log(row.competitionId);
+            console.log(row.competitionId);
+            console.log(row.competitionId);
+            console.log(row.competitionId);
+            console.log(row.competitionId);
+            console.log(row.competitionId);
+            console.log(row.competitionId);
+            console.log(row.competitionId);
+            console.log(row.competitionId);
+            console.log(row.competitionId);
+            console.log(row.competitionId);
+            console.log(row.competitionId);
+            console.log(row.competitionId);
+            console.log(row.competitionId);
             // 상태/승패
             const status = row.status as CompetitionStatus;
             const isWin = row.isWin === true;

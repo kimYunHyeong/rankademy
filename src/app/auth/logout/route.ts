@@ -2,12 +2,14 @@ import {
   ACCESS_COOKIE,
   REFRESH_COOKIE,
   SUMMONER_ICON_COOKIE,
+  USER_ID,
 } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
 export async function POST() {
   try {
@@ -62,6 +64,7 @@ export async function POST() {
     (await cookieStore).delete(ACCESS_COOKIE);
     (await cookieStore).delete(REFRESH_COOKIE);
     (await cookieStore).delete(SUMMONER_ICON_COOKIE);
+    (await cookieStore).delete(USER_ID);
     console.log("✅ 쿠키 삭제 완료");
 
     return res;

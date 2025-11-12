@@ -17,16 +17,14 @@ export default async function GroupMemberEditPage({
   /* 그룹 세부 정보 */
   const groupDetailDataRequieredQuery = `?page=0&groupId=${groupId}`;
   const groupDetailDataApiUrl = `/groups/${groupId}${groupDetailDataRequieredQuery}`;
-  const groupDetailData = (await fetchFromAPI(
-    groupDetailDataApiUrl
-  )) as GroupDetail;
+  const groupDetailData = (await fetchFromAPI(groupDetailDataApiUrl))
+    .data as GroupDetail;
 
   /* 그룹 멤버 정보 */
   const groupMemberDataRequieredQuery = `?page=0&`;
   const groupMemberDataApiUrl = `/groups/${groupId}/members/manage${groupMemberDataRequieredQuery}`;
-  const groupMemberData = (await fetchFromAPI(
-    groupMemberDataApiUrl
-  )) as GroupMemberAPIres;
+  const groupMemberData = (await fetchFromAPI(groupMemberDataApiUrl))
+    .data as GroupMemberAPIres;
   const groupMember = groupMemberData.content;
   const pageData = groupMemberData.page;
 

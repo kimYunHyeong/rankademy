@@ -77,16 +77,15 @@ export default async function TeamDetailPage({
   const { teamId } = await params;
 
   /* 팀 상세정보 */
-  const res = (await fetchFromAPI(`/teams/${teamId}`)) as TeamDetail;
+  const res = (await fetchFromAPI(`/teams/${teamId}`)).data as TeamDetail;
   const data = mockTeamDetail;
 
   /* 대항전 요청 정보 */
   const competitionReqData: CompetitionRequestMsg[] =
     res.isTeamLeader === true
       ? (
-          (await fetchFromAPI(
-            `/competition-requests/${teamId}`
-          )) as CompetitionRequestRes
+          (await fetchFromAPI(`/competition-requests/${teamId}`))
+            .data as CompetitionRequestRes
         ).content ?? []
       : [];
 

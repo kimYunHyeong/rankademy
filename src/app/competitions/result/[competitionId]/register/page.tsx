@@ -15,11 +15,10 @@ export default async function SubmitCompetitonResultPage({
 }) {
   const { competitionId } = await params;
 
-  /* const res = (await fetchFromAPI(
-    `/competitions/${competitionId}`
-  )) as CompetitionDetailAPIres; */
+  const res = (await fetchFromAPI(`/competitions/${competitionId}`))
+    .data as CompetitionDetailAPIres;
 
-  const competitionInfo = mockCompetitionDetail;
+  const competitionInfo = res;
 
   /* 팀의 정보 */
   const teamA = competitionInfo.team1;

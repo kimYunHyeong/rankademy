@@ -24,6 +24,7 @@ import {
 import { mockRecentCompetitionData } from "@/mock/recentCompetitionData";
 import { mockGroupJoinRequestPopUp } from "@/mock/mockGroupJoinRequestPopUp";
 import GroupTableHeader from "@/components/group-table-header";
+import { redirect } from "next/navigation";
 
 type GroupJoinRequestMsgApiRes = {
   content: GroupJoinRequestMsg[];
@@ -38,21 +39,19 @@ export default async function GroupDetailPage({
   const { groupId } = await params;
 
   /* 그룹 세부 정보 */
-  const data = (await fetchFromAPI(`/groups/${groupId}`)) as GroupDetail;
+  const data = (await fetchFromAPI(`/groups/${groupId}`)).data as GroupDetail;
 
   /* 최근 대항전 정보 */
   const RecentCompetitionInfo =
-    ((await fetchFromAPI(
-      `/groups/${groupId}/recent-competitions`
-    )) as RecentCompetition[]) ?? [];
+    ((await fetchFromAPI(`/groups/${groupId}/recent-competitions`))
+      .data as RecentCompetition[]) ?? [];
 
   /* 그룹 가입 요청 확인 */
   const groupJoinRequestData: GroupJoinRequestMsg[] =
     data.isLeader === true
       ? (
-          (await fetchFromAPI(
-            `/groups/${groupId}/join-requests?page=0`
-          )) as GroupJoinRequestMsgApiRes
+          (await fetchFromAPI(`/groups/${groupId}/join-requests?page=0`))
+            .data as GroupJoinRequestMsgApiRes
         ).content ?? []
       : [];
 

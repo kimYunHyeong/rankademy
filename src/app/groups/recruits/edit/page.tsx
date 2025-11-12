@@ -20,9 +20,8 @@ export default async function RecruitmentEditPage({
 }: {
   searchParams: Promise<{ groupId: number }>;
 }) {
-  const myGroupsList = (await fetchFromAPI(
-    `/groups/my/summary`
-  )) as GroupSummaryList[];
+  const myGroupsList = (await fetchFromAPI(`/groups/my/summary`))
+    .data as GroupSummaryList[];
 
   const sp = await searchParams;
   const groupId = sp.groupId;
@@ -30,7 +29,8 @@ export default async function RecruitmentEditPage({
   let data: RecruitDetail | undefined = undefined;
 
   if (groupId) {
-    data = (await fetchFromAPI(`/groups/${groupId}/post`)) as RecruitDetail;
+    data = (await fetchFromAPI(`/groups/${groupId}/post`))
+      .data as RecruitDetail;
   } else {
     data = undefined;
   }

@@ -30,4 +30,5 @@ export const mockMyProfile: MyProfile = {
   mostChampionIds: ["Ezreal", "Kaisa"],
   mainPosition: "JUNGLE",
   subPosition: "TOP",
+  labels: ["최강자"],
 };

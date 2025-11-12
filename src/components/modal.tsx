@@ -56,10 +56,6 @@ export default function Modal({ children }: { children: ReactNode }) {
         className="fixed inset-0"
         onClick={() => {
           router.back();
-
-          setTimeout(() => {
-            window.location.reload();
-          }, 100);
         }}
       />
 

@@ -77,7 +77,8 @@ export default function AlarmSection({
 
     // 4) 최신 알림 다시 가져와서 반영
     try {
-      const res = (await fetchFromAPI(`/notifications?page=0`)) as AlarmRes;
+      const res = (await fetchFromAPI(`/notifications?page=0`))
+        .data as AlarmRes;
       setList(res.content.map((a) => ({ ...a, _fading: false })));
     } catch {
       // 재조회 실패 시, 일단 해당 항목만 제거된 상태 유지
@@ -87,39 +88,21 @@ export default function AlarmSection({
 
   return (
     <div className="relative" ref={rootRef}>
-      {open ? (
-        <button
-          onClick={() => setOpen((v) => !v)}
-          aria-haspopup="menu"
-          aria-expanded={open}
-          aria-label="알람"
-          className="focus:outline-none"
-        >
-          <FallBackImage
-            src="/images/alarm-full.png"
-            alt="알람"
-            width={18}
-            height={18}
-            className="object-contain"
-          />
-        </button>
-      ) : (
-        <button
-          onClick={() => setOpen((v) => !v)}
-          aria-haspopup="menu"
-          aria-expanded={open}
-          aria-label="알람"
-          className="focus:outline-none"
-        >
-          <Image
-            src="/images/alarm.png"
-            alt="알람"
-            width={18}
-            height={18}
-            className="object-contain"
-          />
-        </button>
-      )}
+      <button
+        onClick={() => setOpen((v) => !v)}
+        aria-haspopup="menu"
+        aria-expanded={open}
+        aria-label="알람"
+        className="focus:outline-none"
+      >
+        <Image
+          src={`/images/alarm${open ? "-full" : "-empty"}.png`}
+          alt="알람"
+          width={18}
+          height={18}
+          className="object-contain transition-transform duration-200 ease-out hover:scale-110"
+        />
+      </button>
 
       {open && (
         <div

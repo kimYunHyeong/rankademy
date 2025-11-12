@@ -60,6 +60,7 @@ export default function InfoSection({
               height={100}
               className="rounded-2xl mr-4"
             />
+
             <div className="flex flex-col items-start">
               <span>{data.username}</span>
               <div className="text-[40px]">
@@ -69,6 +70,11 @@ export default function InfoSection({
                 {data.summonerInfo.summonerTag ? (
                   <span>#{data.summonerInfo.summonerTag}</span>
                 ) : null}
+              </div>
+              <div className="w-[140px] h-[26px] border border-[#323036] rounded bg-[#FF56790D] flex items-center justify-center mt-1">
+                <span className="bg-[linear-gradient(149.06deg,#FFA1D9_10.49%,#FF5679_60.64%)] bg-clip-text text-transparent font-semibold ">
+                  {data.labels[0] ?? "칭호"}
+                </span>
               </div>
             </div>
           </div>

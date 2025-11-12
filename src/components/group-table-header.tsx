@@ -45,8 +45,8 @@ export default function GroupTableHeader({
         <button
           className="text-white border border-[#FF567980] rounded p-2 cursor-pointer hover:bg-[#FF567920] transition-colors"
           onClick={() => {
-            groupJoinAction(groupId);
             router.push(`/groups/${groupId}/request`);
+            groupJoinAction(groupId);
           }}
         >
           가입 요청하기

@@ -84,12 +84,19 @@ export default function FormSection({
         className="flex flex-col gap-5"
       >
         <div className="flex items-center justify-end px-20">
+          <Link
+            href={"delete"}
+            className="flex items-center justify-center mt-4  border border-[#323036] w-[120px] h-11 text-[#B1ACC1] rounded bg-[#25242A33] text-center mr-2  hover:bg-[#24192F]
+                      transition-colors duration-300 ease-in-out"
+          >
+            탈퇴하기
+          </Link>
           <button
             type="submit"
             className="flex items-center justify-center 
               w-[120px] h-11 
               text-white rounded 
-              bg-[#FF567933] text-center mt-4  hover:opacity-90 transition"
+              bg-[#FF567933] text-center mt-4  hover:bg-[#FF5679] transition-colors duration-300 ease-in-out"
           >
             저장하기
           </button>
@@ -130,6 +137,11 @@ export default function FormSection({
                   {data.summonerInfo.summonerTag ? (
                     <span>#{data.summonerInfo.summonerTag}</span>
                   ) : null}
+                  <div className="w-[140px] h-[26px] border border-[#323036] rounded bg-[#FF56790D] flex items-center justify-center mt-1">
+                    <span className="text-sm bg-[linear-gradient(149.06deg,#FFA1D9_10.49%,#FF5679_60.64%)] bg-clip-text text-transparent font-semibold ">
+                      {data.labels[0] ?? "칭호"}
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>

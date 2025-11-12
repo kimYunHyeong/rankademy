@@ -1,14 +1,22 @@
 import SubHeaderMain from "@/components/sub-header-main";
 import GroupCards from "@/components/group-cards";
 import RowScrollContainer from "@/components/row-scroll-container";
-import {
-  acceptGroupInvite,
-  rejectGroupInvite,
-  showMyGroupList,
-} from "./actions";
+import { acceptGroupInvite, rejectGroupInvite } from "./actions";
 import CheckPopupGroupInvite from "@/components/check-popup-group-invite";
+import { fetchFromAPI } from "@/utils/fetcher";
+
+/* 내 그룹 */
+export type MyGroup = {
+  groupId: number;
+  groupName: string;
+  groupLogoImg: string;
+  about: string;
+  createdAt: string;
+};
 
 export default async function MyGroupListPage() {
+  const myGroupList: MyGroup[] = (await fetchFromAPI(`/groups/my`)).data;
+
   return (
     <>
       <SubHeaderMain
@@ -32,7 +40,7 @@ export default async function MyGroupListPage() {
 
       {/* 그룹 카드 */}
       <RowScrollContainer>
-        <GroupCards showGroupList={showMyGroupList} />
+        <GroupCards data={myGroupList} />
       </RowScrollContainer>
     </>
   );

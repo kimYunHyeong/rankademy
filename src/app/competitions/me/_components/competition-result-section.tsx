@@ -9,31 +9,13 @@ import { GroupCompetitionResult, PaginationData, Query } from "@/types";
 import { mockGroupCompetitionResult } from "@/mock/groupCompetitionResult";
 
 export default function MyCompetitionResultSection({
-  tableData,
-  pageData,
   apiurl,
 }: {
-  tableData: GroupCompetitionResult[];
-  pageData: PaginationData;
   apiurl: string;
 }) {
-  /* 페이지네이션 */
-  const [pageState, setPageData] = useState<PaginationData>(pageData);
-  const [query, setQuery] = useState<Query>({ page: 0, univNameKey: "" });
-
   return (
     <>
-      {/*  <CompetitionTable data={tableData} apiurl={apiurl} query={query} /> */}
-
-      {/* 페이지네이션 */}
-      <PaginationComponent
-        pageData={pageState}
-        onPageChange={(qs) => {
-          const p = Number((qs.split("=").pop() || "1").trim());
-          if (!Number.isFinite(p) || p < 1) return;
-          setQuery((prev) => ({ ...prev, page: p }));
-        }}
-      />
+      <CompetitionTable APIURL={apiurl} isJoined={true} />
     </>
   );
 }

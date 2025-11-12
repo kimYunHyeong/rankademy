@@ -100,8 +100,8 @@ export default async function RootLayout({
 
   const myAlarm: Alarm[] =
     isAuthenticated === true
-      ? ((await fetchFromAPI(`/notifications?page=0`)) as AlarmRes).content ??
-        []
+      ? ((await fetchFromAPI(`/notifications?page=0`)).data as AlarmRes)
+          .content ?? []
       : [];
 
   const navItems: NavItem[] = [

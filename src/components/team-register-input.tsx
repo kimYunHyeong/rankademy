@@ -44,7 +44,7 @@ export default function TeamRegisterInput({
       const url = `/groups/${groupId}/members/search?memberNameKey=${encodeURIComponent(
         keyword.trim()
       )}`;
-      const data = (await fetchFromAPI(url)) as Data[];
+      const data = (await fetchFromAPI(url)).data as Data[];
       setFiltered(Array.isArray(data) ? data : []);
     } catch (e: any) {
       setErr(e?.message ?? "검색 중 오류가 발생했습니다.");

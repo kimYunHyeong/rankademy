@@ -3,39 +3,36 @@
 import FallBackImage from "@/components/fallback-img";
 import Link from "next/link";
 import { formatDate } from "@/utils/format-date";
-import { fetchFromAPI } from "@/utils/fetcher";
 
 /* 목데이터 */
-import { mockMyGroups } from "@/mock/myGroup";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { API_BASE_URL } from "@/lib/api";
-import { cookies } from "next/headers";
+import { fetchFromAPI } from "@/utils/fetcher";
+import { MyGroup } from "@/app/groups/page";
+import { useRouter } from "next/navigation";
 
-/* 내 그룹 */
-export type MyGroup = {
-  groupId: number;
-  groupName: string;
-  groupLogoImg: string;
-  about: string;
-  createdAt: string;
-};
-
-export default function GroupCards({
-  showGroupList,
-}: {
-  showGroupList: () => Promise<MyGroup[]>;
-}) {
-  /* 그룹 데이터 */
-  const [data, setDatas] = useState<MyGroup[]>([]);
+export default function GroupCards({ data }: { data: MyGroup[] }) {
+  const [groups, setGroups] = useState<any[]>([]);
+  const router = useRouter();
 
   useEffect(() => {
-    showGroupList().then(setDatas);
+    const fetchData = async () => {
+      const res = await fetchFromAPI(`/groups/my`);
+
+      if (!res.ok) {
+        if (res.status === 403) alert(`학교 및 대학을 인증 후 진행해주세요`);
+        router.replace("/me");
+        return;
+      }
+
+      setGroups(res.data.content ?? []);
+    };
+
+    fetchData();
   }, []);
 
   return (
     <>
-      {data.length > 0 ? (
+      {(data?.length ?? 0) > 0 ? (
         <>
           {data.map((item) => (
             <Link

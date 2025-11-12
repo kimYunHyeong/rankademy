@@ -39,9 +39,10 @@ type APIres = {
 export default async function MyCompetitionPage() {
   const RequieredQuery = `?page=0`;
   const apiUrl = `/competitions/my${RequieredQuery}`;
-  const res = (await fetchFromAPI(apiUrl)) as APIres;
+  const res = (await fetchFromAPI(apiUrl)).data as APIres;
 
   const data = res.content;
+  const page = res.page;
 
   return (
     <>
@@ -50,11 +51,7 @@ export default async function MyCompetitionPage() {
         <span>내 대항전</span>
       </div>
       <div className="h-10"></div>
-      <MyCompetitionResultSection
-        tableData={mockGroupCompetitionResult}
-        pageData={res.page}
-        apiurl={apiUrl}
-      />
+      <MyCompetitionResultSection apiurl={apiUrl} />
     </>
   );
 }
