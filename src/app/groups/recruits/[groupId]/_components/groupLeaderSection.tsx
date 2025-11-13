@@ -31,8 +31,8 @@ export default function GroupRecruitmentLeaderSection({
     try {
       const status = await upGroupRecruitmentAction(groupId);
 
-      if (status === 200) {
-        router.push(`${groupId}/up/ok`);
+      if (status === 204) {
+        router.push(`/groups/recruits/${groupId}/up/ok`);
       } else if (status === 403) {
         router.push(`${groupId}/up/x`);
       } else {
@@ -40,7 +40,7 @@ export default function GroupRecruitmentLeaderSection({
       }
     } catch (e) {
       console.error("게시글 업 실패:", e);
-      router.push(`${groupId}/up/forbidden`);
+      router.push(`/groups/recruits/${groupId}/up/forbidden`);
     }
   };
 
