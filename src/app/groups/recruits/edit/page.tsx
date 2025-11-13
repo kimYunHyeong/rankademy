@@ -1,6 +1,6 @@
 import { fetchFromAPI } from "@/utils/fetcher";
-import RecruitmentEditFrom from "./_components/formSection";
-import { putGroupRecruitmentAction } from "./_components/actions";
+import RecruitmentEditFrom from "./_components/RecruitmentEditForm";
+import { putGroupRecruitmentAction } from "../../actions";
 import { RecruitDetail } from "../[groupId]/page";
 
 export type GroupSummaryList = {
@@ -23,6 +23,7 @@ export default async function RecruitmentEditPage({
   const myGroupsList = (await fetchFromAPI(`/groups/my/summary`))
     .data as GroupSummaryList[];
 
+  /* 모집글 데이터가 있다면 보여주기 */
   const sp = await searchParams;
   const groupId = sp.groupId;
 

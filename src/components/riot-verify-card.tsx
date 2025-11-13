@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useCallback, useState } from "react";
 
 export default function RiotVerifyCard({
@@ -7,6 +8,8 @@ export default function RiotVerifyCard({
 }: {
   verifyAction: (formData: FormData) => Promise<{ ok: true; error: null }>;
 }) {
+  const router = useRouter();
+
   const [summonerName, setSummonerName] = useState("");
   const [summonerTag, setSummonerTag] = useState("");
   const [reqLoading, setReqLoading] = useState(false);
@@ -25,6 +28,8 @@ export default function RiotVerifyCard({
         setReqLoading(true);
         await verifyAction(formData);
         setHint("인증되었습니다.");
+
+        router.push("/me");
       } catch (e: any) {
         if (e.status === 404) {
           setError(e?.message ?? "인증에 실패했습니다.");

@@ -1,4 +1,4 @@
-import { ScrimTeam } from "./../app/scrims/page";
+import { ScrimTeam } from "@/app/scrims/_components/scrim-list-section";
 export const mockScrimTeamList: ScrimTeam[] = [
   {
     scrimTeamId: 1,

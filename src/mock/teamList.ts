@@ -1,4 +1,4 @@
-import { TeamList, Team } from "@/app/competitions/page";
+import { TeamList } from "@/app/competitions/_components/team-list-section";
 
 export const mockTeamList: TeamList = {
   content: [

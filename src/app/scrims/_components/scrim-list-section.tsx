@@ -1,14 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import SubHeaderMain from "@/components/sub-header-main";
+
 import FallBackImage from "@/components/fallback-img";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import React from "react";
-import { PaginationData } from "@/types";
 import { Query } from "@/types";
-import { ScrimTeam } from "../page";
-import { CHAMPION_IMG_URL, TIER_IMG_URL } from "@/lib/api";
+import { fetchFromAPI } from "@/utils/fetcher";
+import { PaginationData, Tier } from "@/types";
+import { TIER_IMG_URL } from "@/lib/api";
 import { capitalize } from "@/utils/capitalize";
 import PaginationComponent from "@/components/pagination";
 import dayjs from "dayjs";
@@ -18,21 +18,71 @@ import "dayjs/locale/ko";
 dayjs.extend(relativeTime);
 dayjs.locale("ko");
 
-export default function ScrimTeamListSection({
-  data,
-  pageData,
-}: {
-  data: ScrimTeam[];
-  pageData: PaginationData;
-}) {
-  const [pageState, setPageData] = useState<PaginationData>(pageData);
+/* 목데이터 */
+import { mockScrimTeamList } from "@/mock/scrimTeamList";
+import { mockPaginationData } from "@/mock/mockPaginationData";
 
-  const [query, setQuery] = useState<Query>({ page: 0, univNameKey: "" });
+export type ScrimTeam = {
+  scrimTeamId: number;
+  scrimTeamName: string;
+  intro: string;
+  createdAt: string;
+  avgTierInfo: {
+    tier: Tier;
+    rank: string;
+    lp: number;
+    mappedTier: number;
+    flattenString: string;
+  };
+  isRecommended: boolean;
+};
+
+export type ScrimTeamList = {
+  content: ScrimTeam[];
+  page: PaginationData;
+};
+
+export default function ScrimScrimTeamListSection() {
+  /* 페이지네이션 설정 */
+  const [pageState, setPageState] =
+    useState<PaginationData>(mockPaginationData);
+  const [currentPage, setCurrentPage] = useState<number>(0);
+  const [rows, setRows] = useState<ScrimTeam[]>(mockScrimTeamList);
+
+  useEffect(() => {
+    let alive = true;
+
+    const run = async () => {
+      try {
+        const res = (await fetchFromAPI(`/scrim-teams`, {
+          page: currentPage,
+        })) as ScrimTeamList | { data: ScrimTeamList };
+
+        // fetchFromAPI 구현 따라 data 래핑 여부 처리
+        const ScrimTeamList: ScrimTeamList =
+          "content" in res ? res : (res as any).data;
+
+        if (!alive) return;
+
+        setRows(ScrimTeamList.content ?? []);
+        setPageState(ScrimTeamList.page ?? mockPaginationData);
+      } catch (e) {
+        console.error("❌ [RecruitListSection] fetch error:", e);
+        if (!alive) return;
+      }
+    };
+
+    run();
+
+    return () => {
+      alive = false;
+    };
+  }, [currentPage]);
+
   return (
     <>
-      {/* 스크림 모집글 */}
       <div className="flex flex-col justify-center items-center">
-        {data.map((data) => (
+        {rows.map((data) => (
           <Link
             key={`team-${data.scrimTeamId}`}
             href={`/scrims/${data.scrimTeamId}`}
@@ -93,9 +143,10 @@ export default function ScrimTeamListSection({
       <PaginationComponent
         pageData={pageState}
         onPageChange={(qs) => {
-          const p = Number((qs.split("=").pop() || "1").trim());
-          if (!Number.isFinite(p) || p < 1) return;
-          setQuery((prev) => ({ ...prev, page: p }));
+          const m = qs.match(/page=(\d+)/);
+          const p = m ? Number(m[1]) : 0;
+          if (!Number.isFinite(p) || p < 0) return;
+          setCurrentPage(p);
         }}
       />
     </>

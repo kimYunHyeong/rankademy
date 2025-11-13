@@ -41,7 +41,7 @@ export default function DeleteTeamPopUp({
           <button
             onClick={() => {
               deleteAction(teamId);
-              router.replace(`/competitions`);
+              router.push(`/competitions`);
             }}
             className="flex items-center justify-center
                       w-[195px] h-11 text-white rounded

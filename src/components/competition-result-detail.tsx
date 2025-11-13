@@ -3,7 +3,7 @@ import Link from "next/link";
 import { POSITION_IMG_URL, SUMMONER_ICON_URL } from "@/lib/api";
 import { GroupCompetitionResult } from "@/types";
 import FallBackImage from "./fallback-img";
-import { opposeCompetition } from "@/app/groups/actions";
+import { opposeCompetition } from "@/app/competitions/_components/actions";
 
 export default function CompetitionResultDetail({
   data,

@@ -1,6 +1,6 @@
 "use server";
 
-import { deleteFromAPI, patchToAPI } from "@/utils/patcher";
+import { deleteFromAPI, patchToAPI, postToAPI } from "@/utils/patcher";
 
 /* 팀 탈퇴하기 */
 export async function withdrawTeam(teamId: number) {
@@ -27,4 +27,9 @@ export async function acceptCompetitionReq(teamId: number, requestId: number) {
 /* 대항전 거절 */
 export async function rejectCompetitionReq(teamId: number, requestId: number) {
   await patchToAPI(`/competition-requests/${teamId}/reject/${requestId}`);
+}
+
+/* 대항전 이의제기 */
+export async function opposeCompetition(competitionId: number) {
+  await postToAPI(`/competitions/${competitionId}/oppose`);
 }

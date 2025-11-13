@@ -2,7 +2,7 @@
 
 import { fetchFromAPI } from "@/utils/fetcher";
 import FormSection from "./_components/formSection";
-import { updateProfile } from "./_components/actions";
+import { deleteUnivInfo, updateProfile } from "./_components/actions";
 
 /* 목데이터 */
 import { mockMyProfile } from "@/mock/myProfile";
@@ -19,6 +19,7 @@ export default async function EditMyProfile() {
       data={res}
       updateProfile={updateProfile}
       riotVerifyStatus={riotVerifyStatus}
+      deleteUnivInfo={deleteUnivInfo}
     />
   );
 }

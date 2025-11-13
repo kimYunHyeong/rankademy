@@ -44,10 +44,12 @@ export default function FormSection({
   data,
   riotVerifyStatus,
   updateProfile,
+  deleteUnivInfo,
 }: {
   data: MyProfile;
   riotVerifyStatus: boolean;
   updateProfile: (formData: FormData) => Promise<void>;
+  deleteUnivInfo: () => Promise<void>;
 }) {
   const router = useRouter();
 
@@ -160,12 +162,15 @@ export default function FormSection({
                       width={20}
                       height={20}
                     />
-                    <Link
-                      href="/me/edit/univ-verify"
+                    {/* <button
+                      onClick={() => {
+                        deleteUnivInfo;
+                        router.back();
+                      }}
                       className=" text-[#B1ACC1] hover:bg-[#25242A66] transition"
                     >
-                      <span> 다시 인증하기 {">"}</span>
-                    </Link>
+                      <span> 학교 정보 삭제 {">"}</span>
+                    </button> */}
                   </>
                 ) : (
                   <Link

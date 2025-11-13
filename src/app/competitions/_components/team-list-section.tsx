@@ -1,16 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import SubHeaderMain from "@/components/sub-header-main";
 import FallBackImage from "@/components/fallback-img";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import React from "react";
 import { PaginationData } from "@/types";
 import { Query } from "@/types";
-import { Team } from "../page";
-import { CHAMPION_IMG_URL, TIER_IMG_URL } from "@/lib/api";
+import { TIER_IMG_URL } from "@/lib/api";
 import { capitalize } from "@/utils/capitalize";
 import PaginationComponent from "@/components/pagination";
+
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import "dayjs/locale/ko";
@@ -18,20 +17,77 @@ import "dayjs/locale/ko";
 dayjs.extend(relativeTime);
 dayjs.locale("ko");
 
-export default function TeamListSection({
-  data,
-  pageData,
-}: {
-  data: Team[];
-  pageData: PaginationData;
-}) {
-  const [pageState, setPageData] = useState<PaginationData>(pageData);
+/* 목데이터 */
+import { mockTeamList } from "@/mock/teamList";
+import { mockPaginationData } from "@/mock/mockPaginationData";
+import { fetchFromAPI } from "@/utils/fetcher";
 
-  const [query, setQuery] = useState<Query>({ page: 0, univNameKey: "" });
+export type Team = {
+  teamId: number;
+  teamName: string;
+  univName: string;
+  groupName: string;
+  intro: string;
+  createdAt: string;
+  avgTierInfo: {
+    tier: string;
+    rank: string;
+    lp: number;
+    mappedTier: number;
+    flattenString: string;
+  };
+  isRecommended: boolean;
+};
+
+export type TeamList = {
+  content: Team[];
+  page: PaginationData;
+};
+
+export default function TeamListSection() {
+  /* 페이지네이션 설정 */
+  const [pageState, setPageState] =
+    useState<PaginationData>(mockPaginationData);
+  const [currentPage, setCurrentPage] = useState<number>(0);
+  const [rows, setRows] = useState<Team[]>(mockTeamList.content);
+
+  useEffect(() => {
+    let alive = true;
+
+    const run = async () => {
+      try {
+        const res = (await fetchFromAPI(`/teams`, {
+          page: currentPage,
+        })) as TeamList | { data: TeamList };
+
+        // fetchFromAPI 구현 따라 data 래핑 여부 처리
+        const TeamList: TeamList = "content" in res ? res : (res as any).data;
+
+        if (!alive) return;
+
+        setRows(TeamList.content ?? []);
+        setPageState(TeamList.page ?? mockPaginationData);
+      } catch (e) {
+        console.error("❌ [RecruitListSection] fetch error:", e);
+        if (!alive) return;
+
+        // 실패 시 목데이터로 fallback
+        setRows(mockTeamList.content);
+        setPageState(mockTeamList.page);
+      }
+    };
+
+    run();
+
+    return () => {
+      alive = false;
+    };
+  }, [currentPage]);
+
   return (
     <>
       <div className="flex flex-col justify-center items-center">
-        {data.map((data) => (
+        {rows.map((data) => (
           <Link
             key={`team-${data.teamId}`}
             href={`/competitions/${data.teamId}`}
@@ -97,9 +153,10 @@ export default function TeamListSection({
       <PaginationComponent
         pageData={pageState}
         onPageChange={(qs) => {
-          const p = Number((qs.split("=").pop() || "1").trim());
-          if (!Number.isFinite(p) || p < 1) return;
-          setQuery((prev) => ({ ...prev, page: p }));
+          const m = qs.match(/page=(\d+)/);
+          const p = m ? Number(m[1]) : 0;
+          if (!Number.isFinite(p) || p < 0) return;
+          setCurrentPage(p);
         }}
       />
     </>

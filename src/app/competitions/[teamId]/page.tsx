@@ -3,15 +3,7 @@ import RowScrollContainer from "@/components/row-scroll-container";
 import FallBackImage from "@/components/fallback-img";
 import { capitalize } from "@/utils/capitalize";
 import { CompetitionRequestMsg, PaginationData, Position, Tier } from "@/types";
-import {
-  CHAMPION_IMG_URL,
-  POSITION_IMG_URL,
-  SUMMONER_ICON_URL,
-  TIER_IMG_URL,
-} from "@/lib/api";
-import dayjs from "dayjs";
-import relativeTime from "dayjs/plugin/relativeTime";
-import "dayjs/locale/ko";
+import { POSITION_IMG_URL, SUMMONER_ICON_URL, TIER_IMG_URL } from "@/lib/api";
 import { fetchFromAPI } from "@/utils/fetcher";
 import CheckPopupCompetitionRequest from "@/components/check-popup-competition-request";
 import {
@@ -19,9 +11,14 @@ import {
   rejectCompetitionReq,
 } from "../_components/actions";
 
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+import "dayjs/locale/ko";
+
 dayjs.extend(relativeTime);
 dayjs.locale("ko");
 
+/* 목데이터 */
 import { mockTeamDetail } from "@/mock/teamDeatil";
 import { mockCompetitionRequestPopUp } from "@/mock/mockCompetitionRequestPopUp";
 
@@ -77,14 +74,13 @@ export default async function TeamDetailPage({
   const { teamId } = await params;
 
   /* 팀 상세정보 */
-  const res = (await fetchFromAPI(`/teams/${teamId}`)).data as TeamDetail;
-  const data = mockTeamDetail;
+  const data = (await fetchFromAPI(`/teams/${teamId}`)).data as TeamDetail;
 
   /* 대항전 요청 정보 */
   const competitionReqData: CompetitionRequestMsg[] =
-    res.isTeamLeader === true
+    data.isTeamLeader === true
       ? (
-          (await fetchFromAPI(`/competition-requests/${teamId}`))
+          (await fetchFromAPI(`/competition-requests/${teamId}?page=0`))
             .data as CompetitionRequestRes
         ).content ?? []
       : [];
@@ -112,7 +108,7 @@ export default async function TeamDetailPage({
           {/* 대항전 관련 알람 */}
           <RowScrollContainer>
             <CheckPopupCompetitionRequest
-              data={mockCompetitionRequestPopUp}
+              data={competitionReqData}
               checkAction={acceptCompetitionReq}
               xAction={rejectCompetitionReq}
               teamId={teamId}
@@ -304,7 +300,7 @@ export default async function TeamDetailPage({
         <div className="flex justify-end mt-5">
           <Link
             href={`/competitions/${teamId}/competition-request`}
-            className=" text-[#B1ACC1] border border-[#323036] rounded p-2 cursor-pointer hover:bg-[#FF567920] transition-colors "
+            className=" text-[#B1ACC1] border border-[#323036] rounded p-2 cursor-pointer  hover:bg-[#FF5679] transition-colors duration-300 ease-in-out hover:text-white"
           >
             결투 신청하기
           </Link>
@@ -316,7 +312,6 @@ export default async function TeamDetailPage({
 
 /* 행 스타일: 1~3위 그라데이션 + 짝/홀 배경색 */
 function defaultRowClassName(rank: number) {
-  const isTop3 = rank <= 3;
   const even = rank % 2 === 0;
 
   if (even) {

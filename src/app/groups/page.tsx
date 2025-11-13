@@ -4,6 +4,7 @@ import RowScrollContainer from "@/components/row-scroll-container";
 import { acceptGroupInvite, rejectGroupInvite } from "./actions";
 import CheckPopupGroupInvite from "@/components/check-popup-group-invite";
 import { fetchFromAPI } from "@/utils/fetcher";
+import { GroupInviteMsg, PaginationData } from "@/types";
 
 /* 내 그룹 */
 export type MyGroup = {
@@ -14,8 +15,17 @@ export type MyGroup = {
   createdAt: string;
 };
 
+/* 그룹 초대 메세지 */
+type GroupInviteMsgApiRes = {
+  content: GroupInviteMsg[];
+  page: PaginationData;
+};
+
 export default async function MyGroupListPage() {
   const myGroupList: MyGroup[] = (await fetchFromAPI(`/groups/my`)).data;
+  const GroupInviteMsg: GroupInviteMsg[] = (
+    await fetchFromAPI(`/groups/invitation?page=0`)
+  ).data.content;
 
   return (
     <>
@@ -31,6 +41,7 @@ export default async function MyGroupListPage() {
       {/* 팝업 메세지 */}
       <RowScrollContainer>
         <CheckPopupGroupInvite
+          data={GroupInviteMsg}
           checkAction={acceptGroupInvite}
           xAction={rejectGroupInvite}
         />

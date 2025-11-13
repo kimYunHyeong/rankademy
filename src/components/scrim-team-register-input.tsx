@@ -13,13 +13,11 @@ export type Data = {
   summonerIcon: number;
 };
 
-export default function TeamRegisterInput({
+export default function ScrimTeamRegisterInput({
   position,
-  groupId,
   onSelect,
 }: {
   position: Position;
-  groupId?: number;
   onSelect: (userId: number | null) => void;
 }) {
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -40,7 +38,7 @@ export default function TeamRegisterInput({
     setErr(null);
 
     try {
-      const url = `/groups/${groupId}/members/search?memberNameKey=${encodeURIComponent(
+      const url = `/users/search?userNameKey=${encodeURIComponent(
         keyword.trim()
       )}`;
       const data = (await fetchFromAPI(url)).data as Data[];

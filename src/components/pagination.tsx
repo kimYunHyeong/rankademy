@@ -13,13 +13,20 @@ import { PaginationData } from "@/types";
 
 type Props = {
   pageData: PaginationData;
+  windowSize?: number;
   onPageChange?: (queryString: string) => void;
 };
 
 const WINDOW_SIZE = 25;
 
-export default function PaginationComponent({ pageData, onPageChange }: Props) {
+export default function PaginationComponent({
+  pageData,
+  windowSize,
+  onPageChange,
+}: Props) {
   const { number = 0, totalPages = 1 } = pageData;
+
+  const window = windowSize ?? WINDOW_SIZE;
 
   // 내부는 0-based 유지
   const [pageIndex, setPageIndex] = React.useState(number);
@@ -27,7 +34,7 @@ export default function PaginationComponent({ pageData, onPageChange }: Props) {
 
   // 현재 보이는 "페이지 묶음"의 시작 index (0, 25, 50, ...)
   const [windowStart, setWindowStart] = React.useState(
-    Math.floor((number ?? 0) / WINDOW_SIZE) * WINDOW_SIZE
+    Math.floor((number ?? 0) / window) * window
   );
 
   // 부모에서 number가 바뀌면 동기화
@@ -35,13 +42,13 @@ export default function PaginationComponent({ pageData, onPageChange }: Props) {
     const nextIndex = number ?? 0;
     setPageIndex(nextIndex);
     // 선택된 페이지가 다른 묶음이면 윈도우도 맞춰 이동
-    const nextWindowStart = Math.floor(nextIndex / WINDOW_SIZE) * WINDOW_SIZE;
+    const nextWindowStart = Math.floor(nextIndex / window) * window;
     if (nextWindowStart !== windowStart) {
       setWindowStart(nextWindowStart);
     }
   }, [number]);
 
-  const windowEnd = Math.min(windowStart + WINDOW_SIZE, totalPages);
+  const windowEnd = Math.min(windowStart + window, totalPages);
   const hasPrevWindow = windowStart > 0;
   const hasNextWindow = windowEnd < totalPages;
 

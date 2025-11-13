@@ -1,10 +1,11 @@
 "use client";
 
 import FallBackImage from "@/components/fallback-img";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import TeamRegisterInput from "@/components/team-register-input";
 import { Position } from "@/types";
+import ScrimTeamRegisterInput from "@/components/scrim-team-register-input";
 
 type FormMember = {
   userId: number;
@@ -100,35 +101,35 @@ export default function CreateScrimTeamFrom({
           <span className="text-white text-sm mb-5">팀원 등록</span>
 
           <div className="grid grid-cols-2 gap-x-8 gap-y-2">
-            <TeamRegisterInput
+            <ScrimTeamRegisterInput
               position="TOP"
               onSelect={(userId: number | null) => {
                 if (!userId) return;
                 upsertMember("TOP", userId);
               }}
             />
-            <TeamRegisterInput
+            <ScrimTeamRegisterInput
               position="JUNGLE"
               onSelect={(userId: number | null) => {
                 if (!userId) return;
                 upsertMember("JUNGLE", userId);
               }}
             />
-            <TeamRegisterInput
+            <ScrimTeamRegisterInput
               position="MIDDLE"
               onSelect={(userId: number | null) => {
                 if (!userId) return;
                 upsertMember("MIDDLE", userId);
               }}
             />
-            <TeamRegisterInput
+            <ScrimTeamRegisterInput
               position="BOTTOM"
               onSelect={(userId: number | null) => {
                 if (!userId) return;
                 upsertMember("BOTTOM", userId);
               }}
             />
-            <TeamRegisterInput
+            <ScrimTeamRegisterInput
               position="UTILITY"
               onSelect={(userId: number | null) => {
                 if (!userId) return;

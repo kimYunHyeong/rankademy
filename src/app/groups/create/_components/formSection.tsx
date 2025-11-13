@@ -87,12 +87,6 @@ export default function CreateGroupFormSection({
 
   return (
     <>
-      {/* 헤더 */}
-      <div className="flex items-center justify-center text-white my-3">
-        <span>그룹 생성</span>
-      </div>
-      <div className="h-20"></div>
-
       {/* 본문 */}
       <form
         onSubmit={handleSubmit}

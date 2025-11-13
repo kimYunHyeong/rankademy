@@ -1,21 +1,31 @@
 import Link from "next/link";
-import { Switch } from "@/components/ui/switch";
 import FallBackImage from "@/components/fallback-img";
-import RowScrollContainer from "@/components/row-scroll-container";
 import { fetchFromAPI } from "@/utils/fetcher";
 import { CHAMPION_IMG_URL } from "@/lib/api";
-import dayjs from "dayjs";
-import relativeTime from "dayjs/plugin/relativeTime";
-import CheckPopupGroupJoinRequest from "@/components/check-popup-group-join-request";
-import "dayjs/locale/ko";
-import { upGroupRecruitmentAction } from "./actions";
 import GroupRecruitmentLeaderSection from "./_components/groupLeaderSection";
-import { GroupDetail, GroupJoinRequestMsg, PaginationData } from "@/types";
+import { GroupJoinRequestMsg, PaginationData } from "@/types";
 import NotJoinedSection from "./_components/notJoinedSection";
 import { groupJoinAction } from "../../[groupId]/actions";
 
+import dayjs from "dayjs";
+import "dayjs/locale/ko";
+import relativeTime from "dayjs/plugin/relativeTime";
 dayjs.extend(relativeTime);
 dayjs.locale("ko");
+
+/* 목데이터 */
+const mock: RecruitDetail = {
+  postId: 1,
+  groupId: 1,
+  groupName: "string",
+  title: "string",
+  content: "string",
+  requirements: "string",
+  createdAt: "2025-11-02T06:59:25.531Z",
+  isJoined: true,
+  isLeader: true,
+  isRecruiting: true,
+};
 
 export type RecruitDetail = {
   postId: number;
@@ -35,19 +45,6 @@ export type GroupJoinRequestMsgRes = {
   page: PaginationData;
 };
 
-const mock: RecruitDetail = {
-  postId: 1,
-  groupId: 1,
-  groupName: "string",
-  title: "string",
-  content: "string",
-  requirements: "string",
-  createdAt: "2025-11-02T06:59:25.531Z",
-  isJoined: true,
-  isLeader: true,
-  isRecruiting: true,
-};
-
 export default async function RecruitDetailPage({
   params,
 }: {
@@ -56,9 +53,8 @@ export default async function RecruitDetailPage({
   const { groupId } = await params;
 
   /* 모집 게시글 데이터 */
-  const res = (await fetchFromAPI(`/groups/${groupId}/post`))
+  const data = (await fetchFromAPI(`/groups/${groupId}/post`))
     .data as RecruitDetail;
-  const data = res;
 
   /* 그룹 가입 요청 데이터 */
   const groupJoinRequestData: GroupJoinRequestMsg[] =
@@ -69,16 +65,14 @@ export default async function RecruitDetailPage({
         ).content ?? []
       : [];
 
-  const groupJoinData = groupJoinRequestData;
-
   return (
     <>
       {/* 그룹 리더일 때 표시할 정보 */}
       {data.isLeader && (
         <GroupRecruitmentLeaderSection
-          groupId={data.groupId}
-          groupJoinData={groupJoinData}
-          recruitStatus={res.isRecruiting}
+          joinReqData={groupJoinRequestData}
+          groupId={groupId}
+          recruitStatus={data.isRecruiting}
         />
       )}
 

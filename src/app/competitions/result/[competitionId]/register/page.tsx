@@ -6,7 +6,7 @@ import {
   requestOCRResult,
   registerCompetitionResult,
 } from "./_components/actions";
-import { uploadImage } from "@/app/groups/edit/actions";
+import { uploadImage } from "@/app/groups/create/actions";
 
 export default async function SubmitCompetitonResultPage({
   params,

@@ -4,27 +4,24 @@ import { useEffect, useState } from "react";
 import FallBackImage from "@/components/fallback-img";
 import { GroupInviteMsg, PaginationData } from "@/types";
 import { formatDate } from "@/utils/format-date";
-
-/* 목데이터 */
-import { mockGroupInviationPopUp } from "@/mock/mockGroupInviationPopUp";
 import { fetchFromAPI } from "@/utils/fetcher";
 import { useRouter } from "next/navigation";
 
-export type GroupInviteMsgApiRes = {
-  content: GroupInviteMsg[];
-  page: PaginationData;
-};
+/* 목데이터 */
+import { mockGroupInviationPopUp } from "@/mock/mockGroupInviationPopUp";
+
 type CallbackType = (groupId: number, invitationId: number) => Promise<void>;
 
 export default function CheckPopupGroupInvite({
+  data,
   checkAction,
   xAction,
 }: {
+  data: GroupInviteMsg[];
   checkAction: CallbackType;
   xAction: CallbackType;
 }) {
   const router = useRouter();
-  const [data, setData] = useState<GroupInviteMsg[]>([]);
 
   useEffect(() => {
     async function load() {
@@ -41,6 +38,7 @@ export default function CheckPopupGroupInvite({
 
     load();
   }, [router]);
+
   // 애니메이션 플래그 포함한 로컬 상태
   const [items, setItems] = useState<(GroupInviteMsg & { fading: boolean })[]>(
     data.map((item) => ({ ...item, fading: false }))

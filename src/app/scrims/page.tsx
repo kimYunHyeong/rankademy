@@ -1,39 +1,9 @@
 import Link from "next/link";
 import SubHeaderMain from "@/components/sub-header-main";
 import React from "react";
-import { fetchFromAPI } from "@/utils/fetcher";
-import { PaginationData, Tier } from "@/types";
-import { mockScrimTeamList } from "@/mock/scrimTeamList";
 import ScrimTeamListSection from "./_components/scrim-list-section";
 
-export type ScrimTeam = {
-  scrimTeamId: number;
-  scrimTeamName: string;
-  intro: string;
-  createdAt: string;
-  avgTierInfo: {
-    tier: Tier;
-    rank: string;
-    lp: number;
-    mappedTier: number;
-    flattenString: string;
-  };
-  isRecommended: boolean;
-};
-
-export type ScrimTeamList = {
-  content: ScrimTeam[];
-  page: PaginationData;
-};
-
 export default async function ScrimTeamListPage() {
-  const resRequestedUrl = "?page=0";
-  const res = (await fetchFromAPI(`/scrim-teams${resRequestedUrl}`))
-    .data as ScrimTeamList;
-
-  const data = res.content;
-  const pageData = res.page;
-
   return (
     <>
       {/* 대항전/스크림 선택 */}
@@ -58,7 +28,7 @@ export default async function ScrimTeamListPage() {
           팀 생성
         </Link>
       </div>
-      <ScrimTeamListSection data={data} pageData={pageData} />
+      <ScrimTeamListSection />
     </>
   );
 }

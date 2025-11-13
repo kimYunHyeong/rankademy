@@ -1,48 +1,42 @@
-import { PaginationData } from "@/types";
-import { fetchFromAPI } from "@/utils/fetcher";
+import Link from "next/link";
 import RecruitListSection from "./_components/recruit-list-section";
-
-export type recruit = {
-  postId: number;
-  groupId: number;
-  groupName: string;
-  groupLogo: string;
-  title: string;
-  content: string;
-  createdAt: string;
-};
-
-type APIres = {
-  content: recruit[];
-  page: PaginationData;
-};
-
-/* 목데이터 */
-const mockRecruits: APIres = {
-  content: [
-    {
-      postId: 1,
-      groupId: 10,
-      groupName: "서울과기대 컴공 20학번",
-      groupLogo: "string",
-      title: "컴퓨터공학과 20학번 모집합니다",
-      content:
-        "본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문본문",
-      createdAt: "2025-10-28T16:12:39.857Z",
-    },
-  ],
-  page: {
-    size: 10,
-    number: 0,
-    totalElements: 0,
-    totalPages: 0,
-  },
-};
+import SubHeaderMain from "@/components/sub-header-main";
 
 export default async function RecruitListPage() {
-  const resRequestedUrl = "?page=0";
-  const res = (await fetchFromAPI(`/groups/posts${resRequestedUrl}`))
-    .data as APIres;
+  return (
+    <>
+      <SubHeaderMain
+        items={[
+          { label: "내 그룹", href: "/groups" },
+          { label: "모집 게시판", href: "/groups/recruits" },
+        ]}
+        className="my-3"
+      />
+      <div className="h-8"></div>
+      <div className="flex items-center justify-end my-5">
+        <Link
+          href="create"
+          className="flex items-center justify-center 
+      border border-[#323036] 
+      w-[120px] h-11 
+      text-[#B1ACC1] rounded 
+      bg-[#25242A33] text-center mt-10 mr-2"
+        >
+          그룹 생성
+        </Link>
 
-  return <RecruitListSection data={res.content} pageData={res.page} />;
+        <Link
+          href={`recruits/edit`}
+          className="flex items-center justify-center 
+      border border-[#323036] 
+      w-[120px] h-11 
+      text-[#B1ACC1] rounded 
+      bg-[#25242A33] text-center mt-10"
+        >
+          모집글 작성
+        </Link>
+      </div>
+      <RecruitListSection />;
+    </>
+  );
 }

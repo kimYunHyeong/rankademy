@@ -7,7 +7,6 @@ import type { Column } from "@/types";
 import { SUMMONER_ICON_URL, TIER_IMG_URL } from "@/lib/api";
 import { capitalize } from "@/utils/capitalize";
 import { POSITION_IMG_URL } from "@/lib/api";
-
 import { GroupMember } from "@/types";
 
 /* 목데이터 */

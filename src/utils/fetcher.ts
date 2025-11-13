@@ -45,7 +45,7 @@ export async function fetchFromAPI(endpoint: string, query?: Query) {
     .catch(() => "(no body)");
 
   // 요청 로그
-  /*   console.log("\n==============================");
+  console.log("\n==============================");
   console.log("📡 [fetchFromAPI] Request");
   console.log("URL:", url.toString());
   console.log("Method: GET");
@@ -58,13 +58,13 @@ export async function fetchFromAPI(endpoint: string, query?: Query) {
   } else {
     console.log("엑세스토큰이 없습니다.");
   }
-  console.log("=============================="); */
+  console.log("==============================");
 
   // 응답 로그
-  /*   console.log("📥 [fetchFromAPI] Response");
+  console.log("📥 [fetchFromAPI] Response");
   console.log("Status:", res.status, res.statusText);
   console.log("Response Body:", text.slice(0, 300));
-  console.log("==============================\n"); */
+  console.log("==============================\n");
 
   // 에러 처리
   if (!res.ok) {

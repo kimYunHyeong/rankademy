@@ -101,7 +101,7 @@ export async function mutateAPI(
   }
 
   // 6) 요청 로그
-  /* console.log("\n==============================");
+  console.log("\n==============================");
   console.log("✍️ [mutateAPI] Request");
   console.log("URL:", url.toString());
   console.log("Method:", method);
@@ -111,7 +111,7 @@ export async function mutateAPI(
   } else if (isFormData) {
     console.log("Body: [FormData]");
   }
-  console.log("=============================="); */
+  console.log("==============================");
 
   // 7) 실제 요청
   const res = await fetch(url.toString(), {
@@ -123,11 +123,11 @@ export async function mutateAPI(
 
   // 8) 응답 파싱 + 로그
   const { parsed, raw } = await safeParse(res);
-  /* console.log("📥 [mutateAPI] Response");
+  console.log("📥 [mutateAPI] Response");
   console.log("Status:", res.status, res.statusText);
   console.log("Response Body:", String(raw));
   console.log("==============================\n");
- */
+
   // 9) 에러 처리
   if (!res.ok) {
     if (res.status === 401) {

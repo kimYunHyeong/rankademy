@@ -18,11 +18,11 @@ import {
 
 export default function GroupRecruitmentLeaderSection({
   groupId,
-  groupJoinData,
+  joinReqData,
   recruitStatus,
 }: {
   groupId: number;
-  groupJoinData: GroupJoinRequestMsg[];
+  joinReqData: GroupJoinRequestMsg[];
   recruitStatus: boolean;
 }) {
   const router = useRouter();
@@ -87,7 +87,7 @@ export default function GroupRecruitmentLeaderSection({
       {/* 그룹 가입 요청 */}
       <RowScrollContainer>
         <CheckPopupGroupJoinRequest
-          data={groupJoinData}
+          data={joinReqData}
           checkAction={acceptGroupInvite}
           xAction={rejectGroupInvite}
           groupId={groupId}

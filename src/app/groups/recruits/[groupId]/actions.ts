@@ -1,6 +1,6 @@
 "use server";
 
-import { postToAPI, patchToAPI } from "@/utils/patcher";
+import { patchToAPI } from "@/utils/patcher";
 
 /* 그룹 게시글 UP요청 */
 export async function upGroupRecruitmentAction(groupId: number) {

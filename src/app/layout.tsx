@@ -147,7 +147,7 @@ export default async function RootLayout({
                       />
                     </Link>
                     <AlarmSection
-                      alarmList={mockAlarmList}
+                      alarmList={myAlarm}
                       checkAction={checkAlarm}
                     />
                     <ProfileMenu summonerIcon={summonerIcon} />

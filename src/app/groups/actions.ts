@@ -11,7 +11,13 @@ export async function rejectGroupInvite(groupId: number, invitationId: number) {
   await patchToAPI(`/groups/${groupId}/invitation/reject/${invitationId}`);
 }
 
-/* 이메일 코드 확인 */
-export async function opposeCompetition(competitionId: number) {
-  await postToAPI(`/competitions/${competitionId}/oppose`);
+/* 그룹 가입 요청 */
+export async function putGroupRecruitmentAction(
+  groupId: number,
+  formData: FormData
+) {
+  const payload = Object.fromEntries(formData.entries());
+  await postToAPI(`/groups/${groupId}/posts`, {
+    body: payload,
+  });
 }

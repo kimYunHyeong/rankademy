@@ -1,13 +1,8 @@
-import { fetchFromAPI } from "@/utils/fetcher";
 import CreateScrimTeamFrom from "./_components/createScrimTeamForm";
-import { GroupSummaryList } from "@/app/groups/recruits/edit/page";
 import { createScrimTeam } from "./_components/actions";
 import { cookies } from "next/headers";
 
 export default async function createScrimTeamPage() {
-  const myGroupsList = (await fetchFromAPI(`/groups/my/summary`))
-    .data as GroupSummaryList[];
-
   const cookieStore = cookies();
   const userId = (await cookieStore).get("userId")?.value;
 

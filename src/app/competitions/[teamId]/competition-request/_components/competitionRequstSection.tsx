@@ -1,24 +1,100 @@
 "use client";
-import { Query, PaginationData } from "@/types";
+import { PaginationData } from "@/types";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { fetchFromAPI } from "@/utils/fetcher";
+import { mockPaginationData } from "@/mock/mockPaginationData";
 import PaginationComponent from "@/components/pagination";
-import { useState } from "react";
-import { TeamInfo } from "../page";
+
+export type TeamInfo = {
+  teamId: number;
+  teamName: string;
+  groupId: number;
+  groupName: string;
+};
+
+type MyTeamList = {
+  content: TeamInfo[];
+  page: PaginationData;
+};
+
+const mock = {
+  content: [
+    {
+      teamId: 1,
+      teamName: "컴퓨터공학과",
+      groupId: 1,
+      groupName: "서울과학기술대학교",
+    },
+    {
+      teamId: 2,
+      teamName: "컴퓨터공학과",
+      groupId: 2,
+      groupName: "서울과학기술대학교",
+    },
+    {
+      teamId: 3,
+      teamName: "컴퓨터공학과",
+      groupId: 1,
+      groupName: "서울과학기술대학교",
+    },
+  ],
+  page: {
+    size: 3,
+    number: 0,
+    totalElements: 3,
+    totalPages: 1,
+  },
+};
 
 export default function CompetitionRequestSection({
   otherTeamId,
-  data,
-  pageData,
   submitAction,
 }: {
   otherTeamId: number;
-  data: TeamInfo[];
-  pageData: PaginationData;
   submitAction: (teamId: number, otherTeamId: number) => Promise<void>;
 }) {
   const router = useRouter();
-  const [pageState, setPageData] = useState<PaginationData>(pageData);
-  const [query, setQuery] = useState<Query>({ page: 0 });
+  /* 페이지네이션 설정 */
+  const [pageState, setPageState] = useState<PaginationData>(
+    mockPaginationData ?? mock.page
+  );
+  const [currentPage, setCurrentPage] = useState<number>(0);
+  const [rows, setRows] = useState<TeamInfo[]>(mock.content);
+
+  useEffect(() => {
+    let alive = true;
+
+    const run = async () => {
+      try {
+        const res = (await fetchFromAPI(`/teams/my`, {
+          page: currentPage,
+        })) as MyTeamList | { data: MyTeamList };
+
+        // fetchFromAPI 구현 따라 data 래핑 여부 처리
+        const MyTeamList: MyTeamList =
+          "content" in res ? res : (res as any).data;
+
+        if (!alive) return;
+
+        setRows(MyTeamList.content ?? []);
+        setPageState(MyTeamList.page ?? mockPaginationData);
+      } catch (e) {
+        console.error("❌ [RecruitListSection] fetch error:", e);
+        if (!alive) return;
+
+        // 실패 시 목데이터로 fallback
+        setRows(mock.content);
+        setPageState(mock.page);
+      }
+    };
+
+    run();
+
+    return () => {
+      alive = false;
+    };
+  }, [currentPage]);
 
   return (
     <>
@@ -37,7 +113,7 @@ export default function CompetitionRequestSection({
 
         {/* 테이블 */}
         <div className="mt-4 mb-2">
-          {data.slice(0, pageData.size).map((team) => (
+          {rows.slice(0, pageState.size).map((team) => (
             <div
               key={team.teamId}
               onClick={() => {
@@ -53,13 +129,16 @@ export default function CompetitionRequestSection({
             </div>
           ))}
         </div>
+
         {/* 페이지네이션 */}
         <PaginationComponent
           pageData={pageState}
+          windowSize={5}
           onPageChange={(qs) => {
-            const p = Number((qs.split("=").pop() || "1").trim());
-            if (!Number.isFinite(p) || p < 1) return;
-            setQuery((prev) => ({ ...prev, page: p }));
+            const m = qs.match(/page=(\d+)/);
+            const p = m ? Number(m[1]) : 0;
+            if (!Number.isFinite(p) || p < 0) return;
+            setCurrentPage(p);
           }}
         />
 

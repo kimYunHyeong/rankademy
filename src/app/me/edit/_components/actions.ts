@@ -1,6 +1,6 @@
 "use server";
 
-import { patchToAPI } from "@/utils/patcher";
+import { deleteFromAPI, patchToAPI } from "@/utils/patcher";
 
 /* 유저 프로필 수정 */
 export async function updateProfile(formData: FormData) {
@@ -9,4 +9,8 @@ export async function updateProfile(formData: FormData) {
   await patchToAPI("/me", {
     body: payload,
   });
+}
+
+export async function deleteUnivInfo() {
+  await deleteFromAPI(`/me/univ`);
 }
