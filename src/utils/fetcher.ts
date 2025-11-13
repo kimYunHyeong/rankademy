@@ -68,7 +68,7 @@ export async function fetchFromAPI(endpoint: string, query?: Query) {
 
   // 에러 처리
   if (!res.ok) {
-    if (res.status === 401) {
+    if (res.status === 401 || res.status === 400) {
       console.warn(
         "[에러코드]: 401(Unauthorized) — No or invalid access token."
       );
