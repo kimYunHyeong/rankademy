@@ -50,13 +50,6 @@ export default function GroupTableHeader({
               <span className="text-[#B1ACC1]">/{capacity}</span>
             </div>
           </div>
-
-          <button
-            className="text-white border border-[#FF567980] rounded p-2 cursor-pointer hover:bg-[#FF567920] transition-colors"
-            onClick={() => router.back()}
-          >
-            종료하기
-          </button>
         </>
       )}
 
